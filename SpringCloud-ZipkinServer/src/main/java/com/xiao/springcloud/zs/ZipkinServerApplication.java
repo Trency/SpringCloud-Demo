@@ -10,7 +10,6 @@ package com.xiao.springcloud.zs;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.sleuth.zipkin.stream.EnableZipkinStreamServer;
-import zipkin.server.internal.EnableZipkinServer;
 
 /**
  * [简要描述]:<br/>
@@ -26,10 +25,8 @@ import zipkin.server.internal.EnableZipkinServer;
 // 加上注解@EnableZipkinServer，开启ZipkinServer的功能
 //@EnableZipkinServer
 @EnableZipkinStreamServer
-public class ZipkinServerApplication
-{
-    public static void main(String[] args)
-    {
+public class ZipkinServerApplication {
+    public static void main(String[] args) {
         SpringApplication.run(ZipkinServerApplication.class, args);
     }
 }

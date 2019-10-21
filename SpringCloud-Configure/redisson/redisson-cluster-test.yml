@@ -50,11 +50,11 @@ clusterServersConfig:
   #启用SSL终端识别 默认值：true
   #sslEnableEndpointIdentification: false
   nodeAddresses:
-  - "redis://localhost:7379"
-  - "redis://localhost:7380"
-  - "redis://localhost:7381"
-  - "redis://localhost1:7379"
-  - "redis://localhost1:7380"
-  - "redis://localhost1:7381"
+    - "redis://localhost:7379"
+    - "redis://localhost:7380"
+    - "redis://localhost:7381"
+    - "redis://localhost1:7379"
+    - "redis://localhost1:7380"
+    - "redis://localhost1:7381"
   #集群扫描间隔时间，默认1000ms
   scanInterval: 1000

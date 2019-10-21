@@ -16,8 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface CodePrefix
-{
+public @interface CodePrefix {
     /**
      * 业务开头编码
      */

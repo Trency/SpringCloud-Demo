@@ -25,8 +25,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Service
-public class ConfigItemGroupServiceImpl implements ConfigItemGroupService
-{
+public class ConfigItemGroupServiceImpl implements ConfigItemGroupService {
     @Autowired
     private ConfigItemGroupMapper configItemGroupMapper;
     @Autowired
@@ -36,42 +35,36 @@ public class ConfigItemGroupServiceImpl implements ConfigItemGroupService
     private ApplicationItemGroupRelationMapper applicationItemGroupRelationMapper;
 
     @Override
-    public Integer save(ConfigItemGroup configItemGroup)
-    {
+    public Integer save(ConfigItemGroup configItemGroup) {
         return configItemGroupMapper.insert(configItemGroup);
     }
 
     @Override
-    public Integer update(ConfigItemGroup configItemGroup)
-    {
+    public Integer update(ConfigItemGroup configItemGroup) {
         return configItemGroupMapper.updateByPrimaryKey(configItemGroup);
     }
 
     @Override
-    public Integer delete(Long id)
-    {
+    public Integer delete(Long id) {
         return configItemGroupMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public PageInfo<ConfigItemGroupDto> pageConfigItemGroup(ConfigItemGroupQuery configItemGroupQuery, Integer pageNum,
-            Integer pageSize)
-    {
+                                                            Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ConfigItemGroupDto> list = configItemGroupMapper.pageConfigItemGroup(configItemGroupQuery);
         return new PageInfo<>(list);
     }
 
     @Override
-    public ConfigItemGroup getConfigItemGroupById(Long id)
-    {
+    public ConfigItemGroup getConfigItemGroupById(Long id) {
         return configItemGroupMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public PageInfo<ConfigItemGroupDto> pageRefGroupWithApp(ConfigItemGroupQuery configItemGroupQuery, int pageNum,
-            int pageSize)
-    {
+                                                            int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ConfigItemGroupDto> list = configItemGroupMapper.pageRefGroupWithApp(configItemGroupQuery);
         return new PageInfo<>(list);
@@ -79,27 +72,21 @@ public class ConfigItemGroupServiceImpl implements ConfigItemGroupService
 
     @Override
     public PageInfo<ConfigItemGroupDto> pageNotRefGroupWithApp(ConfigItemGroupQuery configItemGroupQuery, int pageNum,
-            int pageSize)
-    {
+                                                               int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ConfigItemGroupDto> list = configItemGroupMapper.pageNotRefGroupWithApp(configItemGroupQuery);
         return new PageInfo<>(list);
     }
 
     @Override
-    public int batchDelete(String[] idArr)
-    {
+    public int batchDelete(String[] idArr) {
         List<String> delGroupIds = new ArrayList<>();
         //删除组之前，已经关联应用的不能进行删除，必须先从应用中解除
-        for (String groupId : idArr)
-        {
+        for (String groupId : idArr) {
             //删除组之前，已经关联应用的不能进行删除，必须先从应用中解除
-            if (applicationItemGroupRelationMapper.countByGroupId(groupId) > 0)
-            {
+            if (applicationItemGroupRelationMapper.countByGroupId(groupId) > 0) {
                 continue;
-            }
-            else
-            {
+            } else {
                 delGroupIds.add(groupId);
             }
         }

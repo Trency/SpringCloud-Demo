@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class EntryDto<T>
-{
+public class EntryDto<T> {
     private String key;
     private T value;
 }

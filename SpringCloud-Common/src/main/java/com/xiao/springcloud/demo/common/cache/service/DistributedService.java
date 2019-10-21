@@ -17,8 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0, 2018/10/11 09:04
  * @since JDK 1.8
  */
-public interface DistributedService
-{
+public interface DistributedService {
     /**
      * [简要描述]:获取分布式非公平可重入锁<br>
      * [详细描述]:阻塞式获取，直到获取锁<br>
@@ -36,9 +35,9 @@ public interface DistributedService
      * [简要描述]:非公平可重入锁，并在指定单位时间内自动释放锁，无需手动释放<br/>
      * [详细描述]:阻塞式，直到获取锁<br/>
      *
-     * @param lockKey : key
+     * @param lockKey   : key
      * @param leaseTime : 存货时间
-     * @param unit : 时间单位
+     * @param unit      : 时间单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:37
      **/
@@ -59,10 +58,10 @@ public interface DistributedService
      * [简要描述]:指定时间内尝试获取非公平可重入锁，获取成功并设置锁自动失效时间<br/>
      * [详细描述]:获取不到锁返回null<br/>
      *
-     * @param lockKey : key
-     * @param timeout : 超时时间，单位秒
+     * @param lockKey   : key
+     * @param timeout   : 超时时间，单位秒
      * @param leaseTime : 锁失效时间
-     * @param unit : 锁失效单位
+     * @param unit      : 锁失效单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:52
      **/
@@ -82,9 +81,9 @@ public interface DistributedService
      * [简要描述]:获取可重入公平锁，并在指定单位时间内自动释放锁，无需手动释放<br/>
      * [详细描述]:阻塞式，直到获取锁<br/>
      *
-     * @param lockKey : key
+     * @param lockKey   : key
      * @param leaseTime : 存货时间
-     * @param unit : 时间单位
+     * @param unit      : 时间单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:37
      **/
@@ -105,10 +104,10 @@ public interface DistributedService
      * [简要描述]:指定时间内尝试获取公平可重入锁，获取成功并设置锁自动失效时间<br/>
      * [详细描述]:获取不到锁返回null<br/>
      *
-     * @param lockKey : key
-     * @param timeout : 超时时间，单位秒
+     * @param lockKey   : key
+     * @param timeout   : 超时时间，单位秒
      * @param leaseTime : 锁失效时间
-     * @param unit : 锁失效单位
+     * @param unit      : 锁失效单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:52
      **/
@@ -131,8 +130,8 @@ public interface DistributedService
      *
      * @param lockKey : key
      * @param isWrite : true写锁，false读锁
-     * @param lease : 存活时间
-     * @param unit : 时间单位
+     * @param lease   : 存活时间
+     * @param unit    : 时间单位
      * @return org.redisson.api.RReadWriteLock
      * llxiao  2018/10/11 - 10:54
      **/
@@ -154,11 +153,11 @@ public interface DistributedService
      * [简要描述]:指定时间内尝试获取读写锁，获取成功并设置锁自动失效时间<br/>
      * [详细描述]:获取不到锁返回null<br/>
      *
-     * @param lockKey : key
-     * @param isWrite : true写锁，false读锁
-     * @param timeout : 超时时间，单位秒
+     * @param lockKey   : key
+     * @param isWrite   : true写锁，false读锁
+     * @param timeout   : 超时时间，单位秒
      * @param leaseTime : 锁失效时间
-     * @param unit : 锁失效单位
+     * @param unit      : 锁失效单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:52
      **/
@@ -168,7 +167,7 @@ public interface DistributedService
      * [简要描述]:获取一点数量的分布式闭锁（CountDownLatch）<br/>
      * [详细描述]:<br/>
      *
-     * @param key : key
+     * @param key   : key
      * @param count : 数量
      * @return org.redisson.api.RCountDownLatch
      * llxiao  2018/10/11 - 11:49
@@ -180,7 +179,7 @@ public interface DistributedService
      * [详细描述]:<br/>
      *
      * @param key : key
-     * llxiao  2018/10/11 - 11:53
+     *            llxiao  2018/10/11 - 11:53
      **/
     void countDown(String key);
 
@@ -189,7 +188,7 @@ public interface DistributedService
      * [详细描述]:<br/>
      *
      * @param lockKey : key
-     * llxiao  2018/10/11 - 9:42
+     *                llxiao  2018/10/11 - 9:42
      **/
     void unRLock(String lockKey);
 
@@ -198,7 +197,7 @@ public interface DistributedService
      * [详细描述]:<br/>
      *
      * @param rLock : RLock
-     * llxiao  2018/10/11 - 9:42
+     *              llxiao  2018/10/11 - 9:42
      **/
     void unRLock(RLock rLock);
 }

@@ -13,8 +13,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Data
-public class SearchCommodityResultDo
-{
+public class SearchCommodityResultDo {
     private List<ElasticSearchDoc> commodityList;
 
     /**

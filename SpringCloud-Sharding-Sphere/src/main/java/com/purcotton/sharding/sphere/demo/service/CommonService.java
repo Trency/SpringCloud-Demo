@@ -8,12 +8,15 @@ package com.purcotton.sharding.sphere.demo.service;
  * @version 1.0, 2018/11/14 11:14
  * @since JDK 1.8
  */
-public interface CommonService
-{
+public interface CommonService {
     void initEnvironment();
+
     void cleanEnvironment();
+
     void processSuccess(boolean isRangeSharding);
+
     void processFailure();
+
     void printData(boolean isRangeSharding);
 
 }

@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = "winner-config-server")
 @RequestMapping("/refresh")
-public interface RefreshFeign
-{
+public interface RefreshFeign {
     @RequestMapping("/client")
     boolean refresh(@RequestParam("ip") String ip, @RequestParam("port") int port);
 }

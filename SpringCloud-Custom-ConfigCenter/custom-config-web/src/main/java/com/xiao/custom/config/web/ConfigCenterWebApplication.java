@@ -19,10 +19,8 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableFeignClients
 // 开启熔断功能
 //@EnableCircuitBreaker
-public class ConfigCenterWebApplication
-{
-    public static void main(String[] args)
-    {
+public class ConfigCenterWebApplication {
+    public static void main(String[] args) {
         SpringApplication.run(ConfigCenterWebApplication.class, args);
     }
 }

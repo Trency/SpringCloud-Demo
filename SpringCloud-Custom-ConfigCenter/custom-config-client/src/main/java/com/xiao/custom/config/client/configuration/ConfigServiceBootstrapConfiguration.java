@@ -37,40 +37,35 @@ import org.springframework.retry.interceptor.RetryOperationsInterceptor;
  */
 @Configuration
 @EnableConfigurationProperties
-public class ConfigServiceBootstrapConfiguration
-{
+public class ConfigServiceBootstrapConfiguration {
 
     @Autowired
     private ConfigurableEnvironment environment;
 
     @Bean
-    public ConfigClientProperties configClientProperties()
-    {
+    public ConfigClientProperties configClientProperties() {
         ConfigClientProperties client = new ConfigClientProperties(this.environment);
         return client;
     }
 
     @Bean
     @ConditionalOnProperty(value = "spring.cloud.config.enabled", matchIfMissing = true)
-    public ConfigServicePropertySourceLocator configServicePropertySource(ConfigClientProperties properties)
-    {
+    public ConfigServicePropertySourceLocator configServicePropertySource(ConfigClientProperties properties) {
         ConfigServicePropertySourceLocator locator = new ConfigServicePropertySourceLocator(properties);
         return locator;
     }
 
     @ConditionalOnProperty(value = "spring.cloud.config.failFast", matchIfMissing = false)
-    @ConditionalOnClass({ Retryable.class, Aspect.class, AopAutoConfiguration.class })
+    @ConditionalOnClass({Retryable.class, Aspect.class, AopAutoConfiguration.class})
     @Configuration
     @EnableRetry(proxyTargetClass = true)
     @Import(AopAutoConfiguration.class)
     @EnableConfigurationProperties(RetryProperties.class)
-    protected static class RetryConfiguration
-    {
+    protected static class RetryConfiguration {
 
         @Bean
         @ConditionalOnMissingBean(name = "configServerRetryInterceptor")
-        public RetryOperationsInterceptor configServerRetryInterceptor(RetryProperties properties)
-        {
+        public RetryOperationsInterceptor configServerRetryInterceptor(RetryProperties properties) {
             return RetryInterceptorBuilder.stateless()
                     .backOffOptions(properties.getInitialInterval(), properties.getMultiplier(), properties
                             .getMaxInterval()).maxAttempts(properties.getMaxAttempts()).build();

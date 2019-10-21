@@ -6,8 +6,8 @@
 var contextPath = "/";//上下文根
 
 var LOCAL_STORAGE_TABBTN_KEY = "tabBtnStorage";//导航存储key
-var pageContextPath = contextPath+"pages/";//页面路径
-var OSSAccessDomain= "oss-cn-shenzhen.aliyuncs.com";
+var pageContextPath = contextPath + "pages/";//页面路径
+var OSSAccessDomain = "oss-cn-shenzhen.aliyuncs.com";
 
 
 //调试模式
@@ -19,7 +19,7 @@ var HOME_NAV_TAB_OBJ = {
     name: "首页",
     url: "#home/home.html",
     iconCls: "ios-home-outline",
-    componentId:"admin-home"
+    componentId: "admin-home"
 };
 
 // //浏览器检查，是否支持es6表达式

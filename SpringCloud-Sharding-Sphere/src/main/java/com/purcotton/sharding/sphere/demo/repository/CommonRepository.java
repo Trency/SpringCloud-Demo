@@ -10,8 +10,7 @@ import java.util.List;
  * @version 1.0, 2018/11/14 11:12
  * @since JDK 1.8
  */
-public interface CommonRepository<T>
-{
+public interface CommonRepository<T> {
     void createTableIfNotExists();
 
     void dropTable();

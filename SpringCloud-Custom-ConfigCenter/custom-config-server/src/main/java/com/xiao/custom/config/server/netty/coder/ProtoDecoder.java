@@ -15,32 +15,26 @@ import java.util.List;
  * @version 1.0, 2019/3/30 13:54
  * @since JDK 1.8
  */
-public class ProtoDecoder extends ByteToMessageDecoder
-{
+public class ProtoDecoder extends ByteToMessageDecoder {
     private static final int PROTO_BUFF_FLAG = 4;
 
     private Class<?> genericClass;
 
-    public ProtoDecoder(Class cls)
-    {
+    public ProtoDecoder(Class cls) {
         this.genericClass = cls;
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> list) throws Exception
-    {
-        if (byteBuf.readableBytes() < PROTO_BUFF_FLAG)
-        {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> list) throws Exception {
+        if (byteBuf.readableBytes() < PROTO_BUFF_FLAG) {
             return;
         }
         byteBuf.markReaderIndex();
         int dataLength = byteBuf.readInt();
-        if (dataLength < 0)
-        {
+        if (dataLength < 0) {
             ctx.close();
         }
-        if (byteBuf.readableBytes() < dataLength)
-        {
+        if (byteBuf.readableBytes() < dataLength) {
             byteBuf.resetReaderIndex();
         }
         // 将ByteBuf转换为byte[]

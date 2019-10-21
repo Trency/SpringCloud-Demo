@@ -1,15 +1,14 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :LogCompent.java
  * 创建人  :llxiao
  * 创建时间:2018年8月7日
-*/
+ */
 
 package com.xiao.springcloud.demo.kafka.elk.kafka;
 
-import org.springframework.stereotype.Component;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 /**
  * [简要描述]:<br/>
@@ -21,11 +20,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Component
 @Slf4j
-public class LogCompent
-{
+public class LogCompent {
 
-    public void testLog()
-    {
+    public void testLog() {
         log.info("Hello kafak for logback !!!!!!!!!!!!!!!!!!!!!!!");
     }
 }

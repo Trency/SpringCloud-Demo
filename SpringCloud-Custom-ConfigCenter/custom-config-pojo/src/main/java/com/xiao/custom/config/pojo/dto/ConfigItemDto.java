@@ -15,8 +15,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfigItemDto
-{
+public class ConfigItemDto {
     //
     private Long id;
 
@@ -41,11 +40,9 @@ public class ConfigItemDto
     //应用类型，0通用，1开发环境，2测试环境，3生产环境，4其他。默认通用类型
     private Integer itemType;
 
-    public static ConfigItem convertToEntity(ConfigItemDto configItemDto)
-    {
+    public static ConfigItem convertToEntity(ConfigItemDto configItemDto) {
         ConfigItem configItem = null;
-        if (configItemDto != null)
-        {
+        if (configItemDto != null) {
             configItem = new ConfigItem();
             configItem.setCreateTime(configItemDto.getCreateTime());
             configItem.setItemDesc(configItemDto.getItemDesc());
@@ -59,11 +56,9 @@ public class ConfigItemDto
         return configItem;
     }
 
-    public static ConfigItemDto convertToDto(ConfigItem configItem)
-    {
+    public static ConfigItemDto convertToDto(ConfigItem configItem) {
         ConfigItemDto configItemDto = null;
-        if (configItem != null)
-        {
+        if (configItem != null) {
             configItemDto = new ConfigItemDto();
             configItemDto.setCreateTime(configItem.getCreateTime());
             configItemDto.setId(configItem.getId());

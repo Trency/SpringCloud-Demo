@@ -1,12 +1,12 @@
 package com.xiao.spring.cloud.search.es.service;
 
 import com.alibaba.fastjson.JSON;
-import com.xiao.springcloud.demo.common.exception.CommonException;
 import com.xiao.spring.cloud.search.dto.ElasticSearchDoc;
 import com.xiao.spring.cloud.search.es.client.ElasticSearchClient;
 import com.xiao.spring.cloud.search.es.common.ESConstants;
 import com.xiao.spring.cloud.search.es.common.SearchException;
 import com.xiao.spring.cloud.search.service.SearchManangerService;
+import com.xiao.springcloud.demo.common.exception.CommonException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -49,8 +49,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-public class SearchManagerEsImpl implements SearchManangerService, ESConstants
-{
+public class SearchManagerEsImpl implements SearchManangerService, ESConstants {
     /**
      * es客户端
      */
@@ -66,28 +65,22 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * llxiao 2018/10/17 - 19:47
      **/
     @Override
-    public boolean createIndexMapping(String index)
-    {
-        if (StringUtils.isBlank(index))
-        {
+    public boolean createIndexMapping(String index) {
+        if (StringUtils.isBlank(index)) {
             log.error("Create index and mapping error! index name:{}", index);
             return false;
         }
-        if (this.existsIndex(index))
-        {
+        if (this.existsIndex(index)) {
             this.deleteIndex(index);
         }
 
         TransportClient client = esClient.getTransportClient();
         CreateIndexRequestBuilder cib = client.admin().indices().prepareCreate(index);
-        try
-        {
+        try {
             XContentBuilder mapping = createMapping();
             cib.addMapping(index, mapping).execute().actionGet();
             return true;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("Create index and mapping error! index name:{}", index, e);
         }
         return false;
@@ -97,10 +90,9 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * 创建mapping
      *
      * @return
-     * @exception IOException
+     * @throws IOException
      */
-    private XContentBuilder createMapping() throws IOException
-    {
+    private XContentBuilder createMapping() throws IOException {
         XContentBuilder mapping = XContentFactory.jsonBuilder().startObject().startObject("properties");
         mapping.startObject("id").field("type", "text").endObject();
         mapping.startObject("keyWords").field("type", "text").endObject();
@@ -146,8 +138,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * llxiao 2018/10/18 - 8:35
      **/
     @Override
-    public boolean existsIndex(String index)
-    {
+    public boolean existsIndex(String index) {
         IndicesExistsRequest inExistsRequest = new IndicesExistsRequest(index);
         TransportClient client = esClient.getTransportClient();
         IndicesExistsResponse inExistsResponse = client.admin().indices().exists(inExistsRequest).actionGet();
@@ -163,15 +154,12 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * llxiao 2018/10/18 - 8:35
      **/
     @Override
-    public boolean deleteIndex(String index)
-    {
+    public boolean deleteIndex(String index) {
         boolean flag = false;
-        if (StringUtils.isNotBlank(index))
-        {
+        if (StringUtils.isNotBlank(index)) {
             DeleteIndexRequestBuilder deleteIndexRequestBuilder = esClient.getTransportClient().admin().indices()
                     .prepareDelete(index);
-            if (null != deleteIndexRequestBuilder)
-            {
+            if (null != deleteIndexRequestBuilder) {
                 DeleteIndexResponse dResponse = deleteIndexRequestBuilder.execute().actionGet();
                 flag = dResponse.isAcknowledged();
             }
@@ -183,15 +171,13 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * [简要描述]:根据id查找doc<br/>
      * [详细描述]:<br/>
      *
-     * @param id 索引ID
+     * @param id    索引ID
      * @param index 索引名称
      * @return 索引文档
      */
     @Override
-    public ElasticSearchDoc getEsDocById(String id, String index)
-    {
-        if (StringUtils.isBlank(id) || StringUtils.isBlank(index))
-        {
+    public ElasticSearchDoc getEsDocById(String id, String index) {
+        if (StringUtils.isBlank(id) || StringUtils.isBlank(index)) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "查询失败，索引名称和文档ID不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
@@ -208,8 +194,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 所有文档
      */
     @Override
-    public List<ElasticSearchDoc> getAllDos(String index)
-    {
+    public List<ElasticSearchDoc> getAllDos(String index) {
         List<ElasticSearchDoc> esDocList = new ArrayList<>();
         TransportClient client = esClient.getTransportClient();
         long totalHits = client.prepareSearch(index).setTypes(IDNEX_DEV_TYPE).setQuery(QueryBuilders.matchAllQuery())
@@ -218,15 +203,13 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         SearchResponse searchResponse;
         SearchHits hits;
         SearchHit[] searchHits;
-        for (int i = 0; i < totalSize; i++)
-        {
+        for (int i = 0; i < totalSize; i++) {
             searchResponse = client.prepareSearch(index).setTypes(IDNEX_DEV_TYPE)
                     .setQuery(QueryBuilders.matchAllQuery()).setSearchType(SearchType.QUERY_THEN_FETCH)
                     .setFrom(GET_ALL_SIZE * i).setSize(GET_ALL_SIZE).addSort(COMMON_NO, SortOrder.DESC).get();
             hits = searchResponse.getHits();
             searchHits = hits.getHits();
-            for (SearchHit searchHit : searchHits)
-            {
+            for (SearchHit searchHit : searchHits) {
                 esDocList.add(JSON.parseObject(searchHit.getSourceAsString(), ElasticSearchDoc.class));
             }
         }
@@ -238,14 +221,12 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * [详细描述]:<br/>
      *
      * @param defProdNo 产品ID
-     * @param index 索引名称
+     * @param index     索引名称
      * @return 产品信息
      */
     @Override
-    public ElasticSearchDoc getEsDocByDefProdNo(String defProdNo, String index)
-    {
-        if (StringUtils.isBlank(defProdNo) || StringUtils.isBlank(index))
-        {
+    public ElasticSearchDoc getEsDocByDefProdNo(String defProdNo, String index) {
+        if (StringUtils.isBlank(defProdNo) || StringUtils.isBlank(index)) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "查询失败，索引名称和货品编号不能为空!");
         }
         List<ElasticSearchDoc> esDocList = new ArrayList<>();
@@ -257,13 +238,11 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         SearchResponse response = searchBuilder.execute().actionGet();
         SearchHits hits = response.getHits();
         String searchSource;
-        for (SearchHit searchHit : hits)
-        {
+        for (SearchHit searchHit : hits) {
             searchSource = searchHit.getSourceAsString();
             esDocList.add(JSON.parseObject(searchSource, ElasticSearchDoc.class));
         }
-        if (esDocList.size() == 1)
-        {
+        if (esDocList.size() == 1) {
             return esDocList.get(0);
         }
         return new ElasticSearchDoc();
@@ -274,15 +253,13 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * [详细描述]:<br/>
      *
      * @param commoNo 商品ID
-     * @param index 索引名称
+     * @param index   索引名称
      * @return 商品信息
      */
     @Override
-    public List<ElasticSearchDoc> getEsDocByCommoNo(String commoNo, String index)
-    {
+    public List<ElasticSearchDoc> getEsDocByCommoNo(String commoNo, String index) {
         List<ElasticSearchDoc> esDocList = new ArrayList<>();
-        if (StringUtils.isBlank(commoNo) || StringUtils.isBlank(index))
-        {
+        if (StringUtils.isBlank(commoNo) || StringUtils.isBlank(index)) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "查询失败，索引名称和商品编号不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
@@ -295,8 +272,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         SearchResponse response = searchBuilder.execute().actionGet();
         SearchHits hits = response.getHits();
         String searchSource;
-        for (SearchHit searchHit : hits)
-        {
+        for (SearchHit searchHit : hits) {
             searchSource = searchHit.getSourceAsString();
             esDocList.add(JSON.parseObject(searchSource, ElasticSearchDoc.class));
         }
@@ -311,10 +287,8 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 添加状态
      */
     @Override
-    public boolean addData(ElasticSearchDoc doc)
-    {
-        if (doc == null || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex()))
-        {
+    public boolean addData(ElasticSearchDoc doc) {
+        if (doc == null || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex())) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "添加失败，索引名称和文档ID不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
@@ -323,8 +297,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         irb.setSource(JSON.parseObject(JSON.toJSONString(doc), Map.class));
         bulkRequest.add(irb);
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "");
             return false;
         }
@@ -339,10 +312,8 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 更新结果状态
      */
     @Override
-    public boolean addDatas(List<ElasticSearchDoc> docs)
-    {
-        if (CollectionUtils.isEmpty(docs))
-        {
+    public boolean addDatas(List<ElasticSearchDoc> docs) {
+        if (CollectionUtils.isEmpty(docs)) {
             log.error("Parameter  is null  in ManagerService addDatas() method");
             return false;
         }
@@ -350,11 +321,9 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         String index;
         IndexRequestBuilder irb;
-        for (ElasticSearchDoc esDoc : docs)
-        {
+        for (ElasticSearchDoc esDoc : docs) {
             index = esDoc.getIndex();
-            if (StringUtils.isBlank(index) || StringUtils.isBlank(esDoc.getId()))
-            {
+            if (StringUtils.isBlank(index) || StringUtils.isBlank(esDoc.getId())) {
                 continue;
             }
             irb = client.prepareIndex(index, IDNEX_DEV_TYPE, esDoc.getId());
@@ -362,8 +331,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
             bulkRequest.add(irb);
         }
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "");
             return false;
         }
@@ -378,10 +346,8 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 更新状态
      */
     @Override
-    public boolean updateData(ElasticSearchDoc doc)
-    {
-        if (doc == null || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex()))
-        {
+    public boolean updateData(ElasticSearchDoc doc) {
+        if (doc == null || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex())) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "更新失败，索引名称和文档ID不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
@@ -392,8 +358,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         bulkRequest.add(urb);
 
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "");
         }
         return true;
@@ -407,21 +372,17 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 更新状态
      */
     @Override
-    public boolean updateDatas(List<ElasticSearchDoc> docs)
-    {
-        if (CollectionUtils.isEmpty(docs))
-        {
+    public boolean updateDatas(List<ElasticSearchDoc> docs) {
+        if (CollectionUtils.isEmpty(docs)) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "批量添加失败，商品不能为空");
         }
         TransportClient client = esClient.getTransportClient();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         UpdateRequestBuilder urb;
         String index;
-        for (ElasticSearchDoc esDoc : docs)
-        {
+        for (ElasticSearchDoc esDoc : docs) {
             index = esDoc.getIndex();
-            if (StringUtils.isBlank(index) || StringUtils.isBlank(esDoc.getId()))
-            {
+            if (StringUtils.isBlank(index) || StringUtils.isBlank(esDoc.getId())) {
                 continue;
             }
             urb = client.prepareUpdate(index, IDNEX_DEV_TYPE, esDoc.getId());
@@ -429,8 +390,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
             bulkRequest.add(urb);
         }
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "");
         }
         return true;
@@ -444,25 +404,19 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 更新状态
      */
     @Override
-    public boolean updateDataById(ElasticSearchDoc doc)
-    {
-        if (null == doc || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex()))
-        {
+    public boolean updateDataById(ElasticSearchDoc doc) {
+        if (null == doc || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex())) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "更新失败，索引名称和文档ID不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
-        if (null != client)
-        {
+        if (null != client) {
             ElasticSearchDoc esDocById = getEsDocById(doc.getId(), doc.getIndex());
             Map<String, Object> docMap = JSON.parseObject(JSON.toJSONString(doc), Map.class);
             Map<String, Object> oldDoc = JSON.parseObject(JSON.toJSONString(esDocById), Map.class);
-            if (docMap.containsKey(ESConstants.SALES_TAG_NAME))
-            {
+            if (docMap.containsKey(ESConstants.SALES_TAG_NAME)) {
                 // 标签更新处理
                 updateTagNames(oldDoc, docMap);
-            }
-            else
-            {
+            } else {
                 oldDoc.putAll(docMap);
             }
             BulkRequestBuilder bulkRequest = client.prepareBulk();
@@ -472,8 +426,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
             bulkRequest.add(urb);
 
             BulkResponse bulkResponse = bulkRequest.get();
-            if (bulkResponse.hasFailures())
-            {
+            if (bulkResponse.hasFailures()) {
                 log.error(bulkResponse.getTook() + "");
                 return false;
             }
@@ -490,15 +443,12 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 更新状态
      */
     @Override
-    public boolean updateDataByDefProdNo(ElasticSearchDoc doc)
-    {
-        if (null == doc || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex()))
-        {
+    public boolean updateDataByDefProdNo(ElasticSearchDoc doc) {
+        if (null == doc || StringUtils.isBlank(doc.getId()) || StringUtils.isBlank(doc.getIndex())) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "更新失败，索引名称和文档ID不能为空!");
         }
         ElasticSearchDoc esDocById = getEsDocByDefProdNo(doc.getId(), doc.getIndex());
-        if (null == esDocById)
-        {
+        if (null == esDocById) {
             throw new CommonException(SearchException.NOT_FOUND_DOC.getCode(), "更新失败，更新的文档不存在!");
         }
         Map<String, Object> oldMap = JSON.parseObject(JSON.toJSONString(esDocById), Map.class);
@@ -511,8 +461,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         bulkRequest.add(urb);
 
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "");
             return false;
         }
@@ -527,25 +476,21 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 更新状态
      */
     @Override
-    public boolean updateHasStock(List<ElasticSearchDoc> allDocs)
-    {
-        if (CollectionUtils.isEmpty(allDocs))
-        {
+    public boolean updateHasStock(List<ElasticSearchDoc> allDocs) {
+        if (CollectionUtils.isEmpty(allDocs)) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "批量更新库存失败，索引名称和文档ID不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         UpdateRequestBuilder urb;
-        for (ElasticSearchDoc doc : allDocs)
-        {
+        for (ElasticSearchDoc doc : allDocs) {
             urb = client.prepareUpdate(doc.getIndex(), IDNEX_DEV_TYPE, doc.getId());
             urb.setDoc(doc);
             bulkRequest.add(urb);
         }
 
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "");
         }
         return true;
@@ -555,15 +500,13 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * [简要描述]:根据id单个删除<br/>
      * [详细描述]:<br/>
      *
-     * @param id 索引ID
+     * @param id    索引ID
      * @param index 索引名称
      * @return 删除状态
      */
     @Override
-    public boolean deleteData(String id, String index)
-    {
-        if (StringUtils.isBlank(id) || StringUtils.isBlank(index))
-        {
+    public boolean deleteData(String id, String index) {
+        if (StringUtils.isBlank(id) || StringUtils.isBlank(index)) {
             throw new CommonException(SearchException.PARAM_IS_NULL.getCode(), "删除失败，索引名称和文档ID不能为空!");
         }
         TransportClient client = esClient.getTransportClient();
@@ -571,8 +514,7 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
         DeleteRequestBuilder drb = client.prepareDelete(index, IDNEX_DEV_TYPE, id);
         bulkRequest.add(drb);
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "fail Id:" + id);
         }
         return true;
@@ -586,24 +528,20 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * @return 删除状态
      */
     @Override
-    public boolean deleteDatas(List<ElasticSearchDoc> docs)
-    {
-        if (CollectionUtils.isEmpty(docs))
-        {
+    public boolean deleteDatas(List<ElasticSearchDoc> docs) {
+        if (CollectionUtils.isEmpty(docs)) {
             log.error("Parameter  is null  in ManagerService deleteDatas() method");
             return false;
         }
         TransportClient client = esClient.getTransportClient();
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         DeleteRequestBuilder drb;
-        for (ElasticSearchDoc doc : docs)
-        {
+        for (ElasticSearchDoc doc : docs) {
             drb = client.prepareDelete(doc.getIndex(), IDNEX_DEV_TYPE, doc.getId());
             bulkRequest.add(drb);
         }
         BulkResponse bulkResponse = bulkRequest.get();
-        if (bulkResponse.hasFailures())
-        {
+        if (bulkResponse.hasFailures()) {
             log.error(bulkResponse.getTook() + "");
             return false;
         }
@@ -615,26 +553,21 @@ public class SearchManagerEsImpl implements SearchManangerService, ESConstants
      * [详细描述]:<br/>
      *
      * @param commoNo 商品编号
-     * @param index 索引名称
+     * @param index   索引名称
      * @return 删除状态
      */
     @Override
-    public boolean deleteDatasByCommoNo(String commoNo, String index)
-    {
+    public boolean deleteDatasByCommoNo(String commoNo, String index) {
         return false;
     }
 
-    private void updateTagNames(Map<String, Object> esDocById, Map<String, Object> docMap)
-    {
+    private void updateTagNames(Map<String, Object> esDocById, Map<String, Object> docMap) {
         String desTags = (String) docMap.remove(ESConstants.SALES_TAG_NAME);
-        if (StringUtils.isNotBlank(desTags))
-        {
+        if (StringUtils.isNotBlank(desTags)) {
             List<String> desTagNames = JSON.parseArray(desTags, String.class);
             Set<String> dts = new HashSet<>(desTagNames);
             esDocById.put(ESConstants.SALES_TAG_NAME, JSON.toJSONString(dts));
-        }
-        else
-        {
+        } else {
             esDocById.put(ESConstants.SALES_TAG_NAME, "");
         }
         esDocById.putAll(docMap);

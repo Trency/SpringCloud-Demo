@@ -13,8 +13,7 @@ import java.util.Set;
  * @since JDK 1.8
  */
 @Data
-public class SearchCommodityPropertyDo
-{
+public class SearchCommodityPropertyDo {
     //属性编码
     private String propertyNo;
 

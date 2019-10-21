@@ -15,13 +15,11 @@ import java.util.concurrent.ForkJoinPool;
  * @since JDK 1.8
  */
 @Configuration
-public class ForkjoinConfiguration implements DisposableBean
-{
+public class ForkjoinConfiguration implements DisposableBean {
     private ForkJoinPool forkJoinPool;
 
     @Bean
-    public ForkJoinPool forkJoinPool()
-    {
+    public ForkJoinPool forkJoinPool() {
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         this.forkJoinPool = forkJoinPool;
         return forkJoinPool;
@@ -30,15 +28,13 @@ public class ForkjoinConfiguration implements DisposableBean
     /**
      * Invoked by a BeanFactory on destruction of a singleton.
      *
-     * @exception Exception in case of shutdown errors.
-     * Exceptions will get logged but not rethrown to allow
-     * other beans to release their resources too.
+     * @throws Exception in case of shutdown errors.
+     *                   Exceptions will get logged but not rethrown to allow
+     *                   other beans to release their resources too.
      */
     @Override
-    public void destroy() throws Exception
-    {
-        if (null != forkJoinPool)
-        {
+    public void destroy() throws Exception {
+        if (null != forkJoinPool) {
             forkJoinPool.shutdown();
         }
     }

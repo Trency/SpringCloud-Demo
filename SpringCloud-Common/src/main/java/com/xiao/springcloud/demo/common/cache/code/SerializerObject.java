@@ -19,8 +19,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SerializerObject implements Serializable
-{
+public class SerializerObject implements Serializable {
 
     private Object value;
 

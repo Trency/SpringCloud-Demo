@@ -34,8 +34,7 @@ import java.sql.Timestamp;
  * @since JDK 1.8
  */
 @Service
-public class AuthUserServiceImpl implements AuthUserService
-{
+public class AuthUserServiceImpl implements AuthUserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -50,11 +49,9 @@ public class AuthUserServiceImpl implements AuthUserService
     private AuthFeign authApi;
 
     @Override
-    public UserDetail register(AuthUser authUser)
-    {
+    public UserDetail register(AuthUser authUser) {
         final String username = authUser.getUsername();
-        if (authApi.findByUsername(username) != null)
-        {
+        if (authApi.findByUsername(username) != null) {
             throw new CustomException(ResultJson.failure(ResultCode.BAD_REQUEST, "用户已存在"));
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -70,8 +67,7 @@ public class AuthUserServiceImpl implements AuthUserService
     }
 
     @Override
-    public ResponseUserToken login(String username, String password)
-    {
+    public ResponseUserToken login(String username, String password) {
         //用户验证
         final Authentication authentication = authenticate(username, password);
         //存储认证信息
@@ -86,21 +82,18 @@ public class AuthUserServiceImpl implements AuthUserService
     }
 
     @Override
-    public void logout(String token)
-    {
+    public void logout(String token) {
         token = token.substring(AuthContants.TOKEN_BEARER_START.length());
         String userName = jwtTokenUtil.getUsernameFromToken(token);
         jwtTokenUtil.deleteToken(userName);
     }
 
     @Override
-    public ResponseUserToken refresh(String oldToken)
-    {
+    public ResponseUserToken refresh(String oldToken) {
         String token = oldToken.substring(AuthContants.TOKEN_BEARER_START.length());
         String username = jwtTokenUtil.getUsernameFromToken(token);
         UserDetail userDetail = (UserDetail) userDetailsService.loadUserByUsername(username);
-        if (jwtTokenUtil.canTokenBeRefreshed(token, userDetail.getLastPasswordResetDate()))
-        {
+        if (jwtTokenUtil.canTokenBeRefreshed(token, userDetail.getLastPasswordResetDate())) {
             token = jwtTokenUtil.refreshToken(token);
             return new ResponseUserToken(token, userDetail);
         }
@@ -108,8 +101,7 @@ public class AuthUserServiceImpl implements AuthUserService
     }
 
     @Override
-    public UserDetail getUserByToken(String token)
-    {
+    public UserDetail getUserByToken(String token) {
         token = token.substring(AuthContants.TOKEN_BEARER_START.length());
         return jwtTokenUtil.getUserFromToken(token);
     }
@@ -123,8 +115,7 @@ public class AuthUserServiceImpl implements AuthUserService
      * llxiao  2019/5/9 - 17:24
      **/
     @Override
-    public UserDetail getByToken(String token)
-    {
+    public UserDetail getByToken(String token) {
         token = token.substring(AuthContants.TOKEN_BEARER_START.length());
         String username = jwtTokenUtil.getUsernameFromToken(token);
         return new UserDetail(authApi.findByUsername(username));
@@ -139,20 +130,15 @@ public class AuthUserServiceImpl implements AuthUserService
      * llxiao  2019/5/9 - 17:24
      **/
     @Override
-    public UserDetail getByUsername(String username)
-    {
+    public UserDetail getByUsername(String username) {
         return new UserDetail(authApi.findByUsername(username));
     }
 
-    private Authentication authenticate(String username, String password)
-    {
-        try
-        {
+    private Authentication authenticate(String username, String password) {
+        try {
             //该方法会去调用userDetailsService.loadUserByUsername()去验证用户名和密码，如果正确，则存储该用户名密码到“security 的 context中”
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        }
-        catch (DisabledException | BadCredentialsException e)
-        {
+        } catch (DisabledException | BadCredentialsException e) {
             throw new CustomException(ResultJson.failure(ResultCode.LOGIN_ERROR, e.getMessage()));
         }
     }

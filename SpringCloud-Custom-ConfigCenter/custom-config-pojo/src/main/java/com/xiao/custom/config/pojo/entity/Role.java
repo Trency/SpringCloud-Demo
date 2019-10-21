@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role
-{
+public class Role {
     private Long id;
     private String name;
     private String nameZh;

@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
  * @since JDK 1.8
  */
 @Service("configUserDetailsService")
-public class ConfigUserDetailsServiceImpl implements UserDetailsService
-{
+public class ConfigUserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private AuthFeign authApi;
 
@@ -32,15 +31,13 @@ public class ConfigUserDetailsServiceImpl implements UserDetailsService
      *
      * @param username the username identifying the user whose data is required.
      * @return a fully populated user record (never <code>null</code>)
-     * @exception UsernameNotFoundException if the user could not be found or the user has no
-     * GrantedAuthority
+     * @throws UsernameNotFoundException if the user could not be found or the user has no
+     *                                   GrantedAuthority
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
-    {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AuthUser authUser = authApi.findByUsername(username);
-        if (authUser == null)
-        {
+        if (authUser == null) {
             throw new UsernameNotFoundException(String.format("No userDetail found with username '%s'.", username));
         }
         return new UserDetail(authUser);

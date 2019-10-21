@@ -20,14 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0, 2018年3月30日
  */
 @RestController
-public class SkywalkingController
-{
+public class SkywalkingController {
 
     @RequestMapping(path = "/skywalking")
     // cacheable注解，一般建议放在service层
     @Cacheable(value = "skywalking", key = "'skywalking'.concat({#hello})", sync = true)
-    public String skywalking(@RequestParam("hello") String hello)
-    {
+    public String skywalking(@RequestParam("hello") String hello) {
         return hello;
     }
 }

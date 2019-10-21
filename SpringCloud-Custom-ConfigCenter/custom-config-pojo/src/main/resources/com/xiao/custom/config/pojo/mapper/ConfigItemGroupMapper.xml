@@ -17,8 +17,8 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, group_name, group_desc, create_time, update_time
-  </sql>
+        id, group_name, group_desc, create_time, update_time
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -26,16 +26,17 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_config_item_group
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_config_item_group
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroup" useGeneratedKeys="true"
             keyColumn="id" keyProperty="id">
-    insert into t_config_item_group (id, group_name, group_desc, 
-      create_time, update_time)
-    values (#{id,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, #{groupDesc,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
+        insert into t_config_item_group (id, group_name, group_desc,
+                                         create_time, update_time)
+        values (#{id,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, #{groupDesc,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
     <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroup">
         insert into t_config_item_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -92,13 +93,13 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroup">
-    update t_config_item_group
-    set group_name = #{groupName,jdbcType=VARCHAR},
-      group_desc = #{groupDesc,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update t_config_item_group
+        set group_name  = #{groupName,jdbcType=VARCHAR},
+            group_desc  = #{groupDesc,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
     <select id="pageConfigItemGroup" resultMap="DtoResultMap">
         select

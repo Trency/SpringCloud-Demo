@@ -9,8 +9,7 @@ import java.sql.Timestamp;
  * createAt: 2018/9/14
  */
 @Data
-public class AuthUser
-{
+public class AuthUser {
     private long id;
     private String username;
     private String password;

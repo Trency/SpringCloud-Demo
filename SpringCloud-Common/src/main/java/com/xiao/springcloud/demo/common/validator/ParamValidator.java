@@ -23,18 +23,15 @@ import java.lang.reflect.Field;
  * @since JDK1.8
  */
 @Slf4j
-public class ParamValidator
-{
+public class ParamValidator {
     /**
      * [简要描述]:校验对象属性<br/>
      * [详细描述]:对象的属性用ParamVerify注解校验<br/>
      *
      * @param object 校验对象
      */
-    public static void validator(Object object)
-    {
-        if (null == object)
-        {
+    public static void validator(Object object) {
+        if (null == object) {
             return;
         }
 
@@ -42,12 +39,10 @@ public class ParamValidator
         //获取业务编码前缀
         CodePrefix codePrefix = objClass.getAnnotation(CodePrefix.class);
         int moduleCode = 0;
-        if (null != codePrefix)
-        {
+        if (null != codePrefix) {
             moduleCode = codePrefix.moduleCode();
         }
-        try
-        {
+        try {
             // 获取所有字段 包括private 不包括父类字段
             Field[] farray = objClass.getDeclaredFields();
             // 初始化校验注解
@@ -56,13 +51,11 @@ public class ParamValidator
             ParamVerify paramVerify;
             String reg;
             String fValue;
-            for (Field field : farray)
-            {
+            for (Field field : farray) {
                 // 获取其中字段
                 fieldName = field.getName();
                 // 判断是否被chkstring注解所标识
-                if (field.isAnnotationPresent(verify))
-                {
+                if (field.isAnnotationPresent(verify)) {
                     // 返回这个类所标识的注解对象
                     paramVerify = field.getAnnotation(verify);
 
@@ -73,11 +66,9 @@ public class ParamValidator
 
                     // 获取属性值
                     fValue = String.valueOf(field.get(object));
-                    if (!canBlank)
-                    {
+                    if (!canBlank) {
                         // 必填校验
-                        if (StringUtils.isBlank(fValue))
-                        {
+                        if (StringUtils.isBlank(fValue)) {
                             log.info("缺少:{}必填参数", fieldName);
                             // 如果字段是为空
                             throw new CommonException(generateCode(moduleCode, CommonException.REQUIRED_PARAM_SUFFIX), String
@@ -86,8 +77,7 @@ public class ParamValidator
 
                         int maxLeng = paramVerify.maxLeng();
                         // 参数最大长度校验
-                        if (0 != maxLeng && fValue.length() > maxLeng)
-                        {
+                        if (0 != maxLeng && fValue.length() > maxLeng) {
                             log.info("求参数:{}过长", fieldName);
                             throw new CommonException(generateCode(moduleCode, CommonException.ILLEGAL_PARAM_SUFFIX), String
                                     .format("参数:%s非法", fieldName));
@@ -95,8 +85,7 @@ public class ParamValidator
 
                         // 正则校验
                         reg = paramVerify.regex();
-                        if (StringUtils.isNotBlank(reg) && !fValue.matches(reg))
-                        {
+                        if (StringUtils.isNotBlank(reg) && !fValue.matches(reg)) {
                             log.info("请求参数:{}非法", fieldName);
                             throw new CommonException(generateCode(moduleCode, CommonException.ILLEGAL_PARAM_SUFFIX), String
                                     .format("参数:%s非法", fieldName));
@@ -104,16 +93,13 @@ public class ParamValidator
                     }
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("系统内部错误", e);
             throw new CommonException(CommonExceptionEnum.SYSTEM_ERROR);
         }
     }
 
-    private static int generateCode(int moduleCode, String serviceCode)
-    {
+    private static int generateCode(int moduleCode, String serviceCode) {
         String errorCode = moduleCode + serviceCode;
         return Integer.parseInt(errorCode);
     }

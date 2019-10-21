@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :Application.java
  * 创建人  :llxiao
  * 创建时间:2018年3月29日
-*/
+ */
 
 package com.xiao.skywalking.center;
 
@@ -22,10 +22,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @SpringBootApplication
 // 注册中心
 @EnableEurekaServer
-public class Application
-{
-    public static void main(String[] args)
-    {
+public class Application {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 }

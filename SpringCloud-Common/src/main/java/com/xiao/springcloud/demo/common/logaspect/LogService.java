@@ -8,8 +8,7 @@ package com.xiao.springcloud.demo.common.logaspect;
  * @version 1.0, 2018/9/2 16:53
  * @since JDK 1.8
  */
-public interface LogService
-{
+public interface LogService {
     /**
      * [简要描述]:debug日志记录<br/>
      * [详细描述]:<br/>
@@ -35,7 +34,7 @@ public interface LogService
      * [详细描述]:<br/>
      *
      * @param errorMsg : 错误消息
-     * @param e : 异常
+     * @param e        : 异常
      * @return void
      * llxiao  2018/9/2 - 16:55
      **/

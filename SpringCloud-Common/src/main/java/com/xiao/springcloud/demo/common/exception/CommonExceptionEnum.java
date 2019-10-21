@@ -5,8 +5,7 @@ package com.xiao.springcloud.demo.common.exception;
  *
  * @author zhdong
  */
-public enum CommonExceptionEnum implements AbstractServiceException
-{
+public enum CommonExceptionEnum implements AbstractServiceException {
 
     SYSTEM_ERROR(10000, "系统错误，请联系管理员"),
     TOKEN_HAS_EXPIRED(10010, "token已过期"),
@@ -17,25 +16,21 @@ public enum CommonExceptionEnum implements AbstractServiceException
     NO_FOUNT(10031, "访问路径不存在"),
     NO_LOGIN(10060, "没有登录或者登录超时");
 
-    CommonExceptionEnum(Integer code, String message)
-    {
+    private Integer code;
+    private String message;
+
+    CommonExceptionEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    private Integer code;
-
-    private String message;
-
     @Override
-    public Integer getCode()
-    {
+    public Integer getCode() {
         return code;
     }
 
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 

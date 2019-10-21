@@ -28,8 +28,7 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class ClientManagerServiceDbImpl implements ClientManagerService, SqlConstants
-{
+public class ClientManagerServiceDbImpl implements ClientManagerService, SqlConstants {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -41,16 +40,14 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * [详细描述]:<br/>
      *
      * @param serviceName : 应用名
-     * @param profile : 应用环境
-     * @param hostIp : 应用对应服务的IP
-     * @param hostPort : 应用对应服务的端口
+     * @param profile     : 应用环境
+     * @param hostIp      : 应用对应服务的IP
+     * @param hostPort    : 应用对应服务的端口
      **/
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void setClientHost(String serviceName, String profile, String hostIp, int hostPort)
-    {
-        if (log.isDebugEnabled())
-        {
+    public void setClientHost(String serviceName, String profile, String hostIp, int hostPort) {
+        if (log.isDebugEnabled()) {
             log.debug("=======存储服务链接信息:");
             log.debug("应用名称:{}", serviceName);
             log.debug("应用环境:{}", profile);
@@ -67,14 +64,13 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * [简要描述]:更新状态<br/>
      * [详细描述]:<br/>
      *
-     * @param hostIp : 客户端IP
+     * @param hostIp   : 客户端IP
      * @param hostPort : 客户端PORT
-     * @param status : status
+     * @param status   : status
      **/
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateStatus(String hostIp, int hostPort, int status)
-    {
+    public void updateStatus(String hostIp, int hostPort, int status) {
         Map<String, Object> params = new HashMap<>();
         params.put("status", status);
         params.put("nettyIp", hostIp);
@@ -87,15 +83,14 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * [简要描述]:<br/>
      * [详细描述]:<br/>
      *
-     * @param hostIp :
-     * @param hostPort :
-     * @param nettyPort :
+     * @param hostIp      :
+     * @param hostPort    :
+     * @param nettyPort   :
      * @param nettyHostIp llxiao  2019/4/1 - 11:49
      **/
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateNettyInfo(String hostIp, int hostPort, int nettyPort, String nettyHostIp)
-    {
+    public void updateNettyInfo(String hostIp, int hostPort, int nettyPort, String nettyHostIp) {
         Map<String, Object> params = new HashMap<>();
         params.put("nettyPort", nettyPort);
         params.put("ip", hostIp);
@@ -111,35 +106,27 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * @param profile
      * @return
      */
-    private Long processApplication(String serviceName, String profile)
-    {
+    private Long processApplication(String serviceName, String profile) {
         //应用+环境 是否存在
         Map<String, Object> params = new HashMap<>();
         params.put("application", serviceName);
         params.put("profile", profile);
         Long id = getPriKey(SELECT_APPLICATION, params);
 
-        if (null == id)
-        {
+        if (null == id) {
             //插入
             id = insertApplication(serviceName, profile);
-        }
-        else
-        {
+        } else {
             updateApplicationStatus(id);
         }
         return id;
     }
 
-    private Long getPriKey(String sql, Map<String, Object> params)
-    {
+    private Long getPriKey(String sql, Map<String, Object> params) {
         Long id = null;
-        try
-        {
+        try {
             id = namedParameterJdbcTemplate.queryForObject(sql, params, Long.class);
-        }
-        catch (EmptyResultDataAccessException e)
-        {
+        } catch (EmptyResultDataAccessException e) {
             log.warn("获取不到数据");
         }
         return id;
@@ -152,21 +139,17 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * @param hostPort
      * @param id
      */
-    private void processHost(String hostIp, int hostPort, Long id)
-    {
+    private void processHost(String hostIp, int hostPort, Long id) {
         // 添加客户端IP和端口信息
         Map<String, Object> params = new HashMap<>(3);
         params.put("appId", id);
         params.put("ip", hostIp);
         params.put("port", hostPort);
         Long hostId = getPriKey(SELECT_APPLICATION_HOST_INFO, params);
-        if (null == hostId)
-        {
+        if (null == hostId) {
             //添加
             namedParameterJdbcTemplate.update(INSERT_APPLICATION_HOST_INFO, params);
-        }
-        else
-        {
+        } else {
             params = new HashMap<>(1);
             params.put("id", id);
             //更新状态
@@ -174,15 +157,13 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
         }
     }
 
-    private void updateApplicationStatus(Long id)
-    {
+    private void updateApplicationStatus(Long id) {
         Map<String, Long> param = new HashMap<>(1);
         param.put("id", id);
         namedParameterJdbcTemplate.update(UPDATE_APPLICATION, param);
     }
 
-    private Long insertApplication(String serviceName, String profile)
-    {
+    private Long insertApplication(String serviceName, String profile) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("application", serviceName);
         parameters.addValue("profile", profile);
@@ -204,8 +185,7 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * @return java.lang.Long
      * llxiao  2019/1/29 - 17:11
      **/
-    private Long insertReId(PreparedStatementCreator preparedStatementCreator)
-    {
+    private Long insertReId(PreparedStatementCreator preparedStatementCreator) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(preparedStatementCreator, keyHolder);
         return keyHolder.getKey().longValue();
@@ -215,15 +195,14 @@ public class ClientManagerServiceDbImpl implements ClientManagerService, SqlCons
      * [简要描述]:NamedParameterJdbcTemplate方式插入一条数据，返回主键<br/>
      * [详细描述]:<br/>
      *
-     * @param sql : 执行的SQL
+     * @param sql    : 执行的SQL
      * @param params : 参数
      * @return java.lang.Long
      * llxiao  2019/1/29 - 17:44
      **/
-    private Long insertReKey(String sql, SqlParameterSource params)
-    {
+    private Long insertReKey(String sql, SqlParameterSource params) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(sql, params, keyHolder, new String[] { "id" });
+        namedParameterJdbcTemplate.update(sql, params, keyHolder, new String[]{"id"});
         return keyHolder.getKey().longValue();
     }
 }

@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :SearchLogDo.java
  * 创建人  :llxiao
  * 创建时间:2018年2月23日
-*/
+ */
 
 package com.xiao.spring.cloud.search.dto;
 
@@ -20,8 +20,7 @@ import java.time.LocalDateTime;
  * @version 1.0, 2018年2月23日
  * @since Purcotton-Search B01
  */
-public class SearchLogDo
-{
+public class SearchLogDo {
     /**
      * 正常搜索
      */
@@ -119,268 +118,230 @@ public class SearchLogDo
 
     /**
      * 返回id属性
-     * 
+     *
      * @return id属性
      */
-    public Long getId()
-    {
+    public Long getId() {
         return id;
     }
 
     /**
      * 设置id属性
-     * 
-     * @param id
-     *            id属性
+     *
+     * @param id id属性
      */
-    public void setId(Long id)
-    {
+    public void setId(Long id) {
         this.id = id;
     }
 
     /**
      * 返回keyWords属性
-     * 
+     *
      * @return keyWords属性
      */
-    public String getKeyWords()
-    {
+    public String getKeyWords() {
         return keyWords;
     }
 
     /**
      * 设置keyWords属性
-     * 
-     * @param keyWords
-     *            keyWords属性
+     *
+     * @param keyWords keyWords属性
      */
-    public void setKeyWords(String keyWords)
-    {
+    public void setKeyWords(String keyWords) {
         this.keyWords = keyWords;
     }
 
     /**
      * 返回result属性
-     * 
+     *
      * @return result属性
      */
-    public String getResult()
-    {
+    public String getResult() {
         return result;
     }
 
     /**
      * 设置result属性
-     * 
-     * @param result
-     *            result属性
+     *
+     * @param result result属性
      */
-    public void setResult(String result)
-    {
+    public void setResult(String result) {
         this.result = result;
     }
 
     /**
      * 返回searchStats属性
-     * 
+     *
      * @return searchStats属性
      */
-    public int getSearchStats()
-    {
+    public int getSearchStats() {
         return searchStats;
     }
 
     /**
      * 设置searchStats属性
-     * 
-     * @param searchStats
-     *            searchStats属性
+     *
+     * @param searchStats searchStats属性
      */
-    public void setSearchStats(int searchStats)
-    {
+    public void setSearchStats(int searchStats) {
         this.searchStats = searchStats;
     }
 
     /**
      * 返回startTime属性
-     * 
+     *
      * @return startTime属性
      */
-    public LocalDateTime getStartTime()
-    {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
     /**
      * 设置startTime属性
-     * 
-     * @param startTime
-     *            startTime属性
+     *
+     * @param startTime startTime属性
      */
-    public void setStartTime(LocalDateTime startTime)
-    {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
     /**
      * 返回endTime属性
-     * 
+     *
      * @return endTime属性
      */
-    public LocalDateTime getEndTime()
-    {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
     /**
      * 设置endTime属性
-     * 
-     * @param endTime
-     *            endTime属性
+     *
+     * @param endTime endTime属性
      */
-    public void setEndTime(LocalDateTime endTime)
-    {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
     /**
      * 返回costTime属性
-     * 
+     *
      * @return costTime属性
      */
-    public Long getCostTime()
-    {
+    public Long getCostTime() {
         return costTime;
     }
 
     /**
      * 设置costTime属性
-     * 
-     * @param costTime
-     *            costTime属性
+     *
+     * @param costTime costTime属性
      */
-    public void setCostTime(Long costTime)
-    {
+    public void setCostTime(Long costTime) {
         this.costTime = costTime;
     }
 
     /**
      * 返回searchQueryDSL属性
-     * 
+     *
      * @return searchQueryDSL属性
      */
-    public String getSearchQueryDSL()
-    {
+    public String getSearchQueryDSL() {
         return searchQueryDSL;
     }
 
     /**
      * 设置searchQueryDSL属性
-     * 
-     * @param searchQueryDSL
-     *            searchQueryDSL属性
+     *
+     * @param searchQueryDSL searchQueryDSL属性
      */
-    public void setSearchQueryDSL(String searchQueryDSL)
-    {
+    public void setSearchQueryDSL(String searchQueryDSL) {
         this.searchQueryDSL = searchQueryDSL;
     }
 
     /**
      * 返回exceptionMsg属性
-     * 
+     *
      * @return exceptionMsg属性
      */
-    public String getExceptionMsg()
-    {
+    public String getExceptionMsg() {
         return exceptionMsg;
     }
 
     /**
      * 设置exceptionMsg属性
-     * 
-     * @param exceptionMsg
-     *            exceptionMsg属性
+     *
+     * @param exceptionMsg exceptionMsg属性
      */
-    public void setExceptionMsg(String exceptionMsg)
-    {
+    public void setExceptionMsg(String exceptionMsg) {
         this.exceptionMsg = exceptionMsg;
     }
 
     /**
      * 返回request属性
-     * 
+     *
      * @return request属性
      */
-    public String getRequest()
-    {
+    public String getRequest() {
         return request;
     }
 
     /**
      * 设置request属性
-     * 
-     * @param request
-     *            request属性
+     *
+     * @param request request属性
      */
-    public void setRequest(String request)
-    {
+    public void setRequest(String request) {
         this.request = request;
     }
 
     /**
      * 返回participle属性
-     * 
+     *
      * @return participle属性
      */
-    public String getParticiple()
-    {
+    public String getParticiple() {
         return participle;
     }
 
     /**
      * 设置participle属性
-     * 
-     * @param participle
-     *            participle属性
+     *
+     * @param participle participle属性
      */
-    public void setParticiple(String participle)
-    {
+    public void setParticiple(String participle) {
         this.participle = participle;
     }
 
     /**
      * 返回participleStats属性
-     * 
+     *
      * @return participleStats属性
      */
-    public int getParticipleStats()
-    {
+    public int getParticipleStats() {
         return participleStats;
     }
 
     /**
      * 设置participleStats属性
-     * 
-     * @param participleStats
-     *            participleStats属性
+     *
+     * @param participleStats participleStats属性
      */
-    public void setParticipleStats(int participleStats)
-    {
+    public void setParticipleStats(int participleStats) {
         this.participleStats = participleStats;
     }
 
     /**
      * [简要描述]:<br/>
      * [详细描述]:<br/>
-     * 
-     * @author llxiao
+     *
      * @return
-     * @see
-     *      Object#toString()
+     * @author llxiao
+     * @see Object#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
 
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }

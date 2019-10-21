@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class SearchBrandDo
-{
+public class SearchBrandDo {
     /**
      * 品牌编号
      */

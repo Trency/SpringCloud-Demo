@@ -31,8 +31,7 @@ import java.net.URL;
  * @since JDK 1.8
  */
 @Slf4j
-public class ImagePHashUtil
-{
+public class ImagePHashUtil {
     private int size = 32;
     private int smallerSize = 8;
 
@@ -47,9 +46,10 @@ public class ImagePHashUtil
     private boolean check = true;
 
     private ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+    // DCT function stolen from http://stackoverflow.com/questions/4240490/problems-with-dct-and-idct-algorithm-in-java
+    private double[] c;
 
-    public ImagePHashUtil()
-    {
+    public ImagePHashUtil() {
         initCoefficients();
     }
 
@@ -58,18 +58,16 @@ public class ImagePHashUtil
      * [详细描述]:<br/>
      *
      * @param matchThreshold :  匹配度阀值，两者图片的海明值低于指定值则说明为同一张图片
-     * @param check : 是否需要校验图片
+     * @param check          : 是否需要校验图片
      * @return llxiao  2019/9/29 - 15:18
      **/
-    public ImagePHashUtil(int matchThreshold, boolean check)
-    {
+    public ImagePHashUtil(int matchThreshold, boolean check) {
         this.matchThreshold = matchThreshold;
         this.check = check;
         this.initCoefficients();
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         ImagePHashUtil p = new ImagePHashUtil(10, false);
         String basicPath = "D:/image/4200014361-000/";
         String imagePath1 = basicPath + "_m_01.jpg";
@@ -86,26 +84,47 @@ public class ImagePHashUtil
     }
 
     /**
+     * [简要描述]:判断是否图片<br/>
+     * [详细描述]:<br/>
+     *
+     * @param inputStream :
+     * @return boolean
+     * llxiao  2019/9/29 - 14:19
+     **/
+    private static boolean isImage(InputStream inputStream) {
+        if (inputStream == null) {
+            return false;
+        }
+        Image img;
+        try {
+            img = ImageIO.read(inputStream);
+            return !(img == null || img.getWidth(null) <= 0 || img.getHeight(null) <= 0);
+        } catch (Exception e) {
+            log.error("判断是否图片异常，", e);
+            return false;
+        }
+    }
+
+    private static int getBlue(BufferedImage img, int x, int y) {
+        return (img.getRGB(x, y)) & 0xff;
+    }
+
+    /**
      * 判断网络的两张图片相似度比较
      *
-     * @param img1Url: 图片1下载地址
+     * @param img1Url:        图片1下载地址
      * @param img2Url：图片2下载地址
      * @return boolean
      */
-    public boolean matchImage4Url(String img1Url, String img2Url)
-    {
-        if (StringUtils.isBlank(img1Url) || StringUtils.isBlank(img2Url))
-        {
+    public boolean matchImage4Url(String img1Url, String img2Url) {
+        if (StringUtils.isBlank(img1Url) || StringUtils.isBlank(img2Url)) {
             log.error("对比的图片路径不能为空!");
             return false;
         }
-        try
-        {
+        try {
             return this.matchImage4Stream(new URL(img1Url).openConnection().getInputStream(), new URL(img2Url)
                     .openConnection().getInputStream());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("图片对比出现异常，", e);
         }
         return false;
@@ -114,23 +133,18 @@ public class ImagePHashUtil
     /**
      * 两张图片相似度比较
      *
-     * @param img1Path: 图片1地址
+     * @param img1Path:      图片1地址
      * @param img2Path：图片2地址
      * @return boolean
      */
-    public boolean matchImage4Path(String img1Path, String img2Path)
-    {
-        if (StringUtils.isBlank(img1Path) || StringUtils.isBlank(img2Path))
-        {
+    public boolean matchImage4Path(String img1Path, String img2Path) {
+        if (StringUtils.isBlank(img1Path) || StringUtils.isBlank(img2Path)) {
             log.error("对比的图片路径不能为空!");
             return false;
         }
-        try
-        {
+        try {
             return this.matchImage4Stream(new FileInputStream(img1Path), new FileInputStream(img2Path));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("图片对比出现异常，", e);
         }
         return false;
@@ -145,74 +159,33 @@ public class ImagePHashUtil
      * @return boolean
      * llxiao  2019/9/29 - 14:09
      **/
-    public boolean matchImage4Stream(InputStream image1, InputStream image2)
-    {
-        if (null == image1 || null == image2)
-        {
+    public boolean matchImage4Stream(InputStream image1, InputStream image2) {
+        if (null == image1 || null == image2) {
             log.error("图片参数不能为空！");
             return false;
         }
 
-        try
-        {
-            if (check)
-            {
+        try {
+            if (check) {
                 // 校验图片
-                if (isImage(image1) && isImage(image2))
-                {
+                if (isImage(image1) && isImage(image2)) {
                     return this.distance(this.getHash(image1), this.getHash(image2)) >= matchThreshold;
-                }
-                else
-                {
+                } else {
                     log.error("文件流不是图片类型");
                 }
-            }
-            else
-            {
+            } else {
                 return this.distance(this.getHash(image1), this.getHash(image2)) >= matchThreshold;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("图片对比出现位置异常，", e);
         }
         return false;
     }
 
-    /**
-     * [简要描述]:判断是否图片<br/>
-     * [详细描述]:<br/>
-     *
-     * @param inputStream :
-     * @return boolean
-     * llxiao  2019/9/29 - 14:19
-     **/
-    private static boolean isImage(InputStream inputStream)
-    {
-        if (inputStream == null)
-        {
-            return false;
-        }
-        Image img;
-        try
-        {
-            img = ImageIO.read(inputStream);
-            return !(img == null || img.getWidth(null) <= 0 || img.getHeight(null) <= 0);
-        }
-        catch (Exception e)
-        {
-            log.error("判断是否图片异常，", e);
-            return false;
-        }
-    }
-
-    private int distance(String s1, String s2)
-    {
+    private int distance(String s1, String s2) {
         int counter = 0;
-        for (int k = 0; k < s1.length(); k++)
-        {
-            if (s1.charAt(k) != s2.charAt(k))
-            {
+        for (int k = 0; k < s1.length(); k++) {
+            if (s1.charAt(k) != s2.charAt(k)) {
                 counter++;
             }
         }
@@ -224,10 +197,9 @@ public class ImagePHashUtil
      *
      * @param is
      * @return
-     * @exception Exception
+     * @throws Exception
      */
-    private String getHash(InputStream is) throws Exception
-    {
+    private String getHash(InputStream is) throws Exception {
         BufferedImage img = ImageIO.read(is);
 
         //1. 缩小尺寸.
@@ -238,10 +210,8 @@ public class ImagePHashUtil
 
         double[][] vals = new double[size][size];
 
-        for (int x = 0; x < img.getWidth(); x++)
-        {
-            for (int y = 0; y < img.getHeight(); y++)
-            {
+        for (int x = 0; x < img.getWidth(); x++) {
+            for (int y = 0; y < img.getHeight(); y++) {
                 vals[x][y] = getBlue(img, x, y);
             }
         }
@@ -254,10 +224,8 @@ public class ImagePHashUtil
         // 5. 计算平均值
 
         double total = 0;
-        for (int x = 0; x < smallerSize; x++)
-        {
-            for (int y = 0; y < smallerSize; y++)
-            {
+        for (int x = 0; x < smallerSize; x++) {
+            for (int y = 0; y < smallerSize; y++) {
                 total += dctVals[x][y];
             }
         }
@@ -270,12 +238,9 @@ public class ImagePHashUtil
         就构成了一个64位的整数，这就是这张图片的指纹
          */
         String hash = "";
-        for (int x = 0; x < smallerSize; x++)
-        {
-            for (int y = 0; y < smallerSize; y++)
-            {
-                if (x != 0 && y != 0)
-                {
+        for (int x = 0; x < smallerSize; x++) {
+            for (int y = 0; y < smallerSize; y++) {
+                if (x != 0 && y != 0) {
                     hash += (dctVals[x][y] > avg ? "1" : "0");
                 }
             }
@@ -283,8 +248,7 @@ public class ImagePHashUtil
         return hash;
     }
 
-    private BufferedImage resize(BufferedImage image, int width, int height)
-    {
+    private BufferedImage resize(BufferedImage image, int width, int height) {
         BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(image, 0, 0, width, height, null);
@@ -292,43 +256,27 @@ public class ImagePHashUtil
         return resizedImage;
     }
 
-    private BufferedImage grayscale(BufferedImage img)
-    {
+    private BufferedImage grayscale(BufferedImage img) {
         colorConvert.filter(img, img);
         return img;
     }
 
-    private static int getBlue(BufferedImage img, int x, int y)
-    {
-        return (img.getRGB(x, y)) & 0xff;
-    }
-
-    // DCT function stolen from http://stackoverflow.com/questions/4240490/problems-with-dct-and-idct-algorithm-in-java
-    private double[] c;
-
-    private void initCoefficients()
-    {
+    private void initCoefficients() {
         c = new double[size];
-        for (int i = 1; i < size; i++)
-        {
+        for (int i = 1; i < size; i++) {
             c[i] = 1;
         }
         c[0] = 1 / Math.sqrt(2.0);
     }
 
-    private double[][] applyDCT(double[][] f)
-    {
+    private double[][] applyDCT(double[][] f) {
         int N = size;
         double[][] F = new double[N][N];
-        for (int u = 0; u < N; u++)
-        {
-            for (int v = 0; v < N; v++)
-            {
+        for (int u = 0; u < N; u++) {
+            for (int v = 0; v < N; v++) {
                 double sum = 0.0;
-                for (int i = 0; i < N; i++)
-                {
-                    for (int j = 0; j < N; j++)
-                    {
+                for (int i = 0; i < N; i++) {
+                    for (int j = 0; j < N; j++) {
                         sum += Math.cos(((2 * i + 1) / (2.0 * N)) * u * Math.PI) * Math
                                 .cos(((2 * j + 1) / (2.0 * N)) * v * Math.PI) * (f[i][j]);
                     }

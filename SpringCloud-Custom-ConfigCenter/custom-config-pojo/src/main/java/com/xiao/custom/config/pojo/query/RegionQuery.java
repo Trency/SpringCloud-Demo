@@ -14,8 +14,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
-public class RegionQuery extends BaseQuery
-{
+public class RegionQuery extends BaseQuery {
     //区域名称
     private String regionName;
     //开始时间

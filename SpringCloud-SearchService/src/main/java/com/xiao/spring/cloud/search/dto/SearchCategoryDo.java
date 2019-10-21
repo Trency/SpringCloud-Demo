@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class SearchCategoryDo
-{
+public class SearchCategoryDo {
     private String categoryName;
 
     private String categoryNo;

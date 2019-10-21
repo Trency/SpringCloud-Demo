@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/refresh")
-public class RefreshController
-{
+public class RefreshController {
     @Autowired
     private RefreshService refreshService;
 
     @RequestMapping("/client")
-    public boolean refresh(@RequestParam("ip") String ip, @RequestParam("port") int port)
-    {
+    public boolean refresh(@RequestParam("ip") String ip, @RequestParam("port") int port) {
         return refreshService.refresh(ip, port);
     }
 }

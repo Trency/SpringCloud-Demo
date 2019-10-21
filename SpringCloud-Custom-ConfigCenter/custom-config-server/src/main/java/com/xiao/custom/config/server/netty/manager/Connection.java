@@ -13,8 +13,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class Connection
-{
+public class Connection {
     public static final String SPLIT = ":";
 
     private String uniqueKey;
@@ -24,21 +23,18 @@ public class Connection
     private int serverPort;
     private Channel channel;
 
-    public Connection()
-    {
+    public Connection() {
 
     }
 
-    public Connection(Channel channel)
-    {
+    public Connection(Channel channel) {
         this.nettyIp = RemotingUtil.parseRemoteIP(channel);
         this.nettyPort = RemotingUtil.parseRemotePort(channel);
         this.uniqueKey = nettyIp + SPLIT + nettyPort;
         this.channel = channel;
     }
 
-    public Connection(Channel channel, String serverIp, int serverPort)
-    {
+    public Connection(Channel channel, String serverIp, int serverPort) {
         this.nettyIp = RemotingUtil.parseRemoteIP(channel);
         this.nettyPort = RemotingUtil.parseRemotePort(channel);
         this.uniqueKey = nettyIp + SPLIT + nettyPort;

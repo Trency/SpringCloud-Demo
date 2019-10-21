@@ -12,8 +12,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class ApplicationConfigQuery extends BaseQuery
-{
+public class ApplicationConfigQuery extends BaseQuery {
     private Long applicationId;
     private String itemKey;
     private String itemDesc;

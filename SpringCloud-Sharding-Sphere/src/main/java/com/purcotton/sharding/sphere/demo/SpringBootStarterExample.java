@@ -17,19 +17,15 @@ import org.springframework.context.ConfigurableApplicationContext;
  */
 @MapperScan(basePackages = "com.purcotton.sharding.sphere.demo.repository")
 @SpringBootApplication
-public class SpringBootStarterExample
-{
-    public static void main(final String[] args)
-    {
+public class SpringBootStarterExample {
+    public static void main(final String[] args) {
         try (ConfigurableApplicationContext applicationContext = SpringApplication
-                .run(SpringBootStarterExample.class, args))
-        {
+                .run(SpringBootStarterExample.class, args)) {
             process(applicationContext);
         }
     }
 
-    private static void process(final ConfigurableApplicationContext applicationContext)
-    {
+    private static void process(final ConfigurableApplicationContext applicationContext) {
         CommonService commonService = getCommonService(applicationContext);
 //        commonService.initEnvironment();
         commonService.processSuccess(false);
@@ -48,8 +44,7 @@ public class SpringBootStarterExample
 //        }
     }
 
-    private static CommonService getCommonService(final ConfigurableApplicationContext applicationContext)
-    {
+    private static CommonService getCommonService(final ConfigurableApplicationContext applicationContext) {
         return applicationContext.getBean(SpringPojoServiceImpl.class);
     }
 }

@@ -15,8 +15,7 @@ import org.springframework.session.web.http.HttpSessionStrategy;
  */
 @Configuration
 //@EnableRedissonHttpSession(maxInactiveIntervalInSeconds = 18000)
-public class HttpSessionConfig
-{
+public class HttpSessionConfig {
     /**
      * 基于session缓存的策略
      * 1.如果配置了header
@@ -26,8 +25,7 @@ public class HttpSessionConfig
      * @return
      */
     @Bean
-    public HttpSessionStrategy httpSessionStrategy()
-    {
+    public HttpSessionStrategy httpSessionStrategy() {
         CookieHttpSessionStrategy sessionStrategy = new CookieHttpSessionStrategy();
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setCookiePath("/");
@@ -36,8 +34,7 @@ public class HttpSessionConfig
     }
 
     @Bean
-    public RequestCache requestCache()
-    {
+    public RequestCache requestCache() {
         return new HttpSessionRequestCache();
     }
 

@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ConfigureApplication.java
  * 创建人  :llxiao
  * 创建时间:2018年8月9日
-*/
+ */
 
 package com.xiao.springcloud.configure;
 
@@ -22,18 +22,16 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 @SpringBootApplication
 // 配置中心
 @EnableConfigServer
-public class ConfigureApplication
-{
+public class ConfigureApplication {
 
     /**
      * [简要描述]:<br/>
      * [详细描述]:<br/>
-     * 
-     * @author llxiao
+     *
      * @param args
+     * @author llxiao
      */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         SpringApplication.run(ConfigureApplication.class, args);
     }
 

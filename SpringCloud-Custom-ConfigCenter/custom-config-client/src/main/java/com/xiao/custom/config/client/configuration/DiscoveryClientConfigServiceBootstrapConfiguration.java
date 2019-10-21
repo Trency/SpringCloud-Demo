@@ -41,10 +41,9 @@ import java.util.List;
  */
 @ConditionalOnProperty(value = "spring.cloud.config.discovery.enabled", matchIfMissing = false)
 @Configuration
-@Import({ UtilAutoConfiguration.class })
+@Import({UtilAutoConfiguration.class})
 @EnableDiscoveryClient
-public class DiscoveryClientConfigServiceBootstrapConfiguration
-{
+public class DiscoveryClientConfigServiceBootstrapConfiguration {
 
     private static Log logger = LogFactory.getLog(DiscoveryClientConfigServiceBootstrapConfiguration.class);
 
@@ -57,61 +56,49 @@ public class DiscoveryClientConfigServiceBootstrapConfiguration
     private HeartbeatMonitor monitor = new HeartbeatMonitor();
 
     @EventListener(ContextRefreshedEvent.class)
-    public void startup(ContextRefreshedEvent event)
-    {
+    public void startup(ContextRefreshedEvent event) {
         refresh();
     }
 
     @EventListener(HeartbeatEvent.class)
-    public void heartbeat(HeartbeatEvent event)
-    {
-        if (monitor.update(event.getValue()))
-        {
+    public void heartbeat(HeartbeatEvent event) {
+        if (monitor.update(event.getValue())) {
             refresh();
         }
     }
 
-    private void refresh()
-    {
-        try
-        {
+    private void refresh() {
+        try {
             logger.debug("Locating configserver via discovery");
             String serviceId = this.config.getDiscovery().getServiceId();
             List<ServiceInstance> instances = this.client.getInstances(serviceId);
-            if (instances.isEmpty())
-            {
+            if (instances.isEmpty()) {
                 logger.warn("No instances found of configserver (" + serviceId + ")");
                 return;
             }
             ServiceInstance server = instances.get(0);
             String url = getHomePage(server);
-            if (server.getMetadata().containsKey("password"))
-            {
+            if (server.getMetadata().containsKey("password")) {
                 String user = server.getMetadata().get("user");
                 user = user == null ? "user" : user;
                 this.config.setUsername(user);
                 String password = server.getMetadata().get("password");
                 this.config.setPassword(password);
             }
-            if (server.getMetadata().containsKey("configPath"))
-            {
+            if (server.getMetadata().containsKey("configPath")) {
                 String path = server.getMetadata().get("configPath");
-                if (url.endsWith("/") && path.startsWith("/"))
-                {
+                if (url.endsWith("/") && path.startsWith("/")) {
                     url = url.substring(0, url.length() - 1);
                 }
                 url = url + path;
             }
             this.config.setUri(url);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             logger.warn("Could not locate configserver via discovery", ex);
         }
     }
 
-    private String getHomePage(ServiceInstance server)
-    {
+    private String getHomePage(ServiceInstance server) {
         return server.getUri().toString() + "/";
     }
 

@@ -13,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 //@RefreshScope
 //@Configuration
 @Slf4j
-public class DataSourceConfigure
-{
+public class DataSourceConfigure {
 //    @Bean
 //    @RefreshScope// 刷新配置文件
 //    @Primary //Primary可以理解为默认优先选择,同时不可以同时设置多个

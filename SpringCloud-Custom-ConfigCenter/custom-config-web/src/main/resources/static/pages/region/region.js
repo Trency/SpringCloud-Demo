@@ -153,8 +153,7 @@
                             that.findApi();
                         } else if (resp.data == -1) {
                             App.error("已关联应用不能删除，必须先删除应用!")
-                        }
-                        else {
+                        } else {
                             that.$message({
                                 type: 'error',
                                 message: '删除失败!'

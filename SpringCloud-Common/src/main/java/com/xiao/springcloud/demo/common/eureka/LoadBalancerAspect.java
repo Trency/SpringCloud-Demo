@@ -28,14 +28,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-public class LoadBalancerAspect
-{
+public class LoadBalancerAspect {
     @Autowired
     private SpringClientFactory springClientFactory;
 
     @Around(value = "execution (* org.springframework.cloud.client.loadbalancer.LoadBalancerClient.reconstructURI(..)))")
-    public Object reconstructURIAround(final ProceedingJoinPoint joinPoint) throws Throwable
-    {
+    public Object reconstructURIAround(final ProceedingJoinPoint joinPoint) throws Throwable {
 
         Object[] objects = joinPoint.getArgs();
         ServiceInstance instance = (ServiceInstance) objects[0];
@@ -46,8 +44,7 @@ public class LoadBalancerAspect
 
         Object obj = joinPoint.proceed();
 
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug("=======================================================================");
             log.debug(serverStats.toString());
             log.debug("=======================================================================");
@@ -57,10 +54,8 @@ public class LoadBalancerAspect
          * 连续网络链接失败2次以上，迅速标记该provider下线
          */
         int n = serverStats.getSuccessiveConnectionFailureCount();
-        if (n > 1)
-        {
-            if (log.isDebugEnabled())
-            {
+        if (n > 1) {
+            if (log.isDebugEnabled()) {
                 log.debug("===================================================================");
                 log.debug("Mark server:{}-{} to down!!!", server.getHost(), server.getPort());
                 log.debug("===================================================================");

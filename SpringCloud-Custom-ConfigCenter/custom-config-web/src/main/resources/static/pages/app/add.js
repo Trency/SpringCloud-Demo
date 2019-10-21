@@ -4,13 +4,13 @@
         data: function () {
             return {
                 appData: {
-                    id:"",
+                    id: "",
                     application: '',
                     applicationName: '',
                     label: 'master',
                     profile: '',
                     region: '',
-                    regionName:''
+                    regionName: ''
                 },
                 update: false,
                 tabStyle: {},
@@ -48,8 +48,7 @@
                             if (res.success) {
                                 App.success('保存成功');
                                 App.closeCurrentTagNav()
-                            }
-                            else {
+                            } else {
                                 App.error("添加应用错误，对应的应用、环境已经存在");
                             }
                         })
@@ -80,7 +79,7 @@
             })
         },
         /*  组件未被激活 类似小程序ondestroy */
-        deactivated :function() {
+        deactivated: function () {
             // console.log('未激活');
         }
     });

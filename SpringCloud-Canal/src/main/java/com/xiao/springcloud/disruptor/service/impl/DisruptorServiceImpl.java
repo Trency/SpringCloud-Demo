@@ -17,8 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class DisruptorServiceImpl implements DisruptorService, ApplicationListener<ContextRefreshedEvent>
-{
+public class DisruptorServiceImpl implements DisruptorService, ApplicationListener<ContextRefreshedEvent> {
 
     /**
      * [简要描述]:异步处理服务<br/>
@@ -29,14 +28,11 @@ public class DisruptorServiceImpl implements DisruptorService, ApplicationListen
      * llxiao  2019/3/25 - 9:51
      **/
     @Override
-    public void execute(TableData tableData)
-    {
-        if (log.isDebugEnabled())
-        {
+    public void execute(TableData tableData) {
+        if (log.isDebugEnabled()) {
             log.debug("接受数据更新请求，更新表名:{},更新的主键为:{}", tableData.getTableName(), tableData.getId());
         }
-        if (null != tableData)
-        {
+        if (null != tableData) {
             //业务处理 TODO
         }
     }
@@ -44,15 +40,13 @@ public class DisruptorServiceImpl implements DisruptorService, ApplicationListen
     /**
      * 初始化所有的service服务
      */
-    private void initAllCacheService()
-    {
+    private void initAllCacheService() {
         log.info(">>> 初始化所有需要缓存的服务对象.....");
         //业务需要初始化一些处理
     }
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)
-    {
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         initAllCacheService();
     }
 }

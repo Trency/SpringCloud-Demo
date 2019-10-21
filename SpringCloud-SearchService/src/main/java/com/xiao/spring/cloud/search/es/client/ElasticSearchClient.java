@@ -32,8 +32,7 @@ import java.net.UnknownHostException;
  * @since Purcotton-Search B01
  */
 @Component
-public class ElasticSearchClient
-{
+public class ElasticSearchClient {
     /**
      * 日志记录器
      */
@@ -80,14 +79,12 @@ public class ElasticSearchClient
      * [简要描述]:服务停止，关闭客户端<br/>
      * [详细描述]:<br/>
      *
-     * @exception Exception
+     * @throws Exception
      */
     @PreDestroy
-    public void destroy()
-    {
+    public void destroy() {
         LOG.warn("Close elastic search transoport Client beacuase purcotton search server stoped!");
-        if (isOk)
-        {
+        if (isOk) {
             transoportClient.close();
         }
 
@@ -97,16 +94,13 @@ public class ElasticSearchClient
      * [简要描述]:初始化ES client<br/>
      * [详细描述]:<br/>
      *
-     * @exception UnknownHostException
+     * @throws UnknownHostException
      */
     @SuppressWarnings("resource")
     @PostConstruct
-    public void init() throws UnknownHostException
-    {
-        if (StringUtils.isNotBlank(esHosts) || esHosts.split(":").length == IP_AND_PORT_ARRAY_LENGTH)
-        {
-            if (LOG.isInfoEnabled())
-            {
+    public void init() throws UnknownHostException {
+        if (StringUtils.isNotBlank(esHosts) || esHosts.split(":").length == IP_AND_PORT_ARRAY_LENGTH) {
+            if (LOG.isInfoEnabled()) {
                 LOG.info("ElasticSearch Host configuration:" + esHosts);
             }
 
@@ -119,9 +113,7 @@ public class ElasticSearchClient
                     .getByName(ipHost[0]), Integer.parseInt(ipHost[1])));
             transoportClient = new PreBuiltTransportClient(esSettings).addTransportAddress(transportAddress);
             isOk = true;
-        }
-        else
-        {
+        } else {
             LOG.error("Wrong Host configuration for ElasticSearch!");
         }
     }
@@ -132,8 +124,7 @@ public class ElasticSearchClient
      *
      * @return
      */
-    public TransportClient getTransportClient()
-    {
+    public TransportClient getTransportClient() {
         return this.transoportClient;
     }
 }

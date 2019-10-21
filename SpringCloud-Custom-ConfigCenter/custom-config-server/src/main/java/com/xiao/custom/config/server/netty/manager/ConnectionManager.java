@@ -18,8 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 @Component("connectionManager")
 @Slf4j
-public class ConnectionManager
-{
+public class ConnectionManager {
     /**
      * 总连接数
      */
@@ -35,15 +34,12 @@ public class ConnectionManager
      * [详细描述]:<br/>
      *
      * @param connection :
-     * llxiao  2019/4/4 - 8:54
+     *                   llxiao  2019/4/4 - 8:54
      **/
-    public void addConnection(Connection connection)
-    {
-        if (null != connection)
-        {
+    public void addConnection(Connection connection) {
+        if (null != connection) {
             log.info(">>> 新增了一个连接：{}", connection);
-            if (log.isDebugEnabled())
-            {
+            if (log.isDebugEnabled()) {
                 log.debug(">>> 新增了一个连接：{}", connection);
             }
             conns.put(connection.getUniqueKey(), connection);
@@ -59,11 +55,9 @@ public class ConnectionManager
      * @return com.winner.config.center.server.netty.manager.Connection
      * llxiao  2019/4/4 - 8:57
      **/
-    public Connection getConnection(String uniqueKey)
-    {
+    public Connection getConnection(String uniqueKey) {
         Connection connection = null;
-        if (StringUtils.isNotBlank(uniqueKey))
-        {
+        if (StringUtils.isNotBlank(uniqueKey)) {
             connection = conns.get(uniqueKey);
         }
         return connection;
@@ -73,16 +67,14 @@ public class ConnectionManager
      * [简要描述]:依据IP、PORT查找连接信息<br/>
      * [详细描述]:找不到返回一个null<br/>
      *
-     * @param nettyIp :
+     * @param nettyIp  :
      * @param nettyPot :
      * @return com.winner.config.center.server.netty.manager.Connection
      * llxiao  2019/4/4 - 9:02
      **/
-    public Connection getConnection(String nettyIp, int nettyPot)
-    {
+    public Connection getConnection(String nettyIp, int nettyPot) {
         Connection connection = null;
-        if (StringUtils.isNotBlank(nettyIp))
-        {
+        if (StringUtils.isNotBlank(nettyIp)) {
             connection = this.getConnection(nettyIp + Connection.SPLIT + nettyPot);
         }
         return connection;
@@ -92,19 +84,16 @@ public class ConnectionManager
      * [简要描述]:依据IP、PORT查找连接信息<br/>
      * [详细描述]:找不到返回一个null<br/>
      *
-     * @param nettyIp :
+     * @param nettyIp  :
      * @param nettyPot :
      * @return java.nio.channels.Channel
      * llxiao  2019/4/4 - 9:04
      **/
-    public Channel getChannel(String nettyIp, int nettyPot)
-    {
+    public Channel getChannel(String nettyIp, int nettyPot) {
         Channel channel = null;
-        if (StringUtils.isNotBlank(nettyIp))
-        {
+        if (StringUtils.isNotBlank(nettyIp)) {
             Connection connection = this.getConnection(nettyIp, nettyPot);
-            if (null != connection)
-            {
+            if (null != connection) {
                 channel = connection.getChannel();
             }
         }
@@ -119,14 +108,11 @@ public class ConnectionManager
      * @return io.netty.channel.Channel
      * llxiao  2019/4/4 - 9:08
      **/
-    public Channel getChannel(String uniqueKey)
-    {
+    public Channel getChannel(String uniqueKey) {
         Channel channel = null;
-        if (StringUtils.isNotBlank(uniqueKey))
-        {
+        if (StringUtils.isNotBlank(uniqueKey)) {
             Connection connection = this.getConnection(uniqueKey);
-            if (null != connection)
-            {
+            if (null != connection) {
                 channel = connection.getChannel();
             }
         }
@@ -141,16 +127,12 @@ public class ConnectionManager
      * @return void
      * llxiao  2019/4/4 - 9:09
      **/
-    public void remove(String uniqueKey)
-    {
-        if (StringUtils.isNotBlank(uniqueKey))
-        {
+    public void remove(String uniqueKey) {
+        if (StringUtils.isNotBlank(uniqueKey)) {
             Connection connection = conns.remove(uniqueKey);
-            if (null != connection)
-            {
+            if (null != connection) {
                 log.info(">>> 删除了一个连接：{}", connection);
-                if (log.isDebugEnabled())
-                {
+                if (log.isDebugEnabled()) {
                     log.debug(">>> 删除了一个连接：{}", connection);
                 }
                 activeConnect.decrementAndGet();
@@ -162,15 +144,13 @@ public class ConnectionManager
      * [简要描述]:删除一个连接<br/>
      * [详细描述]:<br/>
      *
-     * @param nettyIp :
+     * @param nettyIp   :
      * @param nettyPort :
      * @return void
      * llxiao  2019/4/4 - 9:09
      **/
-    public void remove(String nettyIp, int nettyPort)
-    {
-        if (StringUtils.isNotBlank(nettyIp))
-        {
+    public void remove(String nettyIp, int nettyPort) {
+        if (StringUtils.isNotBlank(nettyIp)) {
             String uniqueKey = nettyIp + Connection.SPLIT + nettyPort;
             this.remove(uniqueKey);
         }
@@ -183,8 +163,7 @@ public class ConnectionManager
      * @return long
      * llxiao  2019/4/4 - 9:14
      **/
-    public long getCurrentConnectNum()
-    {
+    public long getCurrentConnectNum() {
         return activeConnect.get();
     }
 }

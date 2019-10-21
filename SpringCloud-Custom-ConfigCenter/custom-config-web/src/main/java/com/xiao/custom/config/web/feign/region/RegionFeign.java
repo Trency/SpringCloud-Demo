@@ -22,22 +22,21 @@ import java.util.List;
  */
 @FeignClient(value = Constants.CONFIG_SERVICE)
 @RequestMapping(value = "/region")
-public interface RegionFeign
-{
+public interface RegionFeign {
     //分页查询区域
     @RequestMapping(value = "/queryRegion")
     PageInfo<RegionDto> queryRegion(@RequestBody RegionQuery regionQuery);
 
     //删除区域
-    @PostMapping(value="/delectRegion/{ids}")
+    @PostMapping(value = "/delectRegion/{ids}")
     Boolean delete(@PathVariable("ids") String ids);
 
     //更新区域信息
-    @PostMapping(value="/updateRegion")
+    @PostMapping(value = "/updateRegion")
     Boolean updateRegion(@RequestBody RegionDto regionDto);
 
     //新增区域信息
-    @PostMapping(value="/addRegion")
+    @PostMapping(value = "/addRegion")
     Boolean addRegion(@RequestBody RegionDto regionDto);
 
     //查询所有的 Region

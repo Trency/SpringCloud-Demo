@@ -23,38 +23,32 @@ import java.io.IOException;
  */
 @Component
 @Slf4j
-public class JwtAuthenticationTokenFilter extends OncePerRequestFilter
-{
+public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Resource
     private JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String authToken = request.getHeader(AuthContants.TOKEN_HEADER);
 
         // 以 Bearer 开头的token
-        if (StringUtils.isNotEmpty(authToken) && authToken.startsWith(AuthContants.TOKEN_BEARER_START))
-        {
+        if (StringUtils.isNotEmpty(authToken) && authToken.startsWith(AuthContants.TOKEN_BEARER_START)) {
             authToken = authToken.substring(AuthContants.TOKEN_BEARER_START.length());
             accessToken(request, authToken);
         }
         chain.doFilter(request, response);
     }
 
-    private void accessToken(HttpServletRequest request, String authToken)
-    {
+    private void accessToken(HttpServletRequest request, String authToken) {
         String username = jwtUtils.getUsernameFromToken(authToken);
 
         if (jwtUtils.containToken(username, authToken) && username != null
-                && SecurityContextHolder.getContext().getAuthentication() == null)
-        {
+                && SecurityContextHolder.getContext().getAuthentication() == null) {
             // 可以考虑做分布式session
             UserDetail userDetail = jwtUtils.getUserFromToken(authToken);
-            if (jwtUtils.validateToken(authToken, userDetail))
-            {
+            if (jwtUtils.validateToken(authToken, userDetail)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail
                         .getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

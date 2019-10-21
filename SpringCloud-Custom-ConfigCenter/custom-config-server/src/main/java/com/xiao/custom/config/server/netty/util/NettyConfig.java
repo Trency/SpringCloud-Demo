@@ -8,8 +8,7 @@ package com.xiao.custom.config.server.netty.util;
  * @version 1.0, 2019/3/30 14:57
  * @since JDK 1.8
  */
-public class NettyConfig
-{
+public class NettyConfig {
     public static final int NETTY_IO_RATIO_DEFAULT = 70;
 
     public static final int TCP_SO_BACKLOG_DEFAULT = 128;

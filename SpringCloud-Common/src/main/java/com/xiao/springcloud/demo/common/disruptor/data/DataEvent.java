@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class DataEvent
-{
+public class DataEvent {
     /**
      * 具体数据
      */

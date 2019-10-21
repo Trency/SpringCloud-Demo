@@ -26,8 +26,7 @@ import static org.springframework.util.StringUtils.isEmpty;
  * @since JDK 1.8
  */
 @Slf4j
-public class CustomEnvironmentRepository implements EnvironmentRepository, Ordered
-{
+public class CustomEnvironmentRepository implements EnvironmentRepository, Ordered {
     /**
      * config server 一些默认配置
      */
@@ -66,34 +65,28 @@ public class CustomEnvironmentRepository implements EnvironmentRepository, Order
 
     private ClientManagerService clientManagerService;
 
-    public CustomEnvironmentRepository(RepositoryService repositoryService, ClientManagerService clientManagerService)
-    {
+    public CustomEnvironmentRepository(RepositoryService repositoryService, ClientManagerService clientManagerService) {
         this.repositoryService = repositoryService;
         this.clientManagerService = clientManagerService;
     }
 
     @Override
-    public Environment findOne(String application, String profile, String label)
-    {
+    public Environment findOne(String application, String profile, String label) {
         String ip = saveClientInfo(application, profile);
 
         String config = application;
-        if (isEmpty(label))
-        {
+        if (isEmpty(label)) {
             label = DEFAULT_LABEL;
         }
-        if (isEmpty(profile))
-        {
+        if (isEmpty(profile)) {
             profile = DEFAULT_PROFILE;
         }
-        if (!profile.startsWith(DEFAULT_PROFILE))
-        {
+        if (!profile.startsWith(DEFAULT_PROFILE)) {
             profile = DEFAULT_PROFILE + ',' + profile;
         }
         String[] profiles = commaDelimitedListToStringArray(profile);
         Environment environment = new Environment(application, profiles, label, null, null);
-        if (!config.startsWith(APPLICATION))
-        {
+        if (!config.startsWith(APPLICATION)) {
             config = APPLICATION + ',' + config;
         }
         List<String> applications = new ArrayList<>(new LinkedHashSet<>(Arrays
@@ -102,13 +95,10 @@ public class CustomEnvironmentRepository implements EnvironmentRepository, Order
         Collections.reverse(applications);
         Collections.reverse(envs);
         Map<String, Object> resource;
-        for (String app : applications)
-        {
-            for (String env : envs)
-            {
+        for (String app : applications) {
+            for (String env : envs) {
                 resource = repositoryService.getPropertySource(ip, app, label, env);
-                if (MapUtils.isNotEmpty(resource))
-                {
+                if (MapUtils.isNotEmpty(resource)) {
                     environment.add(new PropertySource(app + '-' + env, resource));
                 }
             }
@@ -116,76 +106,64 @@ public class CustomEnvironmentRepository implements EnvironmentRepository, Order
         return environment;
     }
 
-    private String saveClientInfo(String application, String profile)
-    {
+    private String saveClientInfo(String application, String profile) {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();
         String ip = "";
         String port = "";
-        if (null != servletRequestAttributes)
-        {
+        if (null != servletRequestAttributes) {
             HttpServletRequest request = servletRequestAttributes.getRequest();
 
             //获取IP
             ip = request.getHeader(CLIENT_HOST);
-            if (org.apache.commons.lang3.StringUtils.isBlank(ip))
-            {
+            if (org.apache.commons.lang3.StringUtils.isBlank(ip)) {
                 ip = getClientIp(request);
             }
             port = request.getHeader(CLIENT_PORT);
             log.info(">>> 应用：{}开始从配置中心拉取配置", application);
             log.info(">>> 应用端服务器信息-IP:{},Port:{}", ip, port);
-            if (!isEmpty(ip) && !isEmpty(port))
-            {
+            if (!isEmpty(ip) && !isEmpty(port)) {
                 clientManagerService.setClientHost(application, profile, ip, Integer.parseInt(port));
             }
         }
         return ip;
     }
 
-    private String getClientIp(HttpServletRequest request)
-    {
+    private String getClientIp(HttpServletRequest request) {
         String ip = null;
         //X-Forwarded-For：Squid 服务代理
         String ipAddresses = request.getHeader(X_FORWARDED_FOR);
-        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses))
-        {
+        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //Proxy-Client-IP：apache 服务代理
             ipAddresses = request.getHeader(PROXY_CLIENT_IP);
         }
-        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses))
-        {
+        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //WL-Proxy-Client-IP：weblogic 服务代理
             ipAddresses = request.getHeader(WL_PROXY_CLIENT_IP);
         }
-        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses))
-        {
+        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //HTTP_CLIENT_IP：有些代理服务器
             ipAddresses = request.getHeader(HTTP_CLIENT_IP);
         }
-        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses))
-        {
+        if (isEmpty(ipAddresses) || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             //X-Real-IP：nginx服务代理
             ipAddresses = request.getHeader(X_REA_IP);
         }
 
         //有些网络通过多层代理，那么获取到的ip就会有多个，一般都是通过逗号（,）分割开来，并且第一个ip为客户端的真实IP
-        if (ipAddresses != null && ipAddresses.length() != 0)
-        {
+        if (ipAddresses != null && ipAddresses.length() != 0) {
             ip = ipAddresses.split(",")[0];
         }
 
         //还是不能获取到，最后再通过request.getRemoteAddr();获取
-        if (isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ipAddresses))
-        {
+        if (isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ipAddresses)) {
             ip = request.getRemoteAddr();
         }
         return ip;
     }
 
     @Override
-    public int getOrder()
-    {
+    public int getOrder() {
         return order;
     }
 }

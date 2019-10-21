@@ -21,16 +21,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/serverHostConfig")
 @Slf4j
-public class ServerHostConfigApi
-{
+public class ServerHostConfigApi {
 
     @Autowired
     private ServerHostConfigService serverHostConfigService;
 
     //分页查询
     @RequestMapping(value = "/queryServerHost")
-    public PageInfo<ServerHostConfigDto> queryServerHost(@RequestBody ServerHostConfigQuery serverHostConfigQuery)
-    {
+    public PageInfo<ServerHostConfigDto> queryServerHost(@RequestBody ServerHostConfigQuery serverHostConfigQuery) {
 
         return serverHostConfigService
                 .pageServerHostConfig(serverHostConfigQuery, serverHostConfigQuery.getPageNum(), serverHostConfigQuery
@@ -39,10 +37,8 @@ public class ServerHostConfigApi
 
     //删除服务管理
     @RequestMapping(value = "/delectServerHostConfig/{id}")
-    public int delectServerHostConfig(@PathVariable("id") Long id)
-    {
-        if (null == id)
-        {
+    public int delectServerHostConfig(@PathVariable("id") Long id) {
+        if (null == id) {
             log.info("删除服务管理失败，id不能为空");
             throw new RuntimeException("参数不能为空");
         }
@@ -51,20 +47,17 @@ public class ServerHostConfigApi
 
     //更改服务管理
     @PostMapping(value = "/updateServerHostConfig")
-    public Boolean updateServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto)
-    {
+    public Boolean updateServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto) {
         if (null == serverHostConfigDto.getId() || StringUtils.isBlank(serverHostConfigDto.getServerDesc())
                 || StringUtils.isBlank(serverHostConfigDto.getServerHost()) || null == serverHostConfigDto
-                .getRegionId())
-        {
+                .getRegionId()) {
             log.info("更改服务管理失败,参数不能为空");
             throw new RuntimeException("参数不能为空");
 
         }
         int b = serverHostConfigService.update(serverHostConfigDto);
 
-        if (b > 0)
-        {
+        if (b > 0) {
             return true;
         }
         return false;
@@ -72,18 +65,15 @@ public class ServerHostConfigApi
 
     //添加服务管理
     @PostMapping(value = "/addServerHostConfig")
-    public Boolean addServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto)
-    {
+    public Boolean addServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto) {
         if (StringUtils.isBlank(serverHostConfigDto.getServerDesc()) || StringUtils
-                .isBlank(serverHostConfigDto.getServerHost()) || null == serverHostConfigDto.getRegionId())
-        {
+                .isBlank(serverHostConfigDto.getServerHost()) || null == serverHostConfigDto.getRegionId()) {
             log.info("新增服务管理失败,参数不能为空");
             throw new RuntimeException("参数不能为空");
 
         }
         int b = serverHostConfigService.save(serverHostConfigDto);
-        if (b > 0)
-        {
+        if (b > 0) {
             return true;
         }
         return false;
@@ -91,10 +81,8 @@ public class ServerHostConfigApi
     }
 
     @RequestMapping(value = "/selectServerHostConfigById/{id}")
-    public ServerHostConfigDto selectServerHostConfigById(@PathVariable("id") Long id)
-    {
-        if (null == id)
-        {
+    public ServerHostConfigDto selectServerHostConfigById(@PathVariable("id") Long id) {
+        if (null == id) {
             log.info("获取服务管理失败，id不能为空");
             throw new RuntimeException("参数不能为空");
         }
@@ -104,8 +92,7 @@ public class ServerHostConfigApi
     }
 
     //po转dto
-    public ServerHostConfigDto serverHostConfigToDto(ServerHostConfig serverHostConfig)
-    {
+    public ServerHostConfigDto serverHostConfigToDto(ServerHostConfig serverHostConfig) {
         ServerHostConfigDto serverHostConfigDto = new ServerHostConfigDto();
         serverHostConfigDto.setId(serverHostConfig.getId());
         serverHostConfigDto.setRegionId(serverHostConfig.getRegionId());

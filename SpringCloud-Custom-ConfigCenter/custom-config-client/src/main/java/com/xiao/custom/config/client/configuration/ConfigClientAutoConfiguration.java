@@ -37,14 +37,11 @@ import org.springframework.core.env.Environment;
  * @author Marcos Barbero
  */
 @Configuration
-public class ConfigClientAutoConfiguration
-{
+public class ConfigClientAutoConfiguration {
     @Bean
-    public ConfigClientProperties configClientProperties(Environment environment, ApplicationContext context)
-    {
+    public ConfigClientProperties configClientProperties(Environment environment, ApplicationContext context) {
         if (context.getParent() != null && BeanFactoryUtils
-                .beanNamesForTypeIncludingAncestors(context.getParent(), ConfigClientProperties.class).length > 0)
-        {
+                .beanNamesForTypeIncludingAncestors(context.getParent(), ConfigClientProperties.class).length > 0) {
             return BeanFactoryUtils.beanOfTypeIncludingAncestors(context.getParent(), ConfigClientProperties.class);
         }
         ConfigClientProperties client = new ConfigClientProperties(environment);
@@ -52,22 +49,25 @@ public class ConfigClientAutoConfiguration
     }
 
     @Bean
-    public ConfigClientHealthProperties configClientHealthProperties()
-    {
+    public ConfigClientHealthProperties configClientHealthProperties() {
         return new ConfigClientHealthProperties();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "spring.cloud.config.custom", havingValue = "true")
+    public NettyClient nettyClient() {
+        return new NettyClient();
     }
 
     @Configuration
     @ConditionalOnClass(HealthIndicator.class)
     @ConditionalOnBean(ConfigServicePropertySourceLocator.class)
     @ConditionalOnProperty(value = "health.config.enabled", matchIfMissing = true)
-    protected static class ConfigServerHealthIndicatorConfiguration
-    {
+    protected static class ConfigServerHealthIndicatorConfiguration {
 
         @Bean
         public ConfigServerHealthIndicator configServerHealthIndicator(ConfigServicePropertySourceLocator locator,
-                ConfigClientHealthProperties properties, Environment environment)
-        {
+                                                                       ConfigClientHealthProperties properties, Environment environment) {
             return new ConfigServerHealthIndicator(locator, environment, properties);
         }
     }
@@ -76,19 +76,10 @@ public class ConfigClientAutoConfiguration
     @ConditionalOnClass(ContextRefresher.class)
     @ConditionalOnBean(ContextRefresher.class)
     @ConditionalOnProperty(value = "spring.cloud.config.watch.enabled")
-    protected static class ConfigClientWatchConfiguration
-    {
+    protected static class ConfigClientWatchConfiguration {
         @Bean
-        public ConfigClientWatch configClientWatch(ContextRefresher contextRefresher)
-        {
+        public ConfigClientWatch configClientWatch(ContextRefresher contextRefresher) {
             return new ConfigClientWatch(contextRefresher);
         }
-    }
-
-    @Bean
-    @ConditionalOnProperty(name = "spring.cloud.config.custom", havingValue = "true")
-    public NettyClient nettyClient()
-    {
-        return new NettyClient();
     }
 }

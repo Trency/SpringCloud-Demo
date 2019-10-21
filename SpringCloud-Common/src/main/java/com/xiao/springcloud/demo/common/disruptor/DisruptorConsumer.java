@@ -28,27 +28,22 @@ import java.util.concurrent.Executor;
  * @since JDK 1.8
  */
 @Slf4j
-public class DisruptorConsumer implements EventHandler<DataEvent>, WorkHandler<DataEvent>
-{
-    //具体的服务
-    private DisruptorService disruptorService;
-
+public class DisruptorConsumer implements EventHandler<DataEvent>, WorkHandler<DataEvent> {
     /**
      *
      */
     private final Executor executor;
+    //具体的服务
+    private DisruptorService disruptorService;
 
-    public DisruptorConsumer(DisruptorService disruptorService, Executor executor)
-    {
+    public DisruptorConsumer(DisruptorService disruptorService, Executor executor) {
         this.disruptorService = disruptorService;
         this.executor = executor;
     }
 
     @Override
-    public void onEvent(DataEvent dataEvent) throws Exception
-    {
-        if (log.isDebugEnabled())
-        {
+    public void onEvent(DataEvent dataEvent) throws Exception {
+        if (log.isDebugEnabled()) {
             log.info("接受到数据更新请求  >>>" + dataEvent);
         }
         executor.execute(() ->
@@ -59,10 +54,8 @@ public class DisruptorConsumer implements EventHandler<DataEvent>, WorkHandler<D
     }
 
     @Override
-    public void onEvent(DataEvent dataEvent, long sequence, boolean endOfBatch) throws Exception
-    {
-        if (log.isDebugEnabled())
-        {
+    public void onEvent(DataEvent dataEvent, long sequence, boolean endOfBatch) throws Exception {
+        if (log.isDebugEnabled()) {
             log.info("接受到数据更新请求  >>>{}", dataEvent);
             log.info("Sequence:{}", sequence);
             log.info("End Of Batch：{}", endOfBatch);

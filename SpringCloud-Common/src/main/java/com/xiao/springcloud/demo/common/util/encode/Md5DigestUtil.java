@@ -24,8 +24,7 @@ import java.security.NoSuchAlgorithmException;
  * @since smile V100R001C00
  */
 @Slf4j
-public class Md5DigestUtil
-{
+public class Md5DigestUtil {
 
     /**
      * MD5摘要算法
@@ -39,8 +38,7 @@ public class Md5DigestUtil
      * @param plaintext 明文
      * @return md5密文
      */
-    public static String md5Encoding2Base64(String plaintext)
-    {
+    public static String md5Encoding2Base64(String plaintext) {
         return md5Encoding(plaintext, true);
     }
 
@@ -51,8 +49,7 @@ public class Md5DigestUtil
      * @param plaintext 明文
      * @return md5密文
      */
-    public static String md5Encoding(String plaintext)
-    {
+    public static String md5Encoding(String plaintext) {
         return md5Encoding(plaintext, false);
     }
 
@@ -61,36 +58,26 @@ public class Md5DigestUtil
      * [详细描述]:MD5摘要生成工具<br/>
      *
      * @param plaintext 明文
-     * @param isBase64 是否生成base64字符串
+     * @param isBase64  是否生成base64字符串
      * @return md5密文
      */
-    public static String md5Encoding(String plaintext, boolean isBase64)
-    {
-        if (StringUtils.isBlank(plaintext))
-        {
+    public static String md5Encoding(String plaintext, boolean isBase64) {
+        if (StringUtils.isBlank(plaintext)) {
             return "";
         }
         String ciphertext = "";
         MessageDigest md;
-        try
-        {
+        try {
             md = MessageDigest.getInstance(MD5);
             byte[] array = md.digest(plaintext.getBytes(CodeFormatConstants.CODE_FORMAT_UTF_8));
-            if (isBase64)
-            {
+            if (isBase64) {
                 ciphertext = BinaryHelper.array2Base64Str(array);
-            }
-            else
-            {
+            } else {
                 ciphertext = BinaryHelper.array2Str(array);
             }
-        }
-        catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             log.error("MD5 encoding error and error msg :NoSuchAlgorithmException!");
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             log.error("MD5 encoding error and error msg :UnsupportedEncodingException!");
         }
         return ciphertext;

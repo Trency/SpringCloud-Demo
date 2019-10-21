@@ -25,8 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 @ControllerAdvice
-public class DefaultControllerAdvice
-{
+public class DefaultControllerAdvice {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -37,8 +36,7 @@ public class DefaultControllerAdvice
     @ExceptionHandler(CommonException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ResponseData serviceException(CommonException e)
-    {
+    public ResponseData serviceException(CommonException e) {
         log.error("系统异常:", e);
         return new ErrorResponseData(e.getCode(), e.getErrorMessage());
     }
@@ -49,25 +47,20 @@ public class DefaultControllerAdvice
     @ExceptionHandler(HystrixRuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ResponseData hystrixRuntimeException(HystrixRuntimeException e)
-    {
+    public ResponseData hystrixRuntimeException(HystrixRuntimeException e) {
         log.error("系统异常:", e);
         Throwable cause = e.getCause();
         //return new ErrorResponseData(e.getCode(), e.getErrorMessage());
-        if (cause instanceof CommonException)
-        {
+        if (cause instanceof CommonException) {
             return serviceException((CommonException) cause);
         }
         cause = e.getFallbackException();
-        if (null != cause)
-        {
+        if (null != cause) {
             log.error("服务调用熔断异常：", cause);
             // 解决服务之间调用，自定义熔断内抛出的异常处理
-            if (null != cause.getCause())
-            {
+            if (null != cause.getCause()) {
                 Throwable e1 = cause.getCause().getCause();
-                if (null != e1 && e1 instanceof CommonException)
-                {
+                if (null != e1 && e1 instanceof CommonException) {
                     return serviceException((CommonException) e1);
                 }
             }
@@ -82,8 +75,7 @@ public class DefaultControllerAdvice
     @ExceptionHandler(RetryableException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ResponseData retryableException(RetryableException e)
-    {
+    public ResponseData retryableException(RetryableException e) {
         log.error("系统异常:", e);
         return new ErrorResponseData(CommonExceptionEnum.REMOTE_SERVICE_TIMEOUT
                 .getCode(), CommonExceptionEnum.REMOTE_SERVICE_TIMEOUT.getMessage());
@@ -94,10 +86,8 @@ public class DefaultControllerAdvice
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ResponseData notFount(Exception e, HttpServletResponse reponse)
-    {
-        if (HttpStatus.NOT_FOUND.value() == reponse.getStatus())
-        {
+    public ResponseData notFount(Exception e, HttpServletResponse reponse) {
+        if (HttpStatus.NOT_FOUND.value() == reponse.getStatus()) {
             log.error(CommonExceptionEnum.NO_FOUNT.getMessage(), e);
             return new ErrorResponseData(CommonExceptionEnum.NO_FOUNT.getCode(), CommonExceptionEnum.NO_FOUNT
                     .getMessage());

@@ -5,9 +5,9 @@ spring:
       profile: @env@
       label: master
       name: omni-member-service
-  application: 
+  application:
     name: omni-member-service
-  logstash: 
+  logstash:
     server: @logstashServer@
     kafka-servers: @kafkaServer@
     logs-topic: @kafkaLogTopic@

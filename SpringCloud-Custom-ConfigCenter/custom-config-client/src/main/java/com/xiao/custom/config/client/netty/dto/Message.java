@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class Message
-{
+public class Message {
     /**
      * 0：心跳，1：登录以及绑定NETTY信息，2：刷新
      */

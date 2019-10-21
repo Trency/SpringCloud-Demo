@@ -14,8 +14,7 @@ import java.util.Map;
  * @author zhdong
  * @Date 2018/8/30 23:14
  */
-public class DefaultCommonErrorAttributes extends DefaultErrorAttributes
-{
+public class DefaultCommonErrorAttributes extends DefaultErrorAttributes {
 
     @Override
     public Map<String, Object> getErrorAttributes(RequestAttributes requestAttributes, boolean includeStackTrace) {

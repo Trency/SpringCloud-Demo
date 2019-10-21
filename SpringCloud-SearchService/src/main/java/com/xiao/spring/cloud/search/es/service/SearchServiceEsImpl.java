@@ -54,40 +54,31 @@ import java.util.*;
  */
 @Service
 @Slf4j
-public class SearchServiceEsImpl implements SearchService, ESConstants
-{
+public class SearchServiceEsImpl implements SearchService, ESConstants {
 
     /**
      * 日志记录器
      */
     private static final Log LOG = LogFactory.getLog(SearchServiceEsImpl.class);
-
-    @Autowired
-    private ElasticSearchClient esClient;
-
-    @Autowired
-    private ISearchLogService searchLogService;
-
-    @Value("${elasticsearch.highlight.pretags}")
-    private String preTags;
-
-    @Value("${elasticsearch.highlight.posttags}")
-    private String postTags;
-
-    @Value("${elasticsearch.total}")
-    private int searchTotal;
-
+    /**
+     * 日志返回结果最大长度取值
+     */
+    private static final int RESULT_MAX_LENGTH = 5;
     /**
      * [简要描述]: 因子的权重默认值
      * [详细描述]: 当后台对因子未设置权重时，该因子的权重设置为默认值0
      **/
     private static int weight = 0;
-
-    /**
-     * 日志返回结果最大长度取值
-     */
-    private static final int RESULT_MAX_LENGTH = 5;
-
+    @Autowired
+    private ElasticSearchClient esClient;
+    @Autowired
+    private ISearchLogService searchLogService;
+    @Value("${elasticsearch.highlight.pretags}")
+    private String preTags;
+    @Value("${elasticsearch.highlight.posttags}")
+    private String postTags;
+    @Value("${elasticsearch.total}")
+    private int searchTotal;
     /**
      * 分析器 0ES默认分词器，1IK中文分词器
      */
@@ -103,10 +94,8 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * llxiao  2018/10/8 - 11:07
      **/
     @Override
-    public SearchCommodityResultDo search(SearchRequestDo searchRequestDo)
-    {
-        if (LOG.isDebugEnabled() && null != searchRequestDo)
-        {
+    public SearchCommodityResultDo search(SearchRequestDo searchRequestDo) {
+        if (LOG.isDebugEnabled() && null != searchRequestDo) {
             LOG.debug("Start search data for ES with search params:" + searchRequestDo);
         }
         // 对空值置为null
@@ -117,13 +106,10 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
 
         PaginationDo page = new PaginationDo();
         TransportClient client = esClient.getTransportClient();
-        if (null != searchRequestDo && StringUtils.isNotBlank(searchRequestDo.getIndex()) && null != client)
-        {
+        if (null != searchRequestDo && StringUtils.isNotBlank(searchRequestDo.getIndex()) && null != client) {
             // 处理查询
             processSearch(searchRequestDo, page, client);
-        }
-        else
-        {
+        } else {
             // 防止调用者空指针
             page.setResults(new ArrayList<>());
             LOG.error("搜索失败，请求参数及索引及EsClient不能为空!");
@@ -135,32 +121,25 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
 
     @Override
     @Cacheable(value = "searchMenu", key = "'searchMenu'.concat({#searchRequestDo.index}).concat({#searchRequestDo.keyWords}).concat({#searchRequestDo.oprtCatNo})")
-    public SearchMenusDo searchMenu(SearchRequestDo searchRequestDo)
-    {
-        if (LOG.isDebugEnabled() && null != searchRequestDo)
-        {
+    public SearchMenusDo searchMenu(SearchRequestDo searchRequestDo) {
+        if (LOG.isDebugEnabled() && null != searchRequestDo) {
             LOG.debug("Start search data for ES with search params:" + searchRequestDo);
         }
 
         SearchMenusDo menu = new SearchMenusDo();
         TransportClient client = esClient.getTransportClient();
-        if (null != searchRequestDo && StringUtils.isNotBlank(searchRequestDo.getIndex()) && null != client)
-        {
+        if (null != searchRequestDo && StringUtils.isNotBlank(searchRequestDo.getIndex()) && null != client) {
             // 处理查询
             processMenu(searchRequestDo, menu, client);
-        }
-        else
-        {
+        } else {
             LOG.error("搜索失败，请求参数及索引及EsClient不能为空!");
         }
         return menu;
     }
 
     @Override
-    public long commodityTotal(SearchRequestDo searchRequestDo)
-    {
-        if (LOG.isDebugEnabled() && null != searchRequestDo)
-        {
+    public long commodityTotal(SearchRequestDo searchRequestDo) {
+        if (LOG.isDebugEnabled() && null != searchRequestDo) {
             LOG.debug("Start search data for ES with search params:" + searchRequestDo);
         }
         LocalDateTime startTime = LocalDateTime.now();
@@ -170,13 +149,10 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         TransportClient client = esClient.getTransportClient();
         Long commodityTotal;
         // 对空值置为null
-        if (null != searchRequestDo && StringUtils.isNotBlank(searchRequestDo.getIndex()) && null != client)
-        {
+        if (null != searchRequestDo && StringUtils.isNotBlank(searchRequestDo.getIndex()) && null != client) {
             // 处理查询
             commodityTotal = processCommodityTotal(searchRequestDo, client);
-        }
-        else
-        {
+        } else {
             commodityTotal = 0L;
             LOG.error("搜索失败，请求参数及索引及EsClient不能为空!");
         }
@@ -185,19 +161,16 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         return commodityTotal;
     }
 
-    private SearchCommodityResultDo paginationDo2CommdityList(PaginationDo page)
-    {
+    private SearchCommodityResultDo paginationDo2CommdityList(PaginationDo page) {
         SearchCommodityResultDo searchCommodityResultDo = null;
         List<ElasticSearchDoc> commodityList;
-        if (null != page)
-        {
+        if (null != page) {
             commodityList = new ArrayList<>();
             searchCommodityResultDo = new SearchCommodityResultDo();
             searchCommodityResultDo.setPageNo(page.getPageNo());
             searchCommodityResultDo.setPageSize(page.getPageSize());
             searchCommodityResultDo.setTotal(page.getTotal());
-            for (SearchResultDo result : page.getResults())
-            {
+            for (SearchResultDo result : page.getResults()) {
                 result.getDoc().setExtProps("");
                 result.getDoc().setSkuProps("");
                 commodityList.add(result.getDoc());
@@ -210,10 +183,8 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         return searchCommodityResultDo;
     }
 
-    private void processSearchLog(LocalDateTime startTime, SearchLogDo searchLog, PaginationDo page)
-    {
-        try
-        {
+    private void processSearchLog(LocalDateTime startTime, SearchLogDo searchLog, PaginationDo page) {
+        try {
             // 日志数据处理
             LocalDateTime endTime = LocalDateTime.now();
             searchLog.setEndTime(endTime);
@@ -223,9 +194,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
             searchLog.setCostTime(duration.toMillis());
             // 日志处理
             saveLog(searchLog);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             // 日志保存处理异常 不能影响到主流程的查询
             LOG.error("Save log error!", e);
         }
@@ -237,10 +206,8 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      *
      * @param searchLog
      */
-    private void saveLog(SearchLogDo searchLog)
-    {
-        if (LOG.isDebugEnabled())
-        {
+    private void saveLog(SearchLogDo searchLog) {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Search log info:" + searchLog.toString());
         }
         searchLogService.addSearchLog(searchLog);
@@ -253,8 +220,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @param page
      * @return
      */
-    private PaginationDo resultProcess(PaginationDo page)
-    {
+    private PaginationDo resultProcess(PaginationDo page) {
         PaginationDo pd = new PaginationDo();
         pd.setPageNo(page.getPageNo());
         pd.setPageSize(page.getPageSize());
@@ -262,12 +228,9 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         pd.setTotal(page.getTotal());
         List<SearchResultDo> result = page.getResults();
 
-        if (null != result && result.size() > RESULT_MAX_LENGTH)
-        {
+        if (null != result && result.size() > RESULT_MAX_LENGTH) {
             pd.setResults(result.subList(0, RESULT_MAX_LENGTH));
-        }
-        else
-        {
+        } else {
             pd.setResults(result);
         }
         return pd;
@@ -280,8 +243,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @return void
      * mjye  2019-02-28 - 16:45
      **/
-    private void processMenu(SearchRequestDo request, SearchMenusDo menu, TransportClient client)
-    {
+    private void processMenu(SearchRequestDo request, SearchMenusDo menu, TransportClient client) {
         String index = request.getIndex();
         SearchRequestBuilder searchBuilder = client.prepareSearch(index);
         // 设置是否按查询匹配度排序
@@ -293,7 +255,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         boolQuery.must(functionScoreQueryBuilder);
         // 设置过滤条件
         setFilters(request, boolQuery);
-        searchBuilder.setFetchSource(new String[] { ES_EXT_PROPS, ES_SKU_PROPS }, null);
+        searchBuilder.setFetchSource(new String[]{ES_EXT_PROPS, ES_SKU_PROPS}, null);
 
         // 设置菜单的品牌、价格、分类
         this.setMenuInBrandCategorySale(request, boolQuery, menu);
@@ -309,8 +271,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         // 普通查询
         this.processSearchMenu(hits, menu);
         menu.setTook(took);
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Search result:" + menu);
         }
     }
@@ -320,12 +281,11 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [详细描述]:<br/>
      *
      * @param request 查询请求
-     * @param page 分页组装数据
-     * 搜索日志
-     * @param client esClient
+     * @param page    分页组装数据
+     *                搜索日志
+     * @param client  esClient
      */
-    private void processSearch(SearchRequestDo request, PaginationDo page, TransportClient client)
-    {
+    private void processSearch(SearchRequestDo request, PaginationDo page, TransportClient client) {
         Integer pageNo = request.getPageNo();
         Integer pageSize = request.getPageSize();
         pageNo = null == pageNo ? 1 : pageNo;
@@ -365,8 +325,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         // 普通查询
         processSearchResult(page, hits, total);
         page.setTook(took);
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Search result:" + page);
         }
     }
@@ -378,8 +337,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @return int
      * mjye  2019-03-05 - 14:42
      **/
-    private long processCommodityTotal(SearchRequestDo request, TransportClient client)
-    {
+    private long processCommodityTotal(SearchRequestDo request, TransportClient client) {
         String index = request.getIndex();
         SearchRequestBuilder searchBuilder = client.prepareSearch(index);
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
@@ -405,8 +363,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @return void
      * mjye  2019-02-26 - 9:58
      **/
-    private void setMenuInBrandCategorySale(SearchRequestDo request, QueryBuilder query, SearchMenusDo menus)
-    {
+    private void setMenuInBrandCategorySale(SearchRequestDo request, QueryBuilder query, SearchMenusDo menus) {
         // 品牌、价格、分类聚合
         List<String> brandlist = aggregationFunction(request.getIndex(), query, ES_BRAND_NO);
         List<String> pricelist = aggregationFunction(request.getIndex(), query, SALE_PRICE);
@@ -419,19 +376,17 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [简要描述]: 对品牌，分类，价格区间进行聚和
      * [详细描述]:<br/>
      *
-     * @param index : 索引
-     * @param query : 查询条件
+     * @param index  : 索引
+     * @param query  : 查询条件
      * @param column : 聚合字段
      * @return java.util.List<java.lang.String>
      * mjye  2019-02-28 - 15:29
      **/
-    private List<String> aggregationFunction(String index, QueryBuilder query, String column)
-    {
+    private List<String> aggregationFunction(String index, QueryBuilder query, String column) {
         TransportClient client = esClient.getTransportClient();
         SearchRequestBuilder searchBuilder = client.prepareSearch(index);
 
-        if (query == null)
-        {
+        if (query == null) {
             query = QueryBuilders.matchAllQuery();
         }
 
@@ -448,8 +403,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         Terms terms = response.getAggregations().get(column);
 
         List<String> list = new ArrayList<>();
-        for (Terms.Bucket bucket : terms.getBuckets())
-        {
+        for (Terms.Bucket bucket : terms.getBuckets()) {
             list.add(bucket.getKey().toString());
         }
         return list;
@@ -459,15 +413,14 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [简要描述]:分词查询<br/>
      * [详细描述]:<br/>
      *
-     * @param request 查询请求
-     * @param page 响应数据
-     * @param client ES客户端
+     * @param request       查询请求
+     * @param page          响应数据
+     * @param client        ES客户端
      * @param searchBuilder 查询builder
      * @return took
      */
     private long segmentQuery(SearchRequestDo request, PaginationDo page, TransportClient client,
-            SearchRequestBuilder searchBuilder, SearchMenusDo menus)
-    {
+                              SearchRequestBuilder searchBuilder, SearchMenusDo menus) {
 
         // IK_SMART-标准分词 IK_MAX_WORD-最大分词 STANDARD-ES默认分词全拆
         // IK_SMART拆词
@@ -480,13 +433,10 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         SearchHits hits = response.getHits();
         long total = hits.getTotalHits();
         long took = response.getTook().getMillis();
-        if (total > 0 && total >= searchTotal)
-        {
+        if (total > 0 && total >= searchTotal) {
             // 数据处理
             processSearchResult(page, hits, total);
-        }
-        else
-        {
+        } else {
             // IK MAX WORD拆词
             openKeywords = this.openedWords(AnalyzeType.IK_MAX_WORD, client, request.getKeyWords());
             // 拆词查询
@@ -496,13 +446,10 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
             hits = response.getHits();
             total = hits.getTotalHits();
             took = response.getTook().getMillis();
-            if (total > 0 && total >= searchTotal)
-            {
+            if (total > 0 && total >= searchTotal) {
                 // 普通拆词查询
                 processSearchResult(page, hits, total);
-            }
-            else if (STANDARD == this.analyzeType)
-            {
+            } else if (STANDARD == this.analyzeType) {
                 // ES默认拆词，全拆
                 openKeywords = this.openedWords(AnalyzeType.STANDARD, client, request.getKeyWords());
                 // 拆词查询
@@ -512,8 +459,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
                 hits = response.getHits();
                 total = hits.getTotalHits();
                 took = response.getTook().getMillis();
-                if (total > 0)
-                {
+                if (total > 0) {
                     // 处理结果
                     processSearchResult(page, hits, total);
                 }
@@ -528,36 +474,27 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [详细描述]:<br/>
      *
      * @param searchBuilder SearchRequestBuilder
-     * @param request SearchRequestDo
+     * @param request       SearchRequestDo
      */
-    private void setOrder(SearchRequestBuilder searchBuilder, SearchRequestDo request)
-    {
+    private void setOrder(SearchRequestBuilder searchBuilder, SearchRequestDo request) {
         int orderType = request.getSortFeild();
 
         SortOrder sortOrder = SortOrder.ASC;
         int sort = request.getSort();
-        if (DESC_SORT == sort)
-        {
+        if (DESC_SORT == sort) {
             sortOrder = SortOrder.DESC;
         }
 
-        if (OrderField.PRICE.getType() == orderType)
-        {
+        if (OrderField.PRICE.getType() == orderType) {
             // 价格
             searchBuilder.addSort(SALE_PRICE, sortOrder);
-        }
-        else if (OrderField.SALES.getType() == orderType)
-        {
+        } else if (OrderField.SALES.getType() == orderType) {
             // 销量
             searchBuilder.addSort(SALES_VOLUME, sortOrder);
-        }
-        else if (OrderField.SLAESTIME.getType() == orderType)
-        {
+        } else if (OrderField.SLAESTIME.getType() == orderType) {
             // 上架时间
             searchBuilder.addSort(SALE_TIME, sortOrder);
-        }
-        else if (OrderField.COMMENTS.getType() == orderType)
-        {
+        } else if (OrderField.COMMENTS.getType() == orderType) {
             // 好评度
             searchBuilder.addSort(COMMENTS, sortOrder);
         }
@@ -569,25 +506,21 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [详细描述]:<br/>
      *
      * @param analyze 分词器类型
-     * @param client ES客户端
+     * @param client  ES客户端
      * @param content 分词内容
      * @return 拆分后的词
      */
-    private List<String> openedWords(AnalyzeType analyze, TransportClient client, String content)
-    {
+    private List<String> openedWords(AnalyzeType analyze, TransportClient client, String content) {
         List<String> allWorlds = new ArrayList<>();
-        if (StringUtils.isNotBlank(content))
-        {
+        if (StringUtils.isNotBlank(content)) {
             // 指定分词器
             AnalyzeResponse response = client.admin().indices().prepareAnalyze(content).setAnalyzer(analyze.getType())
                     .execute().actionGet();
             List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
-            if (LOG.isDebugEnabled())
-            {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("ElasticSearch excute analyzeToken result:" + JSON.toJSONString(tokens));
             }
-            for (AnalyzeResponse.AnalyzeToken token : tokens)
-            {
+            for (AnalyzeResponse.AnalyzeToken token : tokens) {
                 allWorlds.add(token.getTerm());
             }
         }
@@ -600,25 +533,20 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [详细描述]:<br/>
      *
      * @param searchResultDo SearchResultDo
-     * @param searchHit SearchHit
+     * @param searchHit      SearchHit
      */
-    private void setHighlight(SearchResultDo searchResultDo, SearchHit searchHit)
-    {
+    private void setHighlight(SearchResultDo searchResultDo, SearchHit searchHit) {
         Text[] text;
         Map<String, HighlightField> highlightFields = searchHit.getHighlightFields();
-        if (highlightFields.containsKey(ES_TITLE_FEILD))
-        {
+        if (highlightFields.containsKey(ES_TITLE_FEILD)) {
             text = highlightFields.get(ES_TITLE_FEILD).getFragments();
-            if (text.length > 0)
-            {
+            if (text.length > 0) {
                 searchResultDo.setHighlightTitle(text[0].string());
             }
         }
-        if (highlightFields.containsKey(ES_SUBTITLE_FEILD))
-        {
+        if (highlightFields.containsKey(ES_SUBTITLE_FEILD)) {
             text = highlightFields.get(ES_SUBTITLE_FEILD).getFragments();
-            if (text.length > 0)
-            {
+            if (text.length > 0) {
                 searchResultDo.setHighlightSubTitle(text[0].string());
             }
         }
@@ -631,8 +559,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @return void
      * mjye  2019-02-28 - 16:57
      **/
-    private void processSearchMenu(SearchHits hits, SearchMenusDo menu)
-    {
+    private void processSearchMenu(SearchHits hits, SearchMenusDo menu) {
         // 数据结果
         List<SearchResultDo> searchResponses = new ArrayList<>();
         List<String> searchStrs = new ArrayList<>();
@@ -640,12 +567,10 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         String searchSource;
         ElasticSearchDoc esd;
         // 迭代查询结果
-        for (SearchHit searchHit : hits)
-        {
+        for (SearchHit searchHit : hits) {
             searchResultDo = new SearchResultDo();
             searchSource = searchHit.getSourceAsString();
-            if (StringUtils.isNotBlank(searchSource))
-            {
+            if (StringUtils.isNotBlank(searchSource)) {
                 searchStrs.add(searchSource);
                 esd = JSON.parseObject(searchSource, ElasticSearchDoc.class);
                 esd.setId(searchHit.getId());
@@ -653,8 +578,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
                 searchResponses.add(searchResultDo);
             }
         }
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Search resource:" + searchStrs);
         }
         this.getMenus(searchResponses, menu);
@@ -664,12 +588,11 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [简要描述]:查询结果处理<br/>
      * [详细描述]:<br/>
      *
-     * @param page 分页数据
-     * @param hits 查询数据
+     * @param page  分页数据
+     * @param hits  查询数据
      * @param total 查询总数
      */
-    private void processSearchResult(PaginationDo page, SearchHits hits, long total)
-    {
+    private void processSearchResult(PaginationDo page, SearchHits hits, long total) {
         page.setTotal((int) total);
         // 数据结果
         List<SearchResultDo> searchResponses = new ArrayList<>();
@@ -678,12 +601,10 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         String searchSource;
         ElasticSearchDoc esd;
         // 迭代查询结果
-        for (SearchHit searchHit : hits)
-        {
+        for (SearchHit searchHit : hits) {
             searchResultDo = new SearchResultDo();
             searchSource = searchHit.getSourceAsString();
-            if (StringUtils.isNotBlank(searchSource))
-            {
+            if (StringUtils.isNotBlank(searchSource)) {
                 searchStrs.add(searchSource);
                 esd = JSON.parseObject(searchSource, ElasticSearchDoc.class);
                 esd.setId(searchHit.getId());
@@ -693,8 +614,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
                 searchResponses.add(searchResultDo);
             }
         }
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug("Search resource:" + searchStrs);
         }
         page.setResults(searchResponses);
@@ -706,8 +626,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      *
      * @return 高亮huilder
      */
-    private HighlightBuilder setHighlightBuilder()
-    {
+    private HighlightBuilder setHighlightBuilder() {
         HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false);
         highlightBuilder.preTags(preTags);
         highlightBuilder.postTags(postTags);
@@ -721,17 +640,14 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [详细描述]:<br/>
      *
      * @param openKeywords 拆词后的关键词
-     * @param request 查询条件
+     * @param request      查询条件
      * @return QueryBuilder
      */
-    private QueryBuilder setQueryBuilder(List<String> openKeywords, SearchRequestDo request)
-    {
+    private QueryBuilder setQueryBuilder(List<String> openKeywords, SearchRequestDo request) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-        if (CollectionUtil.isNotEmpty(openKeywords))
-        {
+        if (CollectionUtil.isNotEmpty(openKeywords)) {
             QueryBuilder multiMatch;
-            for (String word : openKeywords)
-            {
+            for (String word : openKeywords) {
                 // 关键字 标签 中多字段查询
                 multiMatch = QueryBuilders.multiMatchQuery(word, ESConstants.ES_KEY_WORDS, ESConstants.SALES_TAG_NAME)
                         .type(MultiMatchQueryBuilder.Type.PHRASE_PREFIX).slop(1).tieBreaker(0.3f);
@@ -750,14 +666,12 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @param request 搜索请求
      * @return QueryBuilder
      */
-    private QueryBuilder setQueryBuilder(SearchRequestDo request)
-    {
+    private QueryBuilder setQueryBuilder(SearchRequestDo request) {
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
         String keyWords = request.getKeyWords();
         // 匹配多个字段
-        if (StringUtils.isNotBlank(keyWords))
-        {
+        if (StringUtils.isNotBlank(keyWords)) {
             // 关键字和标签匹配查询
             QueryBuilder multiMatch = QueryBuilders
                     .multiMatchQuery(keyWords, ES_BRAND_NO, ES_COMMODITY_NO, ES_TITLE, ES_SUB_TITLE, ES_OPRT_CAT_NAME, ES_LABELS, ES_EXT_PROPS, ES_SKU_PROPS, ES_PRODUCT_AREA)
@@ -774,87 +688,72 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * [简要描述]:设置过滤查询<br/>
      * [详细描述]:<br/>
      *
-     * @param request 搜索请求
+     * @param request      搜索请求
      * @param queryBuilder BoolQueryBuilder
      */
-    private void setFilters(SearchRequestDo request, BoolQueryBuilder queryBuilder)
-    {
+    private void setFilters(SearchRequestDo request, BoolQueryBuilder queryBuilder) {
         // 新品不为-1，即有过滤选择
-        if (INVALID_FLAG != request.getNewly())
-        {
+        if (INVALID_FLAG != request.getNewly()) {
             // 新品过滤
             queryBuilder.must(QueryBuilders.matchQuery(NEWLY, request.getNewly()));
         }
 
         // 分类编号过滤
         // 仅对从分类入口进入商品列表是有效
-        if (StringUtils.isBlank(request.getKeyWords()) && StringUtils.isNotBlank(request.getOprtCatNo()))
-        {
+        if (StringUtils.isBlank(request.getKeyWords()) && StringUtils.isNotBlank(request.getOprtCatNo())) {
             queryBuilder.must(QueryBuilders.matchQuery(ES_CATEGORY_NO, request.getOprtCatNo()));
         }
 
         // 是否有货过滤
-        if (INVALID_FLAG != request.getHasStock())
-        {
+        if (INVALID_FLAG != request.getHasStock()) {
             // 无货
             queryBuilder.must(QueryBuilders.matchQuery(HAS_STOCK, request.getHasStock()));
         }
 
         // 商品分类过滤查询
-        if (CollectionUtil.isNotEmpty(request.getCategoryNo()))
-        {
+        if (CollectionUtil.isNotEmpty(request.getCategoryNo())) {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            for (String s : request.getCategoryNo())
-            {
+            for (String s : request.getCategoryNo()) {
                 boolQueryBuilder.should(QueryBuilders.matchQuery(ES_CATEGORY_NO, s));
             }
             queryBuilder.must(boolQueryBuilder);
         }
 
         // 商品品牌过滤查询
-        if (CollectionUtil.isNotEmpty(request.getBrandNo()))
-        {
+        if (CollectionUtil.isNotEmpty(request.getBrandNo())) {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            for (String s : request.getBrandNo())
-            {
+            for (String s : request.getBrandNo()) {
                 boolQueryBuilder.should(QueryBuilders.matchQuery(ES_BRAND_NO, s));
             }
             queryBuilder.must(boolQueryBuilder);
         }
 
         // sku规格属性过滤
-        if (CollectionUtil.isNotEmpty(request.getSkuPropsNo()))
-        {
+        if (CollectionUtil.isNotEmpty(request.getSkuPropsNo())) {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            for (String s : request.getSkuPropsNo())
-            {
+            for (String s : request.getSkuPropsNo()) {
                 boolQueryBuilder.should(QueryBuilders.matchQuery(ES_SKU_PROPS, s));
             }
             queryBuilder.must(boolQueryBuilder);
         }
 
         // 商品扩展属性过滤
-        if (CollectionUtil.isNotEmpty(request.getExtPropsNo()))
-        {
+        if (CollectionUtil.isNotEmpty(request.getExtPropsNo())) {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            for (String s : request.getExtPropsNo())
-            {
+            for (String s : request.getExtPropsNo()) {
                 boolQueryBuilder.should(QueryBuilders.matchQuery(ES_EXT_PROPS, s));
             }
             queryBuilder.must(boolQueryBuilder);
         }
 
         // 价格区间过滤
-        if (CollectionUtil.isNotEmpty(request.getRangesPrices()))
-        {
+        if (CollectionUtil.isNotEmpty(request.getRangesPrices())) {
             BoolQueryBuilder priceBoolQuery = QueryBuilders.boolQuery();
-            for (String rangesPrice : request.getRangesPrices())
-            {
+            for (String rangesPrice : request.getRangesPrices()) {
                 String[] split = rangesPrice.trim().split("-");
                 Double minPrice = Double.parseDouble(split[CONSTANT_ZERO]);
                 Double maxPrice = Double.parseDouble(split[split.length - CONSTANT_ONE]);
-                if (CONSTANT_TWO == split.length && minPrice < maxPrice)
-                {
+                if (CONSTANT_TWO == split.length && minPrice < maxPrice) {
                     priceBoolQuery.should(QueryBuilders.rangeQuery(ESConstants.SALE_PRICE).from(minPrice).to(maxPrice));
                 }
             }
@@ -870,10 +769,8 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @return com.purcotton.omni.search.dto.SearchMenusDo
      * mjye  2019-02-23 - 11:12
      **/
-    private SearchMenusDo getMenus(List<SearchResultDo> searchResponses, SearchMenusDo menus)
-    {
-        if (CollectionUtil.isNotEmpty(searchResponses))
-        {
+    private SearchMenusDo getMenus(List<SearchResultDo> searchResponses, SearchMenusDo menus) {
+        if (CollectionUtil.isNotEmpty(searchResponses)) {
 
             Set<String> brandName = new HashSet<>();
             Set<String> oprtCatName = new HashSet<>();
@@ -895,18 +792,14 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @return java.lang.String
      * mjye  2019-02-23 - 12:00
      **/
-    private void getThreeOprtCat(List<String> catelist, SearchMenusDo menus)
-    {
+    private void getThreeOprtCat(List<String> catelist, SearchMenusDo menus) {
         Set<SearchCategoryDo> threeOprtCat = null;
-        if (CollectionUtil.isNotEmpty(catelist))
-        {
+        if (CollectionUtil.isNotEmpty(catelist)) {
             threeOprtCat = new HashSet<>();
             SearchCategoryDo searchCategoryDo;
-            for (String cate : catelist)
-            {
+            for (String cate : catelist) {
                 List<String> strings1 = Arrays.asList(cate.split(","));
-                for (String s : strings1)
-                {
+                for (String s : strings1) {
                     searchCategoryDo = new SearchCategoryDo();
                     String[] split = s.split("-");
                     searchCategoryDo.setCategoryName(split[CONSTANT_ZERO]);
@@ -925,8 +818,7 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
      * @return org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder
      * mjye  2019-02-23 - 18:14
      **/
-    private QueryBuilder getFunctionScoreQueryBuilder(SearchRequestDo request)
-    {
+    private QueryBuilder getFunctionScoreQueryBuilder(SearchRequestDo request) {
         //        List<SearchShopWeightDto> searchShopWeightDtos = shopRestService.queryShopWeight(shopWeightDto);
         // 业务查询权重配置
         List<SearchShopWeightDto> searchShopWeightDtos = new ArrayList<>();
@@ -935,23 +827,19 @@ public class SearchServiceEsImpl implements SearchService, ESConstants
         FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
 
         // 匹配多个字段
-        if (StringUtils.isNotBlank(request.getKeyWords()))
-        {
+        if (StringUtils.isNotBlank(request.getKeyWords())) {
             // 关键字和标签匹配查询
             QueryBuilder multiMatch = QueryBuilders
                     .multiMatchQuery(searchContent, ES_TITLE, ES_BRAND_NAME, ES_COMMODITY_NO, ES_SUB_TITLE, ES_OPRT_CAT_NAME, ES_LABELS, ES_EXT_PROPS, ES_SKU_PROPS, ES_PRODUCT_AREA)
                     .type(MultiMatchQueryBuilder.Type.PHRASE_PREFIX);
             queryBuilder.should(multiMatch);
 
-            if (CollectionUtil.isNotEmpty(searchShopWeightDtos))
-            {
+            if (CollectionUtil.isNotEmpty(searchShopWeightDtos)) {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[9];
-                for (int i = 0; i < searchShopWeightDtos.size(); i++)
-                {
+                for (int i = 0; i < searchShopWeightDtos.size(); i++) {
                     queryBuilder.should(QueryBuilders
                             .matchQuery(searchShopWeightDtos.get(i).getEnglishName(), searchContent));
-                    if (ESConstants.CONSTANT_ZERO <= searchShopWeightDtos.get(i).getWeightFactor())
-                    {
+                    if (ESConstants.CONSTANT_ZERO <= searchShopWeightDtos.get(i).getWeightFactor()) {
                         weight = searchShopWeightDtos.get(i).getWeightFactor();
                     }
                     filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders

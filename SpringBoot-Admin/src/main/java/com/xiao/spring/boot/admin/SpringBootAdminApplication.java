@@ -16,10 +16,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @SpringBootApplication
 @EnableAdminServer
-public class SpringBootAdminApplication
-{
-    public static void main(String[] args)
-    {
+public class SpringBootAdminApplication {
+    public static void main(String[] args) {
         SpringApplication.run(SpringBootAdminApplication.class, args);
     }
 }

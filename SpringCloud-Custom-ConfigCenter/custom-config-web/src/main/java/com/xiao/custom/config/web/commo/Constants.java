@@ -8,7 +8,6 @@ package com.xiao.custom.config.web.commo;
  * @version 1.0, 2018/12/20 14:00
  * @since JDK 1.8
  */
-public interface Constants
-{
+public interface Constants {
     String CONFIG_SERVICE = "config-center-service";
 }

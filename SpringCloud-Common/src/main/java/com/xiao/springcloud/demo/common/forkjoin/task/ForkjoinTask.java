@@ -12,23 +12,19 @@ import java.util.concurrent.RecursiveTask;
  * @version 1.0, 2019/6/11 19:55
  * @since JDK 1.8
  */
-public class ForkjoinTask extends RecursiveTask<Integer>
-{
-    /**
-     * 待处理的平台商品数据
-     */
-    private CopyOnWriteArrayList<Integer> arrayList;
-
+public class ForkjoinTask extends RecursiveTask<Integer> {
     /**
      * 拆分条件
      */
     private static int THRESHOLD = 500;
-
+    /**
+     * 待处理的平台商品数据
+     */
+    private CopyOnWriteArrayList<Integer> arrayList;
     private int start;
     private int end;
 
-    public ForkjoinTask(List<Integer> arrayList, int start, int end)
-    {
+    public ForkjoinTask(List<Integer> arrayList, int start, int end) {
         this.arrayList = new CopyOnWriteArrayList<>(arrayList);
         this.start = start;
         this.end = end;
@@ -40,14 +36,10 @@ public class ForkjoinTask extends RecursiveTask<Integer>
      * @return the result of the computation
      */
     @Override
-    protected Integer compute()
-    {
-        if (end - start <= THRESHOLD)
-        {
+    protected Integer compute() {
+        if (end - start <= THRESHOLD) {
             return add(arrayList);
-        }
-        else
-        {
+        } else {
             int middle = (end + start) / 2;
             List<Integer> arrayList1 = arrayList.subList(start, middle);
             List<Integer> arrayList2 = arrayList.subList(middle, end);
@@ -58,11 +50,9 @@ public class ForkjoinTask extends RecursiveTask<Integer>
         }
     }
 
-    private Integer add(CopyOnWriteArrayList<Integer> arrayList)
-    {
+    private Integer add(CopyOnWriteArrayList<Integer> arrayList) {
         int status = 0;
-        for (Integer integer : arrayList)
-        {
+        for (Integer integer : arrayList) {
             status += integer;
         }
         return status;

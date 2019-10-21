@@ -20,8 +20,7 @@ import java.io.IOException;
  * @since JDK 1.8
  */
 @WebFilter(urlPatterns = "/*")
-public class HystrixCacheFilter implements Filter
-{
+public class HystrixCacheFilter implements Filter {
     /**
      * Called by the web container to indicate to a filter that it is being
      * placed into service. The servlet container calls the init method exactly
@@ -37,12 +36,11 @@ public class HystrixCacheFilter implements Filter
      * </ul>
      *
      * @param filterConfig The configuration information associated with the
-     * filter instance being initialised
-     * @exception ServletException if the initialisation fails
+     *                     filter instance being initialised
+     * @throws ServletException if the initialisation fails
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException
-    {
+    public void init(FilterConfig filterConfig) throws ServletException {
 
     }
 
@@ -67,27 +65,23 @@ public class HystrixCacheFilter implements Filter
      * 5. Directly set headers on the response after invocation of the next
      * entity in the filter chain.
      *
-     * @param request The request to process
+     * @param request  The request to process
      * @param response The response associated with the request
-     * @param chain Provides access to the next filter in the chain for this
-     * filter to pass the request and response to for further
-     * processing
-     * @exception IOException if an I/O error occurs during this filter's
-     * processing of the request
-     * @exception ServletException if the processing fails for any other reason
+     * @param chain    Provides access to the next filter in the chain for this
+     *                 filter to pass the request and response to for further
+     *                 processing
+     * @throws IOException      if an I/O error occurs during this filter's
+     *                          processing of the request
+     * @throws ServletException if the processing fails for any other reason
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         //初始化Hystrix请求上下文
         HystrixRequestContext context = HystrixRequestContext.initializeContext();
-        try
-        {
+        try {
             chain.doFilter(request, response);
-        }
-        finally
-        {
+        } finally {
             //关闭Hystrix请求上下文
             context.shutdown();
         }
@@ -107,8 +101,7 @@ public class HystrixCacheFilter implements Filter
      * state in memory.
      */
     @Override
-    public void destroy()
-    {
+    public void destroy() {
 
     }
 }

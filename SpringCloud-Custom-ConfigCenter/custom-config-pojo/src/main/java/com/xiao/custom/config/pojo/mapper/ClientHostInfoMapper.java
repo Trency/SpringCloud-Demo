@@ -10,8 +10,7 @@ import java.util.List;
 /**
  * Created by Mybatis Generator on 2019/01/29
  */
-public interface ClientHostInfoMapper
-{
+public interface ClientHostInfoMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(ClientHostInfo record);
@@ -29,7 +28,7 @@ public interface ClientHostInfoMapper
      * [详细描述]:<br/>
      *
      * @param application :
-     * @param profile :
+     * @param profile     :
      * @return java.util.List<com.winner.config.center.pojo.db.entity.ClientHostInfo>
      * llxiao  2019/1/30 - 11:15
      **/
@@ -39,7 +38,7 @@ public interface ClientHostInfoMapper
      * [简要描述]:修改服务状态<br/>
      * [详细描述]:0在线，1下线<br/>
      *
-     * @param id :
+     * @param id      :
      * @param status:
      * @return int
      * llxiao  2019/1/30 - 14:18

@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = Constants.CONFIG_SERVICE)
 @RequestMapping("/clientInfo")
-public interface ClientInfoFeign
-{
+public interface ClientInfoFeign {
     /**
      * 分页查询客户端信息
      *

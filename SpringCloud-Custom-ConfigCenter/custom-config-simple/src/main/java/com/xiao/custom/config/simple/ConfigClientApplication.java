@@ -12,10 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since JDK 1.8
  */
 @SpringBootApplication()
-public class ConfigClientApplication
-{
-    public static void main(String[] args)
-    {
+public class ConfigClientApplication {
+    public static void main(String[] args) {
         SpringApplication.run(ConfigClientApplication.class, args);
     }
 }

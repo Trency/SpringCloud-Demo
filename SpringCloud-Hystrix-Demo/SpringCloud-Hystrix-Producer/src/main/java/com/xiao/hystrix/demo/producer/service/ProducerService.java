@@ -8,8 +8,7 @@ package com.xiao.hystrix.demo.producer.service;
  * @version 1.0, 2019/8/1 09:56
  * @since JDK 1.8
  */
-public interface ProducerService
-{
+public interface ProducerService {
     /**
      * [简要描述]:超时APi模拟<br/>
      * [详细描述]:<br/>

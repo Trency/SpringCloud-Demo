@@ -20,32 +20,27 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(value = "/api/config/configItem")
-public class ConfigItemController
-{
+public class ConfigItemController {
     @Autowired
     private ConfigItemFeign configItemService;
 
     @RequestMapping(value = "/page")
-    public PageInfo<ConfigItemDto> pageConfigItem(@RequestBody ConfigItemQuery configItemQuery)
-    {
+    public PageInfo<ConfigItemDto> pageConfigItem(@RequestBody ConfigItemQuery configItemQuery) {
         return configItemService.pageConfigItem(configItemQuery);
     }
 
     @RequestMapping(value = "/batchDelete/{ids}")
-    public Integer enableOrDisable(@PathVariable("ids") String ids)
-    {
+    public Integer enableOrDisable(@PathVariable("ids") String ids) {
         return configItemService.enableOrDisable(ids);
     }
 
     @RequestMapping(value = "/save")
-    public Boolean save(@RequestBody ConfigItemDto configItemDto)
-    {
+    public Boolean save(@RequestBody ConfigItemDto configItemDto) {
         return configItemService.save(configItemDto);
     }
 
     @RequestMapping(value = "/update")
-    public Boolean update(@RequestBody ConfigItemDto configItemDto)
-    {
+    public Boolean update(@RequestBody ConfigItemDto configItemDto) {
         return configItemService.update(configItemDto);
     }
 }

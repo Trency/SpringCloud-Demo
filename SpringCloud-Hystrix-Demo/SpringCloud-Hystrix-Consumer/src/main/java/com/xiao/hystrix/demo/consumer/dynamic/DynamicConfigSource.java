@@ -28,8 +28,7 @@ import java.util.Map;
 @Component
 @ConditionalOnProperty(name = "hystrix.config.application")
 @Slf4j
-public class DynamicConfigSource implements PolledConfigurationSource
-{
+public class DynamicConfigSource implements PolledConfigurationSource {
 
     public static final String HYSTRIX_CONFIG_APPLICATION = "hystrix.config.application";
 
@@ -48,15 +47,14 @@ public class DynamicConfigSource implements PolledConfigurationSource
     /**
      * Poll the configuration source to get the latest content.
      *
-     * @param initial true if this operation is the first poll.
+     * @param initial    true if this operation is the first poll.
      * @param checkPoint Object that is used to determine the starting point if the result returned is incremental.
-     * Null if there is no check point or the caller wishes to get the full content.
+     *                   Null if there is no check point or the caller wishes to get the full content.
      * @return The content of the configuration which may be full or incremental.
-     * @exception Exception If any exception occurs when fetching the configurations.
+     * @throws Exception If any exception occurs when fetching the configurations.
      */
     @Override
-    public PollResult poll(boolean initial, Object checkPoint) throws Exception
-    {
+    public PollResult poll(boolean initial, Object checkPoint) throws Exception {
         // 获取配置
         return PollResult.createFull(getFromConfigCenter());
     }
@@ -68,16 +66,12 @@ public class DynamicConfigSource implements PolledConfigurationSource
      * @return java.util.Map
      * llxiao  2019/8/8 - 8:49
      **/
-    private Map<String, Object> getFromConfigCenter()
-    {
+    private Map<String, Object> getFromConfigCenter() {
         Map<String, Object> complete = new HashMap<>();
         Environment environment = getRemoteEnvironment();
-        if (null != environment)
-        {
-            if (environment.getPropertySources() != null)
-            {
-                for (PropertySource source : environment.getPropertySources())
-                {
+        if (null != environment) {
+            if (environment.getPropertySources() != null) {
+                for (PropertySource source : environment.getPropertySources()) {
                     complete.putAll((Map<String, Object>) source.getSource());
                 }
             }
@@ -85,34 +79,27 @@ public class DynamicConfigSource implements PolledConfigurationSource
         return complete;
     }
 
-    private Environment getRemoteEnvironment()
-    {
+    private Environment getRemoteEnvironment() {
         String path = "/{name}/{profile}";
 
-        Object[] args = new String[] { application, profile };
-        if (StringUtils.hasText(label))
-        {
-            args = new String[] { application, profile, label };
+        Object[] args = new String[]{application, profile};
+        if (StringUtils.hasText(label)) {
+            args = new String[]{application, profile, label};
             path = path + "/{label}";
         }
         ResponseEntity<Environment> response = null;
 
-        try
-        {
+        try {
             HttpHeaders headers = new HttpHeaders();
             final HttpEntity<Void> entity = new HttpEntity<>((Void) null, headers);
             response = restTemplate.exchange(uri + path, HttpMethod.GET, entity, Environment.class, args);
-        }
-        catch (HttpClientErrorException e)
-        {
-            if (e.getStatusCode() != HttpStatus.NOT_FOUND)
-            {
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() != HttpStatus.NOT_FOUND) {
                 throw e;
             }
         }
 
-        if (response == null || response.getStatusCode() != HttpStatus.OK)
-        {
+        if (response == null || response.getStatusCode() != HttpStatus.OK) {
             return null;
         }
         Environment result = response.getBody();

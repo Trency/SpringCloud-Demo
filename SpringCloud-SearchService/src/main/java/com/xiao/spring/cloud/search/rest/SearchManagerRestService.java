@@ -1,8 +1,8 @@
 package com.xiao.spring.cloud.search.rest;
 
-import com.xiao.springcloud.demo.common.logaspect.LogAnnotation;
 import com.xiao.spring.cloud.search.dto.ElasticSearchDoc;
 import com.xiao.spring.cloud.search.service.SearchManangerService;
+import com.xiao.springcloud.demo.common.logaspect.LogAnnotation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/search/manager")
 @Slf4j
-public class SearchManagerRestService
-{
+public class SearchManagerRestService {
     /*
      * 搜索管理服务
      */
@@ -34,14 +33,13 @@ public class SearchManagerRestService
      * [简要描述]:根据id查找doc<br/>
      * [详细描述]:<br/>
      *
-     * @param id 索引ID
+     * @param id    索引ID
      * @param index 索引名称
      * @return 索引文档
      */
     @RequestMapping("/getById")
     @LogAnnotation
-    public ElasticSearchDoc getEsDocById(String id, String index)
-    {
+    public ElasticSearchDoc getEsDocById(String id, String index) {
         return searchManangerService.getEsDocById(id, index);
     }
 
@@ -54,8 +52,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/getAll")
     @LogAnnotation
-    public List<ElasticSearchDoc> getAllDos(String index)
-    {
+    public List<ElasticSearchDoc> getAllDos(String index) {
         return searchManangerService.getAllDos(index);
     }
 
@@ -68,8 +65,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/getByProdNo")
     @LogAnnotation
-    public ElasticSearchDoc getEsDocByDefProdNo(String defProdNo, String index)
-    {
+    public ElasticSearchDoc getEsDocByDefProdNo(String defProdNo, String index) {
         return searchManangerService.getEsDocByDefProdNo(defProdNo, index);
     }
 
@@ -81,8 +77,7 @@ public class SearchManagerRestService
      * @return 商品信息
      */
     @RequestMapping("/getByCommodityNo")
-    public List<ElasticSearchDoc> getEsDocByCommoNo(String commoNo, String index)
-    {
+    public List<ElasticSearchDoc> getEsDocByCommoNo(String commoNo, String index) {
         return searchManangerService.getEsDocByCommoNo(commoNo, index);
     }
 
@@ -95,8 +90,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/addData")
     @LogAnnotation
-    public boolean addData(@RequestBody ElasticSearchDoc doc)
-    {
+    public boolean addData(@RequestBody ElasticSearchDoc doc) {
         return this.searchManangerService.addData(doc);
     }
 
@@ -109,8 +103,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/batchAdd")
     @LogAnnotation
-    public boolean addDatas(@RequestBody List<ElasticSearchDoc> docs)
-    {
+    public boolean addDatas(@RequestBody List<ElasticSearchDoc> docs) {
         return this.searchManangerService.addDatas(docs);
     }
 
@@ -123,8 +116,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/update")
     @LogAnnotation
-    public boolean updateData(ElasticSearchDoc doc)
-    {
+    public boolean updateData(ElasticSearchDoc doc) {
         return this.searchManangerService.updateData(doc);
     }
 
@@ -137,8 +129,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/batchUpdate")
     @LogAnnotation
-    public boolean updateDatas(List<ElasticSearchDoc> docs)
-    {
+    public boolean updateDatas(List<ElasticSearchDoc> docs) {
         return this.searchManangerService.updateDatas(docs);
     }
 
@@ -151,8 +142,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/updateById")
     @LogAnnotation
-    public boolean updateDataById(ElasticSearchDoc doc)
-    {
+    public boolean updateDataById(ElasticSearchDoc doc) {
         return this.searchManangerService.updateDataById(doc);
     }
 
@@ -165,8 +155,7 @@ public class SearchManagerRestService
      */
     @RequestMapping("/batchUpdateStock")
     @LogAnnotation()
-    public boolean updateHasStock(List<ElasticSearchDoc> docs)
-    {
+    public boolean updateHasStock(List<ElasticSearchDoc> docs) {
         return this.searchManangerService.updateHasStock(docs);
     }
 
@@ -174,14 +163,13 @@ public class SearchManagerRestService
      * [简要描述]:根据id单个删除<br/>
      * [详细描述]:<br/>
      *
-     * @param id 索引ID
+     * @param id    索引ID
      * @param index 索引名称
      * @return 删除状态
      */
     @RequestMapping("/deleteById")
     @LogAnnotation
-    public boolean deleteData(String id, String index)
-    {
+    public boolean deleteData(String id, String index) {
         return this.searchManangerService.deleteData(id, index);
     }
 
@@ -193,8 +181,7 @@ public class SearchManagerRestService
      * @return 删除状态
      */
     @RequestMapping("/batchDeleteById")
-    public boolean deleteDatas(List<ElasticSearchDoc> docs)
-    {
+    public boolean deleteDatas(List<ElasticSearchDoc> docs) {
         return this.searchManangerService.deleteDatas(docs);
     }
 
@@ -203,13 +190,12 @@ public class SearchManagerRestService
      * [详细描述]:<br/>
      *
      * @param commoNo 商品编号
-     * @param index 索引名称
+     * @param index   索引名称
      * @return 删除状态
      */
     @RequestMapping("/deleteByCommoNo")
     @LogAnnotation
-    public boolean deleteDataByCommoNo(String commoNo, String index)
-    {
+    public boolean deleteDataByCommoNo(String commoNo, String index) {
         return this.searchManangerService.deleteDatasByCommoNo(commoNo, index);
     }
 }

@@ -20,8 +20,7 @@ import java.util.List;
  * @since Purcotton-Search B01
  */
 @Data
-public class PaginationDo
-{
+public class PaginationDo {
     /**
      * 查询数据结果
      */

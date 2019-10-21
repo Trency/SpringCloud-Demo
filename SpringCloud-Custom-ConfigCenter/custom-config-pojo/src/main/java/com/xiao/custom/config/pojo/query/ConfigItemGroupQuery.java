@@ -12,8 +12,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class ConfigItemGroupQuery extends BaseQuery
-{
+public class ConfigItemGroupQuery extends BaseQuery {
     //组名称
     private String groupName;
 

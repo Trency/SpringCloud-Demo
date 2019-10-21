@@ -12,11 +12,9 @@ import org.springframework.context.annotation.Bean;
  * @since JDK 1.8
  */
 //@Configuration
-public class FeignConfiguration
-{
+public class FeignConfiguration {
     @Bean
-    public ProducerFeignFallBack feignFallBack()
-    {
+    public ProducerFeignFallBack feignFallBack() {
         return new ProducerFeignFallBack();
     }
 }

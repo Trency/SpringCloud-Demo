@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * [简要描述]:
  * [详细描述]:
@@ -19,8 +17,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchShopWeightDto
-{
+public class SearchShopWeightDto {
     // id主键
     private long id;
     // 店铺编码

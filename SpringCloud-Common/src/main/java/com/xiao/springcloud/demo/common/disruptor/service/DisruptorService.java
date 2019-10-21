@@ -10,14 +10,13 @@ import com.xiao.springcloud.demo.common.disruptor.data.BasisData;
  * @version 1.0, 2019/3/25 09:50
  * @since JDK 1.8
  */
-public interface DisruptorService
-{
+public interface DisruptorService {
     /**
      * [简要描述]:异步处理服务<br/>
      * [详细描述]:<br/>
      *
      * @param data : 数据处理
-     * llxiao  2019/3/25 - 9:51
+     *             llxiao  2019/3/25 - 9:51
      **/
     void execute(BasisData data);
 }

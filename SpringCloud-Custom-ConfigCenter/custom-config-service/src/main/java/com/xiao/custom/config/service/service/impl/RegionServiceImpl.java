@@ -23,8 +23,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Service
-public class RegionServiceImpl implements RegionService
-{
+public class RegionServiceImpl implements RegionService {
     @Autowired
     private RegionMapper regionMapper;
 
@@ -36,8 +35,7 @@ public class RegionServiceImpl implements RegionService
      **/
     @Override
     @Transactional
-    public int save(RegionDto regionDto)
-    {
+    public int save(RegionDto regionDto) {
         regionDto.setCreateTime(new Date());
         Region region = regionDtoconvertRegion(regionDto);
 
@@ -52,8 +50,7 @@ public class RegionServiceImpl implements RegionService
      **/
     @Override
     @Transactional
-    public int update(RegionDto regionDto)
-    {
+    public int update(RegionDto regionDto) {
         Region region = regionDtoconvertRegion(regionDto);
         return regionMapper.updateByPrimaryKey(region);
     }
@@ -67,8 +64,7 @@ public class RegionServiceImpl implements RegionService
      **/
     @Override
     @Transactional
-    public int delete(Long id)
-    {
+    public int delete(Long id) {
         return regionMapper.deleteByPrimaryKey(id);
     }
 
@@ -79,8 +75,7 @@ public class RegionServiceImpl implements RegionService
      * @return RegionDto
      **/
     @Override
-    public PageInfo<RegionDto> pageRegion(RegionQuery regionQuery, Integer pageNum, Integer pageSize)
-    {
+    public PageInfo<RegionDto> pageRegion(RegionQuery regionQuery, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<RegionDto> list = regionMapper.pageRegion(regionQuery);
         return new PageInfo<>(list);
@@ -94,8 +89,7 @@ public class RegionServiceImpl implements RegionService
      * mjye  2018/12/21 - 16:58
      **/
     @Override
-    public List<RegionDto> selectRegion()
-    {
+    public List<RegionDto> selectRegion() {
         return regionMapper.selectRegion();
     }
 
@@ -108,8 +102,7 @@ public class RegionServiceImpl implements RegionService
      * mjye  2018/12/25 - 11:09
      **/
     @Override
-    public int batchDelete(String[] idArr)
-    {
+    public int batchDelete(String[] idArr) {
         return regionMapper.batchDelete(idArr);
     }
 
@@ -119,8 +112,7 @@ public class RegionServiceImpl implements RegionService
      *
      * @return Region
      **/
-    public Region regionDtoconvertRegion(RegionDto regionDto)
-    {
+    public Region regionDtoconvertRegion(RegionDto regionDto) {
         Region region = new Region();
         region.setId(regionDto.getId());
         region.setCreateTime(regionDto.getCreateTime());
@@ -140,8 +132,7 @@ public class RegionServiceImpl implements RegionService
      * mjye  2018/12/21 - 16:57
      **/
     @Override
-    public Region selectRegionById(Long id)
-    {
+    public Region selectRegionById(Long id) {
         return regionMapper.selectByPrimaryKey(id);
     }
 

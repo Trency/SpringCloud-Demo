@@ -23,8 +23,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @version 1.0, 2018年2月23日
  * @since Purcotton-Search B01
  */
-public class BatchSaveSearchLogThread implements Runnable
-{
+public class BatchSaveSearchLogThread implements Runnable {
     private static final Log LOG = LogFactory.getLog(BatchSaveSearchLogThread.class);
     /**
      * 搜索日志
@@ -34,19 +33,15 @@ public class BatchSaveSearchLogThread implements Runnable
     private ArrayBlockingQueue<SearchLogDo> queue;
     private int batchSize;
 
-    public BatchSaveSearchLogThread(ArrayBlockingQueue<SearchLogDo> queue, int batchSize)
-    {
+    public BatchSaveSearchLogThread(ArrayBlockingQueue<SearchLogDo> queue, int batchSize) {
         this.queue = queue;
         this.batchSize = batchSize;
     }
 
     @Override
-    public void run()
-    {
-        if (null != queue && !queue.isEmpty())
-        {
-            if (LOG.isInfoEnabled())
-            {
+    public void run() {
+        if (null != queue && !queue.isEmpty()) {
+            if (LOG.isInfoEnabled()) {
                 LOG.info("Batch process search log!..........");
             }
 
@@ -59,37 +54,27 @@ public class BatchSaveSearchLogThread implements Runnable
      * [简要描述]:队里处理日志<br/>
      * [详细描述]:<br/>
      */
-    private void processQueue()
-    {
-        try
-        {
+    private void processQueue() {
+        try {
             List<SearchLogDo> logs = new ArrayList<>(batchSize);
             SearchLogDo log = queue.poll();
-            if (queue.size() <= batchSize)
-            {
-                while (null != log)
-                {
+            if (queue.size() <= batchSize) {
+                while (null != log) {
                     logs.add(log);
                     log = queue.poll();
                 }
-            }
-            else
-            {
+            } else {
                 int i = 0;
-                while (null != log && i < batchSize)
-                {
+                while (null != log && i < batchSize) {
                     logs.add(log);
                     log = queue.poll();
                     i++;
                 }
             }
-            if (null != SEARCH_LOG)
-            {
+            if (null != SEARCH_LOG) {
                 processLog(logs);
             }
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             // 线程内部捕获RuntimeException异常，记录异常日志
             LOG.error(Thread.currentThread().getName() + " RuntimeException", e);
         }
@@ -101,10 +86,8 @@ public class BatchSaveSearchLogThread implements Runnable
      *
      * @param logs 批量日志
      */
-    private void processLog(List<SearchLogDo> logs)
-    {
-        for (SearchLogDo searchLogDo : logs)
-        {
+    private void processLog(List<SearchLogDo> logs) {
+        for (SearchLogDo searchLogDo : logs) {
             SEARCH_LOG.info(searchLogDo);
         }
 

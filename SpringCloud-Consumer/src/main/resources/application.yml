@@ -1,12 +1,12 @@
-server: 
+server:
   port: 1113
-#spring:
-  #application:
-    #name: service-1113
+    #spring:
+    #application:
+  #name: service-1113
 # 开启熔断功能
-feign: 
-   hystrix: 
-      enabled: true
+feign:
+  hystrix:
+    enabled: true
 ### spring 配置
 spring:
   ##  zipkin 链路跟踪配置

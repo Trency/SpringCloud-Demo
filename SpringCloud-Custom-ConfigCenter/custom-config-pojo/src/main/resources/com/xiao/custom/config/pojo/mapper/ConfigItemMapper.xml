@@ -23,8 +23,8 @@
         <result column="item_type" property="itemType" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, item_key, item_value, item_desc, create_time, update_time, status, item_type
-  </sql>
+        id, item_key, item_value, item_desc, create_time, update_time, status, item_type
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -32,18 +32,19 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_config_item
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_config_item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ConfigItem" useGeneratedKeys="true"
             keyColumn="id" keyProperty="id">
-    insert into t_config_item (id, item_key, item_value, 
-      item_desc, create_time, update_time, 
-      status,item_type)
-    values (#{id,jdbcType=BIGINT}, #{itemKey,jdbcType=VARCHAR}, #{itemValue,jdbcType=VARCHAR}, 
-      #{itemDesc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER}, #{itemType,jdbcType=INTEGER})
-  </insert>
+        insert into t_config_item (id, item_key, item_value,
+                                   item_desc, create_time, update_time,
+                                   status, item_type)
+        values (#{id,jdbcType=BIGINT}, #{itemKey,jdbcType=VARCHAR}, #{itemValue,jdbcType=VARCHAR},
+                #{itemDesc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+                #{status,jdbcType=INTEGER}, #{itemType,jdbcType=INTEGER})
+    </insert>
     <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItem">
         insert into t_config_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -127,16 +128,16 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ConfigItem">
-    update t_config_item
-    set item_key = #{itemKey,jdbcType=VARCHAR},
-      item_value = #{itemValue,jdbcType=VARCHAR},
-      item_desc = #{itemDesc,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER},
-      item_type = #{itemType,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update t_config_item
+        set item_key    = #{itemKey,jdbcType=VARCHAR},
+            item_value  = #{itemValue,jdbcType=VARCHAR},
+            item_desc   = #{itemDesc,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status      = #{status,jdbcType=INTEGER},
+            item_type   = #{itemType,jdbcType=INTEGER}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
     <select id="pageConfigItem" resultMap="DtoResultMap">
         select

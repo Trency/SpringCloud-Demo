@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class TableData
-{
+public class TableData {
     /**
      * 主键ID
      */

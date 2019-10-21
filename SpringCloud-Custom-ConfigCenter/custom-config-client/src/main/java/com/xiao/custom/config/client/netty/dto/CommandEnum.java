@@ -8,8 +8,7 @@ package com.xiao.custom.config.client.netty.dto;
  * @version 1.0, 2019/3/30 16:18
  * @since JDK 1.8
  */
-public enum CommandEnum
-{
+public enum CommandEnum {
     /**
      * 心跳
      */
@@ -25,13 +24,11 @@ public enum CommandEnum
 
     int status;
 
-    CommandEnum(int status)
-    {
+    CommandEnum(int status) {
         this.status = status;
     }
 
-    public int getStatus()
-    {
+    public int getStatus() {
         return status;
     }
 }

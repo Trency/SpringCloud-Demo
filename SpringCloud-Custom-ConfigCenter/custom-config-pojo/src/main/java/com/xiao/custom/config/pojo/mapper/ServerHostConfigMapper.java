@@ -7,8 +7,8 @@ import com.xiao.custom.config.pojo.query.ServerHostConfigQuery;
 import java.util.List;
 
 /**
-* Created by Mybatis Generator on 2018/11/23
-*/
+ * Created by Mybatis Generator on 2018/11/23
+ */
 public interface ServerHostConfigMapper {
     int deleteByPrimaryKey(Long id);
 

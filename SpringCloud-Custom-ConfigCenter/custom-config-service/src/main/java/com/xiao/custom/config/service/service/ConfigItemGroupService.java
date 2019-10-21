@@ -13,8 +13,7 @@ import com.xiao.custom.config.pojo.query.ConfigItemGroupQuery;
  * @version 1.0, 2018/11/26 17:51
  * @since JDK 1.8
  */
-public interface ConfigItemGroupService
-{
+public interface ConfigItemGroupService {
     Integer save(ConfigItemGroup configItemGroup);
 
     Integer update(ConfigItemGroup configItemGroup);
@@ -22,7 +21,7 @@ public interface ConfigItemGroupService
     Integer delete(Long id);
 
     PageInfo<ConfigItemGroupDto> pageConfigItemGroup(ConfigItemGroupQuery configItemGroupQuery, Integer pageNum,
-            Integer pageSize);
+                                                     Integer pageSize);
 
     /**
      * [简要描述]:通过id获取<br/>
@@ -45,7 +44,7 @@ public interface ConfigItemGroupService
      * jun.liu  2018/11/28 - 15:02
      **/
     PageInfo<ConfigItemGroupDto> pageRefGroupWithApp(ConfigItemGroupQuery configItemGroupQuery, int pageNum,
-            int pageSize);
+                                                     int pageSize);
 
     /**
      * [简要描述]:获取未绑定该应用的配置组<br/>
@@ -58,7 +57,7 @@ public interface ConfigItemGroupService
      * jun.liu  2018/11/28 - 15:02
      **/
     PageInfo<ConfigItemGroupDto> pageNotRefGroupWithApp(ConfigItemGroupQuery configItemGroupQuery, int pageNum,
-            int pageSize);
+                                                        int pageSize);
 
     /**
      * [简要描述]:批量删除<br/>

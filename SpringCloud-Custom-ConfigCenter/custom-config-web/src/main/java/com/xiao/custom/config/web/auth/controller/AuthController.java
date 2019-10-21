@@ -27,8 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 //@Api(description = "登陆注册及刷新token")
 @RequestMapping("/user/auth")
-public class AuthController
-{
+public class AuthController {
     private static final long ADMIN_TYPE = 1;
 
     @Autowired
@@ -36,8 +35,7 @@ public class AuthController
 
     @PostMapping(value = "/login")
     //@ApiOperation(value = "登陆", notes = "登陆成功返回token,测试管理员账号:admin,123456;用户账号：les123,admin")
-    public ResultJson<ResponseUserToken> login(String loginName, String password, HttpServletResponse response)
-    {
+    public ResultJson<ResponseUserToken> login(String loginName, String password, HttpServletResponse response) {
         final ResponseUserToken result = authService.login(loginName, password);
         response.setHeader(AuthContants.TOKEN_HEADER, AuthContants.TOKEN_BEARER_START + result.getToken());
         return ResultJson.ok(result);
@@ -46,19 +44,16 @@ public class AuthController
     @GetMapping(value = "/logout")
     //@ApiOperation(value = "登出", notes = "退出登陆")
     //    @ApiImplicitParams({@ApiImplicitParam(name = "Authorization", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-    public ResultJson logout(HttpServletRequest request, HttpServletResponse response)
-    {
+    public ResultJson logout(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader(AuthContants.TOKEN_HEADER);
-        if (token == null)
-        {
+        if (token == null) {
             return ResultJson.failure(ResultCode.UNAUTHORIZED);
         }
         authService.logout(token);
 
         //清除session数据
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null)
-        {
+        if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         request.getSession().invalidate();
@@ -68,8 +63,7 @@ public class AuthController
     @GetMapping(value = "/getInfo")
     //@ApiOperation(value = "根据token获取用户信息", notes = "根据token获取用户信息")
     //    @ApiImplicitParams({@ApiImplicitParam(name = "Authorization", value = "Authorization token", required = true, dataType = "string", paramType = "header")})
-    public ResultJson getUser(HttpServletRequest request)
-    {
+    public ResultJson getUser(HttpServletRequest request) {
         String username = (String) request.getAttribute(AuthContants.REQUEST_USER_NAME);
         UserDetail userDetail = authService.getByUsername(username);
         return ResultJson.ok(userDetail);
@@ -77,10 +71,8 @@ public class AuthController
 
     @PostMapping(value = "/sign")
     //@ApiOperation(value = "用户注册")
-    public ResultJson sign(@RequestBody User user)
-    {
-        if (StringUtils.isAnyBlank(user.getName(), user.getPassword()))
-        {
+    public ResultJson sign(@RequestBody User user) {
+        if (StringUtils.isAnyBlank(user.getName(), user.getPassword())) {
             return ResultJson.failure(ResultCode.BAD_REQUEST);
         }
 
@@ -95,16 +87,12 @@ public class AuthController
 
     @GetMapping(value = "/refresh")
     //    @ApiOperation(value = "刷新token")
-    public ResultJson refreshAndGetAuthenticationToken(HttpServletRequest request)
-    {
+    public ResultJson refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String token = request.getHeader(AuthContants.TOKEN_HEADER);
         ResponseUserToken response = authService.refresh(token);
-        if (response == null)
-        {
+        if (response == null) {
             return ResultJson.failure(ResultCode.BAD_REQUEST, "token无效");
-        }
-        else
-        {
+        } else {
             return ResultJson.ok(response);
         }
     }

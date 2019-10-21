@@ -16,8 +16,7 @@ import com.xiao.custom.config.pojo.query.ApplicationConfigQuery;
  * @version 1.0, 2018/11/26 16:47
  * @since JDK 1.8
  */
-public interface ApplicationService
-{
+public interface ApplicationService {
     /**
      * [简要描述]:保存<br/>
      * [详细描述]:<br/>

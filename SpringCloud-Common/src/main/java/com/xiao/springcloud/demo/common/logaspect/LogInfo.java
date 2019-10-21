@@ -16,8 +16,7 @@ import java.sql.Timestamp;
  * @since JDK 1.8
  */
 @Data
-public class LogInfo
-{
+public class LogInfo {
     //失败
     public static final int FAILED = 1;
 
@@ -60,8 +59,7 @@ public class LogInfo
     private String requestUri;
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }

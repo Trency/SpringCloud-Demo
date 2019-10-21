@@ -13,20 +13,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public class Slf4jLogService implements LogService
-{
+public class Slf4jLogService implements LogService {
     /**
      * [简要描述]:debug日志记录<br/>
      * [详细描述]:<br/>
      *
      * @param debugMsg : debug日志
-     * llxiao  2018/9/2 - 16:57
+     *                 llxiao  2018/9/2 - 16:57
      **/
     @Override
-    public void debug(String debugMsg)
-    {
-        if (log.isDebugEnabled())
-        {
+    public void debug(String debugMsg) {
+        if (log.isDebugEnabled()) {
             log.debug(debugMsg);
         }
     }
@@ -36,13 +33,11 @@ public class Slf4jLogService implements LogService
      * [详细描述]:<br/>
      *
      * @param message : 日志信息
-     * llxiao  2018/9/2 - 16:55
+     *                llxiao  2018/9/2 - 16:55
      **/
     @Override
-    public void info(String message)
-    {
-        if (log.isInfoEnabled())
-        {
+    public void info(String message) {
+        if (log.isInfoEnabled()) {
             log.info(message);
         }
     }
@@ -53,8 +48,7 @@ public class Slf4jLogService implements LogService
      * @param message
      */
     @Override
-    public void warn(String message)
-    {
+    public void warn(String message) {
         log.warn(message);
     }
 
@@ -63,12 +57,11 @@ public class Slf4jLogService implements LogService
      * [详细描述]:<br/>
      *
      * @param errorMsg : 错误消息
-     * @param e : 异常
-     * llxiao  2018/9/2 - 16:55
+     * @param e        : 异常
+     *                 llxiao  2018/9/2 - 16:55
      **/
     @Override
-    public void error(String errorMsg, Throwable e)
-    {
+    public void error(String errorMsg, Throwable e) {
         log.error(errorMsg, e);
     }
 }

@@ -26,7 +26,7 @@ public class FeignConfig {
     //        return HystrixFeign.builder().errorDecoder(new CommonFeignErrorDecoder());
     //    }
     @Bean
-    public ErrorDecoder errorDecoder(){
+    public ErrorDecoder errorDecoder() {
         return new CommonFeignErrorDecoder();
     }
 

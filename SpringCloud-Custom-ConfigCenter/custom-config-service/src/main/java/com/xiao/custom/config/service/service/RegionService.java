@@ -15,13 +15,13 @@ import java.util.List;
  * @version 1.0, 2018/11/26 17:22
  * @since JDK 1.8
  */
-public interface RegionService
-{
+public interface RegionService {
     int save(RegionDto regionDto);
 
     int update(RegionDto regionDto);
 
     int delete(Long id);
+
     Region selectRegionById(Long id);
 
     PageInfo<RegionDto> pageRegion(RegionQuery regionQuery, Integer pageNum, Integer pageSize);

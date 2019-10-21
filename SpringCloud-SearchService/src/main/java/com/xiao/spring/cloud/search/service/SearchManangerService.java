@@ -12,16 +12,14 @@ import java.util.List;
  * @version 1.0, 2018/10/8 09:58
  * @since JDK 1.8
  */
-public interface SearchManangerService
-{
+public interface SearchManangerService {
     /**
      * [简要描述]:创建索引和默认mapping<br/>
      * [详细描述]:<br/>
      *
-     * @param index
-     *            : 索引名称
+     * @param index : 索引名称
      * @return true成功
-     *         llxiao 2018/10/17 - 19:47
+     * llxiao 2018/10/17 - 19:47
      **/
     boolean createIndexMapping(String index);
 
@@ -29,10 +27,9 @@ public interface SearchManangerService
      * [简要描述]:索引是否存在<br/>
      * [详细描述]:<br/>
      *
-     * @param index
-     *            : 索引名称
+     * @param index : 索引名称
      * @return boolean
-     *         llxiao 2018/10/18 - 8:35
+     * llxiao 2018/10/18 - 8:35
      **/
     boolean existsIndex(String index);
 
@@ -40,10 +37,9 @@ public interface SearchManangerService
      * [简要描述]:删除索引<br/>
      * [详细描述]:<br/>
      *
-     * @param index
-     *            : 索引名称
+     * @param index : 索引名称
      * @return boolean
-     *         llxiao 2018/10/18 - 8:35
+     * llxiao 2018/10/18 - 8:35
      **/
     boolean deleteIndex(String index);
 
@@ -51,7 +47,7 @@ public interface SearchManangerService
      * [简要描述]:根据id查找doc<br/>
      * [详细描述]:<br/>
      *
-     * @param id 索引ID
+     * @param id    索引ID
      * @param index 索引名称
      * @return 索引文档
      */
@@ -151,7 +147,7 @@ public interface SearchManangerService
      * [简要描述]:根据id单个删除<br/>
      * [详细描述]:<br/>
      *
-     * @param id 索引ID
+     * @param id    索引ID
      * @param index 索引名称
      * @return 删除状态
      */
@@ -171,7 +167,7 @@ public interface SearchManangerService
      * [详细描述]:<br/>
      *
      * @param commoNo 商品编号
-     * @param index 索引名称
+     * @param index   索引名称
      * @return 删除状态
      */
     boolean deleteDatasByCommoNo(String commoNo, String index);

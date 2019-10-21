@@ -12,8 +12,7 @@ import org.quartz.*;
  * @version 1.0, 2018/12/10 11:53
  * @since JDK 1.8
  */
-public class ServiceTaskExecuteJob implements Job
-{
+public class ServiceTaskExecuteJob implements Job {
     /**
      * <p>
      * Called by the <code>{@link Scheduler}</code> when a <code>{@link Trigger}</code>
@@ -31,11 +30,10 @@ public class ServiceTaskExecuteJob implements Job
      * </p>
      *
      * @param context
-     * @exception JobExecutionException if there is an exception while executing the job.
+     * @throws JobExecutionException if there is an exception while executing the job.
      */
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException
-    {
+    public void execute(JobExecutionContext context) throws JobExecutionException {
         TaskConfigDocument task = (TaskConfigDocument) context.getMergedJobDataMap().get(JobManager.JOB_KEY);
         // 具体业务逻辑
     }

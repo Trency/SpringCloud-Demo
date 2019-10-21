@@ -1,8 +1,5 @@
 package com.xiao.custom.config.client.refresh.component;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-
 /**
  * [简要描述]: 注解扫描refresh包下所有的bean<br>
  * [详细描述]: 主要提供刷新配置文件的入口<br>
@@ -14,6 +11,5 @@ import org.springframework.context.annotation.Configuration;
  */
 //@Configuration
 //@ComponentScan
-public class RefreshBeanConfig
-{
+public class RefreshBeanConfig {
 }

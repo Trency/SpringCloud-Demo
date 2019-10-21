@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class ShopPriceRangeDto implements Comparable<ShopPriceRangeDto>
-{
+public class ShopPriceRangeDto implements Comparable<ShopPriceRangeDto> {
     private Long id;
     //店铺编码
     private String shopCode;
@@ -28,8 +27,7 @@ public class ShopPriceRangeDto implements Comparable<ShopPriceRangeDto>
     private String shopName;
 
     @Override
-    public int compareTo(ShopPriceRangeDto o)
-    {
+    public int compareTo(ShopPriceRangeDto o) {
         return Integer.parseInt(this.getFloorPrice()) - Integer.parseInt(this.getFloorPrice());
     }
 }

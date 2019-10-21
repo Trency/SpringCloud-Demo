@@ -10,9 +10,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8888/eureka/
-      #开启健康检查（需要spring-boot-starter-actuator依赖）
-      #healthcheck:
-       #enable: true
+        #开启健康检查（需要spring-boot-starter-actuator依赖）
+        #healthcheck:
+      #enable: true
 feign:
   #请求和响应进行GZIP压缩，以提高通信效率
   compression:
@@ -60,7 +60,7 @@ hystrix:
       maxQueueSize: 1000
       #动态控制线程池队列的上限，即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝，默认值5
       #queueSizeRejectionThreshold: 800
-    #pref-producer-service:
+      #pref-producer-service:
       #coreSize: 50
       #maximumSize: 100
       #keepAliveTimeMinutes: 1
@@ -69,12 +69,12 @@ hystrix:
     ## 默认全局配置
     default:
       fallback:
-        # 是否关闭回退方法
-        #enable: true
-        #isolation:
-          #semaphore:
-            ## 当触发fallback时，并发最大出发fallback的数量，超过该数量直接拒绝服务
-            #maxConcurrentRequests: 1000
+      # 是否关闭回退方法
+      #enable: true
+      #isolation:
+      #semaphore:
+      ## 当触发fallback时，并发最大出发fallback的数量，超过该数量直接拒绝服务
+      #maxConcurrentRequests: 1000
       execution:
         # 断路器
         circuitBreaker:
@@ -91,14 +91,14 @@ hystrix:
           #强制关闭熔断器 如果这个开关打开circuit将一直关闭且忽略circuitBreaker.errorThresholdPercentage
           #forceClosed: false
           #关闭超时熔断功能
-        #timeout:
-         #enable: false
+          #timeout:
+          #enable: false
         isolation:
           # 隔离策略：有THREAD(默认)(单独的线程上执行，并发请求受线程池中的线程数量的限制)和SEMAPHORE(调用线程上执行，并发请求受到信号量计数的限制)
           #strategy: THREAD
           #semaphore:
-            #当触发fallback时，并发最大出发fallback的数量，超过该数量直接拒绝服务，默认10，SEMAPHORE模式有效
-            #maxConcurrentRequests: 10
+          #当触发fallback时，并发最大出发fallback的数量，超过该数量直接拒绝服务，默认10，SEMAPHORE模式有效
+          #maxConcurrentRequests: 10
           thread:
             #设置熔断超时时间，默认1S，容易出现 fallback available 异常
             #在THREAD模式下，达到超时时间，可以中断，在SEMAPHORE模式下，会等待执行完成后，再去判断是否超时
@@ -109,11 +109,11 @@ hystrix:
             #interruptOnTimeout: true
             #当发生取消时，执行是否应该中断，默认值：true,THREAD模式有效
             #interruptOnCancel: true
-    ## 接口级别配置 -- 移到配置中心
-    #ProducerFeign#timeout(String):
-     # execution:
-        #isolation:
-          #thread:
+            ## 接口级别配置 -- 移到配置中心
+            #ProducerFeign#timeout(String):
+            # execution:
+            #isolation:
+            #thread:
             #timeoutInMilliseconds: 5000
 
 

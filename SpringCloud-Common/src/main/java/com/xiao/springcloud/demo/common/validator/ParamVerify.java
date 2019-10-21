@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ParamVerify.java
  * 创建人  :llxiao
  * 创建时间:2017年12月27日
-*/
+ */
 
 package com.xiao.springcloud.demo.common.validator;
 
@@ -23,8 +23,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Retention(RUNTIME)
 @Target(FIELD)
-public @interface ParamVerify
-{
+public @interface ParamVerify {
     /**
      * 检验的正则表达式
      */

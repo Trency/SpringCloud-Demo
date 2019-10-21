@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/config/clientInfo")
 @Slf4j
-public class ClientInfoController
-{
+public class ClientInfoController {
     @Autowired
     private ClientInfoFeign clientInfoFeign;
 
@@ -33,8 +32,7 @@ public class ClientInfoController
      * @return
      */
     @RequestMapping("/page")
-    public PageInfo<ClientHostInfoDto> pageQuery(@RequestBody ClientHostInfoQuery query)
-    {
+    public PageInfo<ClientHostInfoDto> pageQuery(@RequestBody ClientHostInfoQuery query) {
         return clientInfoFeign.pageQuery(query);
     }
 
@@ -47,14 +45,10 @@ public class ClientInfoController
      * llxiao  2019/3/27 - 15:46
      **/
     @RequestMapping("/del")
-    public boolean deleteById(Long id)
-    {
-        if (null != id)
-        {
+    public boolean deleteById(Long id) {
+        if (null != id) {
             return clientInfoFeign.deleteById(id);
-        }
-        else
-        {
+        } else {
             log.error("删除失败，客户端注解ID为空!");
         }
         return false;

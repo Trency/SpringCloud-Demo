@@ -6,8 +6,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * Created by Mybatis Generator on 2019/01/29
  */
-public interface ClientApplicationMapper
-{
+public interface ClientApplicationMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(ClientApplication record);
@@ -25,11 +24,11 @@ public interface ClientApplicationMapper
      * [详细描述]:<br/>
      *
      * @param application :
-     * @param profile :
-     * @param status :
+     * @param profile     :
+     * @param status      :
      * @return void
      * llxiao  2019/1/30 - 16:11
      **/
     void updateStatus(@Param("application") String application, @Param("profile") String profile,
-            @Param("status") int status);
+                      @Param("status") int status);
 }

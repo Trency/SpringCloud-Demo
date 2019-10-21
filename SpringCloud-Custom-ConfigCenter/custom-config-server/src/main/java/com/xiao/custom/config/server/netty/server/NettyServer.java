@@ -35,69 +35,54 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 @Component
 @Slf4j
-public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, DisposableBean
-{
-    /**
-     * 启动状态
-     */
-    private AtomicBoolean started = new AtomicBoolean(false);
-
-    @Value("${netty.server.port}")
-    private int port;
-
-    @Autowired
-    private ClientManagerService clientManagerService;
-
-    @Autowired
-    private ConnectionManager connectionManager;
-
-    private ScheduledExecutorService scheduledExecutorService;
-
-    private ExecutorService simpleExecutor;
-
-    /**
-     * server bootstrap
-     */
-    private ServerBootstrap serverBootstrap;
-
-    /**
-     * channelFuture
-     */
-    private ChannelFuture channelFuture;
-
-    /**
-     * boss event loop group, boss group should not be daemon, need shutdown manually
-     */
-    private final EventLoopGroup bossGroup = NettyEventLoopUtil
-            .newEventLoopGroup(1, new NamedThreadFactory("Winner-netty-server-boss", false));
-
+public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, DisposableBean {
     /**
      * worker event loop group. Reuse I/O worker threads between rpc servers.
      */
     private static final EventLoopGroup workerGroup = NettyEventLoopUtil.newEventLoopGroup(
             Runtime.getRuntime().availableProcessors() * 2, new NamedThreadFactory("Winner-netty-server-worker", true));
 
-    static
-    {
-        if (workerGroup instanceof NioEventLoopGroup)
-        {
+    static {
+        if (workerGroup instanceof NioEventLoopGroup) {
             ((NioEventLoopGroup) workerGroup).setIoRatio(NettyConfig.NETTY_IO_RATIO_DEFAULT);
-        }
-        else if (workerGroup instanceof EpollEventLoopGroup)
-        {
+        } else if (workerGroup instanceof EpollEventLoopGroup) {
             ((EpollEventLoopGroup) workerGroup).setIoRatio(NettyConfig.NETTY_IO_RATIO_DEFAULT);
         }
     }
 
+    /**
+     * boss event loop group, boss group should not be daemon, need shutdown manually
+     */
+    private final EventLoopGroup bossGroup = NettyEventLoopUtil
+            .newEventLoopGroup(1, new NamedThreadFactory("Winner-netty-server-boss", false));
+    /**
+     * 启动状态
+     */
+    private AtomicBoolean started = new AtomicBoolean(false);
+    @Value("${netty.server.port}")
+    private int port;
+    @Autowired
+    private ClientManagerService clientManagerService;
+    @Autowired
+    private ConnectionManager connectionManager;
+    private ScheduledExecutorService scheduledExecutorService;
+    private ExecutorService simpleExecutor;
+    /**
+     * server bootstrap
+     */
+    private ServerBootstrap serverBootstrap;
+    /**
+     * channelFuture
+     */
+    private ChannelFuture channelFuture;
+
     @Override
-    public void destroy() throws Exception
-    {
+    public void destroy() throws Exception {
         stop();
     }
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)
-    {
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         initNetty();
         setHandler();
         start();
@@ -105,23 +90,18 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, 
         scheduledExecutorService.scheduleAtFixedRate(() -> check(), 1, 2, TimeUnit.MINUTES);
     }
 
-    private void check()
-    {
-        if (!started.get())
-        {
+    private void check() {
+        if (!started.get()) {
             log.info(">>> Re start netty server!");
             start();
         }
     }
 
-    private void setHandler()
-    {
+    private void setHandler() {
 
-        serverBootstrap.childHandler(new ChannelInitializer()
-        {
+        serverBootstrap.childHandler(new ChannelInitializer() {
             @Override
-            protected void initChannel(Channel channel) throws Exception
-            {
+            protected void initChannel(Channel channel) throws Exception {
                 ChannelPipeline pipeline = channel.pipeline();
 
                 // 设置心跳，readerIdleTime：读空闲5S发起心跳处理，writerIdleTime：写空闲时间，allIdleTime：所有空闲时间,5S内没有 read动作，触发userEventTriggered动作
@@ -137,24 +117,19 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, 
         });
     }
 
-    private void start()
-    {
+    private void start() {
         log.info(">>>> Netty Server start......");
-        try
-        {
+        try {
             this.channelFuture = this.serverBootstrap.bind(new InetSocketAddress(port)).sync();
             started.set(this.channelFuture.isSuccess());
             log.info(">>>> Netty Server start successfully,Open port: {}", port);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             log.error(">>>> Netty Server start failed!");
             log.error("Error message:", e);
         }
     }
 
-    private void initNetty()
-    {
+    private void initNetty() {
         scheduledExecutorService = new ScheduledThreadPoolExecutor(1, NamedThreadFactory
                 .create("Scheduled check netty server-", true));
         simpleExecutor = Executors.newSingleThreadExecutor(new NamedThreadFactory("Netty server-", true));
@@ -174,11 +149,9 @@ public class NettyServer implements ApplicationListener<ContextRefreshedEvent>, 
                 .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(NettyConfig.NETTY_BUFFER_LOW_WATERMARK_DEFAULT, NettyConfig.NETTY_BUFFER_HIGH_WATERMARK_DEFAULT));
     }
 
-    private void stop()
-    {
+    private void stop() {
         log.warn(">>> Stop Netty server..............");
-        if (started.get())
-        {
+        if (started.get()) {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
         }

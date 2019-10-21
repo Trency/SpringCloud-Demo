@@ -15,20 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-public class ProducerRestService
-{
+public class ProducerRestService {
     @Autowired
     private ProducerService producerService;
 
     @RequestMapping("/timeout")
-    public String timeout(String input)
-    {
+    public String timeout(String input) {
         return this.producerService.timeout(input);
     }
 
     @RequestMapping("/normal")
-    public String normal(String input)
-    {
+    public String normal(String input) {
         return this.producerService.normal(input);
     }
 }

@@ -10,8 +10,7 @@ import com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation;
  * @version 1.0, 2018/11/27 09:41
  * @since JDK 1.8
  */
-public interface ConfigItemGroupRelationService
-{
+public interface ConfigItemGroupRelationService {
     Integer save(ConfigItemGroupRelation configItemGroupRelation);
 
     Integer update(ConfigItemGroupRelation configItemGroupRelation);

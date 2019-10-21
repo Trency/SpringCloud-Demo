@@ -24,10 +24,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 //开启springboot-cache
 @EnableCaching
-public class ProviderApp
-{
-    public static void main(String[] args)
-    {
+public class ProviderApp {
+    public static void main(String[] args) {
         SpringApplication.run(ProviderApp.class, args);
     }
 }

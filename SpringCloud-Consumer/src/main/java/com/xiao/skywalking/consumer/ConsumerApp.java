@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ConsumerApp.java
  * 创建人  :llxiao
  * 创建时间:2018年3月30日
-*/
+ */
 
 package com.xiao.skywalking.consumer;
 
@@ -30,25 +30,22 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 // 开启熔断功能
 @EnableCircuitBreaker
-public class ConsumerApp
-{
+public class ConsumerApp {
+    public static void main(String[] args) {
+        SpringApplication.run(ConsumerApp.class, args);
+    }
+
     /**
      * 实例化RestTemplate使用@LoadBalanced开启负载均衡
      * [简要描述]:<br/>
      * [详细描述]:<br/>
-     * 
-     * @author llxiao
+     *
      * @return
+     * @author llxiao
      */
     @Bean
     @LoadBalanced
-    public RestTemplate resTemplate()
-    {
+    public RestTemplate resTemplate() {
         return new RestTemplate();
-    }
-
-    public static void main(String[] args)
-    {
-        SpringApplication.run(ConsumerApp.class, args);
     }
 }

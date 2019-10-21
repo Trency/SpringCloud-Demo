@@ -13,6 +13,5 @@ import org.springframework.context.annotation.Configuration;
  */
 @ServletComponentScan(basePackages = "com.purcotton.pref.consumer.filter")
 @Configuration
-public class HystrixCacheConfiguration
-{
+public class HystrixCacheConfiguration {
 }

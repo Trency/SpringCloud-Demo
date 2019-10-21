@@ -25,11 +25,9 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableCaching
 @Slf4j
-public class CaffeineCacheConfiguration
-{
+public class CaffeineCacheConfiguration {
     @Bean
-    public CacheManager cacheManager()
-    {
+    public CacheManager cacheManager() {
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
         Caffeine caffeine = Caffeine.newBuilder()
                 //cache的初始容量值
@@ -44,8 +42,7 @@ public class CaffeineCacheConfiguration
         return caffeineCacheManager;
     }
 
-    private Collection<String> getNames()
-    {
+    private Collection<String> getNames() {
         List<String> names = new ArrayList<>(2);
         names.add(CacheConstants.BIZ_DATA_CACHE);
         names.add(CacheConstants.CFG_DATA_CACHE);

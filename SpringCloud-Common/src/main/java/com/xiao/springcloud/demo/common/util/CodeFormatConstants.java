@@ -15,8 +15,7 @@ package com.xiao.springcloud.demo.common.util;
  * @version 1.0, 2017年2月21日
  * @since smile V100R001C00
  */
-public interface CodeFormatConstants
-{
+public interface CodeFormatConstants {
     /**
      * GBK编码方式
      */

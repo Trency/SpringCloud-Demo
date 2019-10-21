@@ -255,8 +255,7 @@
                 App.removeData("relationData");
                 this.findApi();
                 this.findPrivateConf();
-            }
-            else {
+            } else {
                 App.closeCurrentTagNav();
             }
         },

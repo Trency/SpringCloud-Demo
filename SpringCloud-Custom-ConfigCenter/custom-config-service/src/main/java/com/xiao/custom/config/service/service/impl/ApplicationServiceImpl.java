@@ -32,8 +32,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ApplicationServiceImpl implements ApplicationService
-{
+public class ApplicationServiceImpl implements ApplicationService {
     /**
      * 刷新配置接口常量
      */
@@ -64,11 +63,9 @@ public class ApplicationServiceImpl implements ApplicationService
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer save(Application applicationConfig, String[] groupIdArr)
-    {
+    public Integer save(Application applicationConfig, String[] groupIdArr) {
         int a = applicationMapper.insert(applicationConfig);
-        if (groupIdArr != null && groupIdArr.length > 0 && a > 0)
-        {
+        if (groupIdArr != null && groupIdArr.length > 0 && a > 0) {
             Long appId = applicationConfig.getId();
             return applicationItemGroupRelationMapper.batchSave(groupIdArr, appId);
         }
@@ -77,18 +74,15 @@ public class ApplicationServiceImpl implements ApplicationService
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer update(Application applicationConfig)
-    {
+    public Integer update(Application applicationConfig) {
         return applicationMapper.updateByPrimaryKey(applicationConfig);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Integer delete(Long id)
-    {
+    public Integer delete(Long id) {
         int delFlag = applicationMapper.deleteByPrimaryKey(id);
-        if (delFlag > 0)
-        {
+        if (delFlag > 0) {
             //删除关联应用的配置组信息
             applicationItemGroupRelationMapper.deleteByAppId(id);
         }
@@ -96,15 +90,13 @@ public class ApplicationServiceImpl implements ApplicationService
     }
 
     @Override
-    public PageInfo<ApplicationDto> pageApplicationConfig(AppQuery appQuery, Integer pageNum, Integer pageSize)
-    {
+    public PageInfo<ApplicationDto> pageApplicationConfig(AppQuery appQuery, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(applicationMapper.pageApplicationConfig(appQuery));
     }
 
     @Override
-    public Application selectApplicationConfigById(Long id)
-    {
+    public Application selectApplicationConfigById(Long id) {
         return applicationMapper.selectByPrimaryKey(id);
     }
 
@@ -117,12 +109,10 @@ public class ApplicationServiceImpl implements ApplicationService
      * llxiao  2019/1/7 - 15:27
      **/
     @Override
-    public PageInfo<ApplicationConfigDto> pageQuery(ApplicationConfigQuery query)
-    {
+    public PageInfo<ApplicationConfigDto> pageQuery(ApplicationConfigQuery query) {
         PageHelper.startPage(query.getPageNum(), query.getPageSize());
         List<ApplicationConfigDto> applicationConfigDtos = new ArrayList<>();
-        if (null != query && null != query.getApplicationId())
-        {
+        if (null != query && null != query.getApplicationId()) {
             applicationConfigDtos = applicationConfigMapper.pageQuery(query);
         }
         return new PageInfo<>(applicationConfigDtos);
@@ -138,11 +128,9 @@ public class ApplicationServiceImpl implements ApplicationService
      **/
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveApplicationConfig(ApplicationConfig applicationConfig)
-    {
+    public boolean saveApplicationConfig(ApplicationConfig applicationConfig) {
         int flag = 0;
-        if (null != applicationConfig)
-        {
+        if (null != applicationConfig) {
             flag = this.applicationConfigMapper.insert(applicationConfig);
         }
         return flag > 0;
@@ -158,11 +146,9 @@ public class ApplicationServiceImpl implements ApplicationService
      **/
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean updateApplicationConfig(ApplicationConfig applicationConfig)
-    {
+    public boolean updateApplicationConfig(ApplicationConfig applicationConfig) {
         int flag = 0;
-        if (null != applicationConfig && null != applicationConfig.getId())
-        {
+        if (null != applicationConfig && null != applicationConfig.getId()) {
             flag = this.applicationConfigMapper.updateByPrimaryKeySelective(applicationConfig);
         }
         return flag > 0;
@@ -177,10 +163,8 @@ public class ApplicationServiceImpl implements ApplicationService
      * llxiao  2019/1/8 - 9:21
      **/
     @Override
-    public boolean delPrivateConfig(Long id)
-    {
-        if (null != id)
-        {
+    public boolean delPrivateConfig(Long id) {
+        if (null != id) {
             return this.applicationConfigMapper.deleteByPrimaryKey(id) > 0;
         }
         return false;
@@ -195,21 +179,16 @@ public class ApplicationServiceImpl implements ApplicationService
      * llxiao  2019/1/30 - 10:53
      **/
     @Override
-    public boolean refresh(Long id)
-    {
+    public boolean refresh(Long id) {
         Application application = this.applicationMapper.selectByPrimaryKey(id);
-        if (null != application)
-        {
+        if (null != application) {
             //应用+环境查找 已连接上的应用
             List<ClientHostInfo> hostInfos = clientHostInfoMapper
                     .queryByApplication(application.getApplication(), application.getProfile());
             int size = 0;
-            if (CollectionUtil.isNotEmpty(hostInfos))
-            {
-                for (ClientHostInfo hostInfo : hostInfos)
-                {
-                    if (refreshFeign.refresh(hostInfo.getNettyIp(), hostInfo.getNettyPort()))
-                    {
+            if (CollectionUtil.isNotEmpty(hostInfos)) {
+                for (ClientHostInfo hostInfo : hostInfos) {
+                    if (refreshFeign.refresh(hostInfo.getNettyIp(), hostInfo.getNettyPort())) {
                         size++;
                     }
                     //                    if (restRefresh(hostInfo))
@@ -219,8 +198,7 @@ public class ApplicationServiceImpl implements ApplicationService
                 }
 
                 //所有更新服务失败，需要标记应用下线
-                if (size == 0)
-                {
+                if (size == 0) {
                     clientApplicationMapper
                             .updateStatus(application.getApplication(), application.getProfile(), SERVICE_DOWN);
                 }
@@ -240,20 +218,15 @@ public class ApplicationServiceImpl implements ApplicationService
      * llxiao  2019/3/27 - 14:06
      **/
     @Override
-    public boolean batchRefresh(Long... hostInfoIds)
-    {
+    public boolean batchRefresh(Long... hostInfoIds) {
         int size = 0;
-        if (null != hostInfoIds)
-        {
+        if (null != hostInfoIds) {
             ClientHostInfo hostInfo;
-            for (Long hostInfoId : hostInfoIds)
-            {
+            for (Long hostInfoId : hostInfoIds) {
                 hostInfo = this.clientHostInfoMapper.selectByPrimaryKey(hostInfoId);
                 //在线状态
-                if (null != hostInfo && hostInfo.getStatus() == ClientHostInfo.ONLINE)
-                {
-                    if (refreshFeign.refresh(hostInfo.getNettyIp(), hostInfo.getNettyPort()))
-                    {
+                if (null != hostInfo && hostInfo.getStatus() == ClientHostInfo.ONLINE) {
+                    if (refreshFeign.refresh(hostInfo.getNettyIp(), hostInfo.getNettyPort())) {
                         size++;
                     }
                     //                    if (restRefresh(hostInfo))

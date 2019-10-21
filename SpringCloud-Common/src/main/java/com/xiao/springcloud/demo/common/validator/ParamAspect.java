@@ -16,27 +16,23 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class ParamAspect
-{
+public class ParamAspect {
     /**
      * [简要描述]:定义一个annotation切入点<br/>
      * [详细描述]:切入点<br/>
      * llxiao  2018/9/2 - 17:02
      **/
     @Pointcut("@annotation(com.purcotton.omni.common.annotation.param.aop.Validator)")
-    public void paramValidator()
-    {
+    public void paramValidator() {
 
     }
 
     // around 切面强化
     @Around("paramValidator()")
-    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable
-    {
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         //获取方法参数
         Object[] args = joinPoint.getArgs();
-        for (Object arg : args)
-        {
+        for (Object arg : args) {
             ParamValidator.validator(arg);
         }
         return joinPoint.proceed(args);

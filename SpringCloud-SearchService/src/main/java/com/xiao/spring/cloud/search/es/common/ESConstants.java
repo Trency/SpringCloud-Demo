@@ -15,8 +15,7 @@ package com.xiao.spring.cloud.search.es.common;
  * @version 1.0, 2018年1月11日
  * @since Purcotton-Search B01
  */
-public interface ESConstants
-{
+public interface ESConstants {
 
     /**
      * 集群配置名称
@@ -109,7 +108,7 @@ public interface ESConstants
      * 商品品牌
      */
     String ES_BRAND_NO = "brandNo";
-    String ES_BRAND_NAME="brandName";
+    String ES_BRAND_NAME = "brandName";
 
     /**
      * 商品（SPU）编码
@@ -129,7 +128,7 @@ public interface ESConstants
     /**
      * 运营分类各层级名称
      */
-    String ES_OPRT_CAT_NAME="oprtCatName";
+    String ES_OPRT_CAT_NAME = "oprtCatName";
 
     /**
      * 商品标签

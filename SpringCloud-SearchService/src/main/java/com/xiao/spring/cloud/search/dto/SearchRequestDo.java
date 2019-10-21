@@ -20,8 +20,7 @@ import java.util.List;
  * @since Purcotton-Search B01
  */
 @Data
-public class SearchRequestDo
-{
+public class SearchRequestDo {
     /**
      * 关键字
      */

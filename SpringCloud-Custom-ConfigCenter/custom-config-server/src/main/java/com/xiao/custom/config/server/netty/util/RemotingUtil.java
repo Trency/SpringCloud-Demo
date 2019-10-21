@@ -27,8 +27,7 @@ import java.net.*;
  * @author jiangping
  * @version $Id: RemotingUtil.java, v 0.1 Mar 30, 2016 11:51:02 AM jiangping Exp $
  */
-public class RemotingUtil
-{
+public class RemotingUtil {
 
     /**
      * Parse the remote address of the channel.
@@ -36,10 +35,8 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseRemoteAddress(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseRemoteAddress(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final SocketAddress remote = channel.remoteAddress();
@@ -52,10 +49,8 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseLocalAddress(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseLocalAddress(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final SocketAddress local = channel.localAddress();
@@ -68,15 +63,12 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseRemoteIP(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseRemoteIP(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
-        if (remote != null)
-        {
+        if (remote != null) {
             return remote.getAddress().getHostAddress();
         }
         return StringUtils.EMPTY;
@@ -90,15 +82,12 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseRemoteHostName(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseRemoteHostName(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
-        if (remote != null)
-        {
+        if (remote != null) {
             return remote.getAddress().getHostName();
         }
         return StringUtils.EMPTY;
@@ -110,15 +99,12 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseLocalIP(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseLocalIP(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final InetSocketAddress local = (InetSocketAddress) channel.localAddress();
-        if (local != null)
-        {
+        if (local != null) {
             return local.getAddress().getHostAddress();
         }
         return StringUtils.EMPTY;
@@ -130,15 +116,12 @@ public class RemotingUtil
      * @param channel
      * @return int
      */
-    public static int parseRemotePort(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static int parseRemotePort(final Channel channel) {
+        if (null == channel) {
             return -1;
         }
         final InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
-        if (remote != null)
-        {
+        if (remote != null) {
             return remote.getPort();
         }
         return -1;
@@ -150,15 +133,12 @@ public class RemotingUtil
      * @param channel
      * @return int
      */
-    public static int parseLocalPort(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static int parseLocalPort(final Channel channel) {
+        if (null == channel) {
             return -1;
         }
         final InetSocketAddress local = (InetSocketAddress) channel.localAddress();
-        if (local != null)
-        {
+        if (local != null) {
             return local.getPort();
         }
         return -1;
@@ -173,10 +153,8 @@ public class RemotingUtil
      * @param socketAddress
      * @return String
      */
-    public static String parseSocketAddressToString(SocketAddress socketAddress)
-    {
-        if (socketAddress != null)
-        {
+    public static String parseSocketAddressToString(SocketAddress socketAddress) {
+        if (socketAddress != null) {
             return doParse(socketAddress.toString().trim());
         }
         return StringUtils.EMPTY;
@@ -190,14 +168,11 @@ public class RemotingUtil
      * @param socketAddress
      * @return String
      */
-    public static String parseSocketAddressToHostIp(SocketAddress socketAddress)
-    {
+    public static String parseSocketAddressToHostIp(SocketAddress socketAddress) {
         final InetSocketAddress addrs = (InetSocketAddress) socketAddress;
-        if (addrs != null)
-        {
+        if (addrs != null) {
             InetAddress addr = addrs.getAddress();
-            if (null != addr)
-            {
+            if (null != addr) {
                 return addr.getHostAddress();
             }
         }
@@ -210,16 +185,12 @@ public class RemotingUtil
      * @param url
      * @return
      */
-    public static String getHost(String url)
-    {
+    public static String getHost(String url) {
         String host = "";
-        try
-        {
+        try {
             URL u = new URL(url);
             host = u.getHost();
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
 
         }
         return host;
@@ -234,23 +205,16 @@ public class RemotingUtil
      * @param addr
      * @return
      */
-    private static String doParse(String addr)
-    {
-        if (StringUtils.isBlank(addr))
-        {
+    private static String doParse(String addr) {
+        if (StringUtils.isBlank(addr)) {
             return StringUtils.EMPTY;
         }
-        if (addr.charAt(0) == '/')
-        {
+        if (addr.charAt(0) == '/') {
             return addr.substring(1);
-        }
-        else
-        {
+        } else {
             int len = addr.length();
-            for (int i = 1; i < len; ++i)
-            {
-                if (addr.charAt(i) == '/')
-                {
+            for (int i = 1; i < len; ++i) {
+                if (addr.charAt(i) == '/') {
                     return addr.substring(i + 1);
                 }
             }

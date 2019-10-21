@@ -13,8 +13,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Data
-public class ClientInfo
-{
+public class ClientInfo {
     private String applicationName;
     private List<ClientHostInfo> hostInofs;
 }

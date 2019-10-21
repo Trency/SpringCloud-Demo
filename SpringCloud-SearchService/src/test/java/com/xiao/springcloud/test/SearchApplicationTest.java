@@ -39,8 +39,7 @@ import java.util.Map;
 // 全局 api测试
 @SpringBootTest(classes = SearchApplication.class)
 @WebAppConfiguration
-public class SearchApplicationTest
-{
+public class SearchApplicationTest {
     protected MockMvc mockMvc;
 
     // 是否打印请求信息
@@ -51,8 +50,7 @@ public class SearchApplicationTest
     private WebApplicationContext context;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         // 全局api测试
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -63,47 +61,40 @@ public class SearchApplicationTest
      * [简要描述]:post请求<br/>
      * [详细描述]:KV和JSON参数二者都存在是优先取KV参数<br/>
      *
-     * @param url : 请求地址
-     * @param params :  请求参数 KV
+     * @param url        : 请求地址
+     * @param params     :  请求参数 KV
      * @param jsonParams :  请求JSON参数
      * @return org.springframework.test.web.servlet.ResultActions
      * llxiao  2018/10/9 - 16:44
      **/
-    protected ResultActions testBasePostApi(String url, Map<String, String> params, String jsonParams) throws Exception
-    {
+    protected ResultActions testBasePostApi(String url, Map<String, String> params, String jsonParams) throws Exception {
         //构建请求
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(url);
 
-        if (MapUtils.isNotEmpty(params))
-        {
+        if (MapUtils.isNotEmpty(params)) {
             // 参数请求
             MultiValueMap<String, String> paramMap = new LinkedMultiValueMap();
             Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             Map.Entry<String, String> entry;
-            while (iterator.hasNext())
-            {
+            while (iterator.hasNext()) {
                 entry = iterator.next();
                 paramMap.add(entry.getKey(), entry.getValue());
             }
             request.params(paramMap);
-        }
-        else if (StringUtils.isNotBlank(jsonParams))
-        {
+        } else if (StringUtils.isNotBlank(jsonParams)) {
             request.contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonParams)
                     .accept(MediaType.APPLICATION_JSON_UTF8);
         }
 
         // 发起http请求
         ResultActions actions = mockMvc.perform(request);
-        if (isPrint)
-        {
+        if (isPrint) {
             // 打印出request和response的详细信息，便于调试。
             actions.andDo(MockMvcResultHandlers.print());
         }
         // 期望返回 200
         actions.andExpect(MockMvcResultMatchers.status().isOk());
-        if (MapUtils.isEmpty(params) && StringUtils.isNotBlank(jsonParams))
-        {
+        if (MapUtils.isEmpty(params) && StringUtils.isNotBlank(jsonParams)) {
             // JSON返回处理
             actions.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
         }

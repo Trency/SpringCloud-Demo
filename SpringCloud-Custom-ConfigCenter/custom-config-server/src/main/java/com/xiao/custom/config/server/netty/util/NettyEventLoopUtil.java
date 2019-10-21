@@ -33,8 +33,7 @@ import java.util.concurrent.ThreadFactory;
  * @author YANGLiiN
  * @version $Id: NettyEventLoopUtil.java, v 1.5 2018-05-28 14:07 YANGLiiN $
  */
-public class NettyEventLoopUtil
-{
+public class NettyEventLoopUtil {
 
     /**
      * check whether epoll enabled, and it would not be changed during runtime.
@@ -48,8 +47,7 @@ public class NettyEventLoopUtil
      * @param threadFactory
      * @return an EventLoopGroup suitable for the current platform
      */
-    public static EventLoopGroup newEventLoopGroup(int nThreads, ThreadFactory threadFactory)
-    {
+    public static EventLoopGroup newEventLoopGroup(int nThreads, ThreadFactory threadFactory) {
         return epollEnabled ?
                 new EpollEventLoopGroup(nThreads, threadFactory) :
                 new NioEventLoopGroup(nThreads, threadFactory);
@@ -58,16 +56,14 @@ public class NettyEventLoopUtil
     /**
      * @return a SocketChannel class suitable for the given EventLoopGroup implementation
      */
-    public static Class<? extends SocketChannel> getClientSocketChannelClass()
-    {
+    public static Class<? extends SocketChannel> getClientSocketChannelClass() {
         return epollEnabled ? EpollSocketChannel.class : NioSocketChannel.class;
     }
 
     /**
      * @return a ServerSocketChannel class suitable for the given EventLoopGroup implementation
      */
-    public static Class<? extends ServerSocketChannel> getServerSocketChannelClass()
-    {
+    public static Class<? extends ServerSocketChannel> getServerSocketChannelClass() {
         return epollEnabled ? EpollServerSocketChannel.class : NioServerSocketChannel.class;
     }
 
@@ -77,10 +73,8 @@ public class NettyEventLoopUtil
      *
      * @param serverBootstrap server bootstrap
      */
-    public static void enableTriggeredMode(ServerBootstrap serverBootstrap)
-    {
-        if (epollEnabled)
-        {
+    public static void enableTriggeredMode(ServerBootstrap serverBootstrap) {
+        if (epollEnabled) {
             serverBootstrap.childOption(EpollChannelOption.EPOLL_MODE, EpollMode.EDGE_TRIGGERED);
         }
     }

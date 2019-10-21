@@ -22,8 +22,7 @@ import java.util.*;
  */
 @Slf4j
 @Service
-public class JdbcRepositoryServiceImpl implements RepositoryService
-{
+public class JdbcRepositoryServiceImpl implements RepositoryService {
     //区域查询
     private static final String REGION_SQL = "select region_id from t_server_host_config h where h.server_host = ?";
 
@@ -51,8 +50,7 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
     private ResultSetExtractor<List<Long>> tResultSetExtractor = rs ->
     {
         List<Long> itemGroups = new ArrayList<>();
-        while (rs.next())
-        {
+        while (rs.next()) {
             itemGroups.add(rs.getLong(1));
         }
         return itemGroups;
@@ -62,8 +60,7 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
     private ResultSetExtractor<Map<String, Object>> sourceExtractor = rs ->
     {
         Map<String, Object> map = new LinkedHashMap<>();
-        while (rs.next())
-        {
+        while (rs.next()) {
             map.put(rs.getString(1), rs.getObject(2));
         }
         return map;
@@ -73,32 +70,27 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
      * [简要描述]:<br/>
      * [详细描述]:<br/>
      *
-     * @param ip : 服务IP
+     * @param ip          : 服务IP
      * @param application : 应用名称
-     * @param label : 标签默认master
-     * @param profile : 环境
+     * @param label       : 标签默认master
+     * @param profile     : 环境
      * @return java.util.Map
      * llxiao  2018/11/23 - 8:38
      **/
     @Override
-    public Map<String, Object> getPropertySource(String ip, String application, String label, String profile)
-    {
-        if (log.isDebugEnabled())
-        {
+    public Map<String, Object> getPropertySource(String ip, String application, String label, String profile) {
+        if (log.isDebugEnabled()) {
             log.debug("Query config properties for Jdbc!");
             log.debug("[ip:{},application:{},label:{},profile:{}]", ip, application, label, profile);
         }
         Map<String, Object> map = new HashMap<>();
         // 公共配置项
         List<Long> itemGroupIds = queryIds(ITEM_GROUP_SQL, ip, application, label, profile);
-        if (!CollectionUtils.isEmpty(itemGroupIds))
-        {
+        if (!CollectionUtils.isEmpty(itemGroupIds)) {
             List<Long> itemIds = queryItemsForGroups(itemGroupIds);
-            if (!CollectionUtils.isEmpty(itemIds))
-            {
+            if (!CollectionUtils.isEmpty(itemIds)) {
                 map = queryItems(itemIds);
-                if (log.isDebugEnabled())
-                {
+                if (log.isDebugEnabled()) {
                     log.debug("Found public properties:{}", map);
                 }
             }
@@ -106,11 +98,9 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
 
         //私有配置项
         Map<String, Object> privateItems = queryPrivateItems(ip, application, label, profile);
-        if (CollectionUtil.isNotEmpty(privateItems))
-        {
+        if (CollectionUtil.isNotEmpty(privateItems)) {
             map.putAll(privateItems);
-            if (log.isDebugEnabled())
-            {
+            if (log.isDebugEnabled()) {
                 log.debug("Found private properties:{}", privateItems);
             }
         }
@@ -118,8 +108,7 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
     }
 
     //获取资源集合
-    private Map<String, Object> queryItems(List<Long> itemIds)
-    {
+    private Map<String, Object> queryItems(List<Long> itemIds) {
         NamedParameterJdbcTemplate itemsTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
         Map<String, List<Long>> stringMap = new HashMap<>();
         stringMap.put("ids", itemIds);
@@ -127,12 +116,10 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
     }
 
     //查询私有属性
-    private Map<String, Object> queryPrivateItems(String ip, String application, String label, String profile)
-    {
+    private Map<String, Object> queryPrivateItems(String ip, String application, String label, String profile) {
         Map<String, Object> privateItems = new HashMap<>();
         List<Long> appIds = queryIds(QUERY_APPLICATION_ID, ip, application, label, profile);
-        if (CollectionUtil.isNotEmpty(appIds) && appIds.size() == 1)
-        {
+        if (CollectionUtil.isNotEmpty(appIds) && appIds.size() == 1) {
             NamedParameterJdbcTemplate itemsTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
             Map<String, Long> params = new HashMap<>();
             params.put("appId", appIds.get(0));
@@ -142,8 +129,7 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
     }
 
     // 获取所有的Item 的ID集合
-    private List<Long> queryItemsForGroups(List<Long> itemGroupIds)
-    {
+    private List<Long> queryItemsForGroups(List<Long> itemGroupIds) {
         NamedParameterJdbcTemplate itemIdsTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
         Map<String, List<Long>> stringMap = new HashMap<>();
         stringMap.put("ids", itemGroupIds);
@@ -151,8 +137,7 @@ public class JdbcRepositoryServiceImpl implements RepositoryService
     }
 
     //获取对应的配置项组列表
-    private List<Long> queryIds(String sql, String ip, String application, String label, String profile)
-    {
-        return jdbcTemplate.query(sql, new Object[] { ip, application, label, profile }, tResultSetExtractor);
+    private List<Long> queryIds(String sql, String ip, String application, String label, String profile) {
+        return jdbcTemplate.query(sql, new Object[]{ip, application, label, profile}, tResultSetExtractor);
     }
 }

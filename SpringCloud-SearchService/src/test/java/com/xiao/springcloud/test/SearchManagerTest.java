@@ -1,6 +1,5 @@
 package com.xiao.springcloud.test;
 
-import com.xiao.spring.cloud.search.dto.ElasticSearchDoc;
 import com.xiao.spring.cloud.search.es.client.ElasticSearchClient;
 import com.xiao.spring.cloud.search.service.SearchManangerService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -29,8 +28,7 @@ import java.util.Map;
  * @version 1.0, 2018/10/9 11:07
  * @since JDK 1.8
  */
-public class SearchManagerTest extends SearchApplicationTest
-{
+public class SearchManagerTest extends SearchApplicationTest {
     @Autowired
     private SearchManangerService searchManangerService;
 
@@ -38,8 +36,7 @@ public class SearchManagerTest extends SearchApplicationTest
     private ElasticSearchClient esClient;
 
     @Test
-    public void testGetByCommoNo() throws Exception
-    {
+    public void testGetByCommoNo() throws Exception {
         this.isPrint = true;
         String url = "/search/manager/getById";
         Map<String, String> params = new HashMap<>(1);
@@ -53,8 +50,7 @@ public class SearchManagerTest extends SearchApplicationTest
     }
 
     @Test
-    public void testDel()
-    {
+    public void testDel() {
         searchManangerService.deleteData("50101001", "10000");
         searchManangerService.deleteData("50101002", "10000");
         searchManangerService.deleteData("50101003", "10000");
@@ -68,8 +64,7 @@ public class SearchManagerTest extends SearchApplicationTest
      * llxiao  2019/1/31 - 15:44
      **/
     @Test
-    public void testFilterQuery()
-    {
+    public void testFilterQuery() {
         String searchContent = "IPhone";
         TransportClient client = esClient.getTransportClient();
         String index = "10000";
@@ -112,8 +107,7 @@ public class SearchManagerTest extends SearchApplicationTest
         SearchResponse response = searchBuilder.execute().actionGet();
         SearchHits hits = response.getHits();
         String searchSource;
-        for (SearchHit hit : hits)
-        {
+        for (SearchHit hit : hits) {
             searchSource = hit.getSourceAsString();
             System.out.println(searchSource);
         }

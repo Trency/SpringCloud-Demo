@@ -12,17 +12,14 @@ import org.springframework.stereotype.Component;
  * @since JDK 1.8
  */
 @Component
-public class ProducerFeignFallBack implements ProducerFeign
-{
+public class ProducerFeignFallBack implements ProducerFeign {
     @Override
-    public String timeout(String input)
-    {
+    public String timeout(String input) {
         return "Time out fall back!  " + input;
     }
 
     @Override
-    public String normal(String input)
-    {
+    public String normal(String input) {
         return "Normal fall back!  " + input;
     }
 }

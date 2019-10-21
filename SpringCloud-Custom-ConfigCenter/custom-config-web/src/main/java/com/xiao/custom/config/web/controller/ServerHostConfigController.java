@@ -22,37 +22,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/serverHostConfig")
 @Slf4j
-public class ServerHostConfigController
-{
+public class ServerHostConfigController {
     @Autowired
     private ServerHostConfigFeign serverHostConfigFeign;
 
     //查询服务器配置信息
     @RequestMapping(value = "/page")
-    public PageInfo<ServerHostConfigDto> pageConfigItem(@RequestBody ServerHostConfigQuery serverHostConfigQuery)
-    {
+    public PageInfo<ServerHostConfigDto> pageConfigItem(@RequestBody ServerHostConfigQuery serverHostConfigQuery) {
         return serverHostConfigFeign.pageServerHostConfig(serverHostConfigQuery);
     }
 
     //更改服务器配置信息
     @RequestMapping(value = "/updateServerHostConfig")
-    public Boolean updateServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto)
-    {
+    public Boolean updateServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto) {
 
         return serverHostConfigFeign.updateServerHostConfig(serverHostConfigDto);
     }
 
     //添加服务器配置信息
     @RequestMapping(value = "/addServerHostConfig")
-    public Boolean addServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto)
-    {
+    public Boolean addServerHostConfig(@RequestBody ServerHostConfigDto serverHostConfigDto) {
         return serverHostConfigFeign.addServerHostConfig(serverHostConfigDto);
     }
 
     //删除服务器配置信息
     @RequestMapping(value = "/delectServerHostConfig/{id}")
-    public int delectServerHostConfig(@PathVariable("id") String id)
-    {
+    public int delectServerHostConfig(@PathVariable("id") String id) {
         long ids = Long.parseLong(id);
         return serverHostConfigFeign.delectServerHostConfig(ids);
     }

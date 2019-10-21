@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :GateWayApplication.java
  * 创建人  :llxiao
  * 创建时间:2018年3月30日
-*/
+ */
 
 package com.xiao.skywalking.gateway.zuul;
 
@@ -22,10 +22,8 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableZuulProxy
-public class GatewayApplication
-{
-    public static void main(String[] args)
-    {
+public class GatewayApplication {
+    public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
 }

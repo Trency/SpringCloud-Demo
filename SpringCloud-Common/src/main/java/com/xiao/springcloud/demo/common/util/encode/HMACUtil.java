@@ -26,8 +26,7 @@ import java.security.NoSuchAlgorithmException;
  * @since smile V100R001C00
  */
 @Slf4j
-public class HMACUtil
-{
+public class HMACUtil {
 
     /**
      * HmacSHA1
@@ -44,11 +43,10 @@ public class HMACUtil
      * [详细描述]:<br/>
      *
      * @param plainText 明文
-     * @param key 密钥
+     * @param key       密钥
      * @return 密文
      */
-    public static String hmacSHA1Encode(String plainText, String key)
-    {
+    public static String hmacSHA1Encode(String plainText, String key) {
         return hmacEncode(plainText, key, HMAC_SHA1);
     }
 
@@ -57,11 +55,10 @@ public class HMACUtil
      * [详细描述]:<br/>
      *
      * @param plainText 明文
-     * @param key 密钥
+     * @param key       密钥
      * @return 密文
      */
-    public static String hmacSHA256Encode(String plainText, String key)
-    {
+    public static String hmacSHA256Encode(String plainText, String key) {
         return hmacEncode(plainText, key, HMAC_SHA256);
     }
 
@@ -70,32 +67,24 @@ public class HMACUtil
      * [详细描述]:<br/>
      *
      * @param plainText 明文
-     * @param key 密钥
-     * @param shaByte 加密算法，如HmacSHA1、HmacSHA256
+     * @param key       密钥
+     * @param shaByte   加密算法，如HmacSHA1、HmacSHA256
      * @return 加密后的密文为 apache base64字符串
      */
-    private static String hmacEncode(String plainText, String key, String shaByte)
-    {
+    private static String hmacEncode(String plainText, String key, String shaByte) {
         String ciphertext = "";
-        try
-        {
+        try {
             SecretKeySpec signingKey = new SecretKeySpec(key
                     .getBytes(CodeFormatConstants.CODE_FORMAT_UTF_8), HMAC_SHA1);
             Mac mac = Mac.getInstance(shaByte);
             mac.init(signingKey);
             byte[] rawHmac = mac.doFinal(plainText.getBytes(CodeFormatConstants.CODE_FORMAT_UTF_8));
             ciphertext = Base64.encodeBase64String(rawHmac);
-        }
-        catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             log.error("UnsupportedEncodingException");
-        }
-        catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             log.error("NoSuchAlgorithmException");
-        }
-        catch (InvalidKeyException e)
-        {
+        } catch (InvalidKeyException e) {
             log.error("InvalidKeyException", e);
         }
         return ciphertext;

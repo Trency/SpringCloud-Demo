@@ -15,12 +15,10 @@ import java.util.concurrent.RejectedExecutionException;
  * @since JDK 1.8
  */
 @Component
-public class ProducerFeignFactory implements FallbackFactory<ProducerFeign>
-{
+public class ProducerFeignFactory implements FallbackFactory<ProducerFeign> {
     private final ProducerFeignFallBack producerFeignFallBack;
 
-    public ProducerFeignFactory(ProducerFeignFallBack producerFeignFallBack)
-    {
+    public ProducerFeignFactory(ProducerFeignFallBack producerFeignFallBack) {
         this.producerFeignFallBack = producerFeignFallBack;
     }
 
@@ -28,10 +26,8 @@ public class ProducerFeignFactory implements FallbackFactory<ProducerFeign>
      * Returns an instance of the fallback appropriate for the given cause
      */
     @Override
-    public ProducerFeign create(Throwable cause)
-    {
-        if (cause instanceof RejectedExecutionException)
-        {
+    public ProducerFeign create(Throwable cause) {
+        if (cause instanceof RejectedExecutionException) {
             cause.printStackTrace();
         }
         return producerFeignFallBack;

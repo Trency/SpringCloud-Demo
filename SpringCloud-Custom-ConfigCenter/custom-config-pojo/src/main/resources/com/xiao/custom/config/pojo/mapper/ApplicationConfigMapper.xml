@@ -11,8 +11,8 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, application_id, item_key, item_value, item_desc, create_time, update_time
-  </sql>
+        id, application_id, item_key, item_value, item_desc, create_time, update_time
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -20,17 +20,18 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_application_config
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_application_config
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ApplicationConfig">
-    insert into t_application_config (id, application_id, item_key, 
-      item_value, item_desc, create_time, 
-      update_time)
-    values (#{id,jdbcType=BIGINT}, #{applicationId,jdbcType=BIGINT}, #{itemKey,jdbcType=VARCHAR}, 
-      #{itemValue,jdbcType=VARCHAR}, #{itemDesc,jdbcType=VARCHAR}, now(),
-      #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
+        insert into t_application_config (id, application_id, item_key,
+                                          item_value, item_desc, create_time,
+                                          update_time)
+        values (#{id,jdbcType=BIGINT}, #{applicationId,jdbcType=BIGINT}, #{itemKey,jdbcType=VARCHAR},
+                #{itemValue,jdbcType=VARCHAR}, #{itemDesc,jdbcType=VARCHAR}, now(),
+                #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
     <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ApplicationConfig">
         insert into t_application_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -91,19 +92,19 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-                update_time = now(),
+            update_time = now(),
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ApplicationConfig">
-    update t_application_config
-    set application_id = #{applicationId,jdbcType=BIGINT},
-      item_key = #{itemKey,jdbcType=VARCHAR},
-      item_value = #{itemValue,jdbcType=VARCHAR},
-      item_desc = #{itemDesc,jdbcType=VARCHAR},
-      update_time = now()
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update t_application_config
+        set application_id = #{applicationId,jdbcType=BIGINT},
+            item_key       = #{itemKey,jdbcType=VARCHAR},
+            item_value     = #{itemValue,jdbcType=VARCHAR},
+            item_desc      = #{itemDesc,jdbcType=VARCHAR},
+            update_time    = now()
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
     <!-- 分页查询应用的私有配置 -->
     <select id="pageQuery" resultType="com.xiao.custom.config.pojo.dto.ApplicationConfigDto"

@@ -8,8 +8,7 @@ package com.xiao.custom.config.server.manager;
  * @version 1.0, 2019/1/29 16:53
  * @since JDK 1.8
  */
-public interface SqlConstants
-{
+public interface SqlConstants {
 
     /**
      * 应用名称和环境查找应用ID，返回Null则表示不存在

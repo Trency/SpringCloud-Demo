@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :OrderField.java
  * 创建人  :llxiao
  * 创建时间:2018年1月15日
-*/
+ */
 
 package com.xiao.spring.cloud.search.es.common;
 
@@ -15,8 +15,7 @@ package com.xiao.spring.cloud.search.es.common;
  * @version 1.0, 2018年1月15日
  * @since Purcotton-Search B01
  */
-public enum OrderField
-{
+public enum OrderField {
     /**
      * 默认排序
      */
@@ -42,18 +41,16 @@ public enum OrderField
 
     private int type;
 
-    private OrderField(int type)
-    {
+    private OrderField(int type) {
         this.type = type;
     }
 
     /**
      * 返回type属性
-     * 
+     *
      * @return type属性
      */
-    public int getType()
-    {
+    public int getType() {
         return type;
     }
 

@@ -12,8 +12,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class ClientHostInfoQuery extends BaseQuery
-{
+public class ClientHostInfoQuery extends BaseQuery {
     /**
      * IP查询
      */

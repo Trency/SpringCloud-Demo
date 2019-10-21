@@ -26,8 +26,7 @@ import java.util.Date;
 @RestController
 @RequestMapping(value = "/configItem")
 @Slf4j
-public class ConfigItemApi
-{
+public class ConfigItemApi {
     @Autowired
     private ConfigItemService configItemService;
 
@@ -40,8 +39,7 @@ public class ConfigItemApi
      * jun.liu  2018/11/27 - 10:54
      **/
     @RequestMapping(value = "/page")
-    public PageInfo<ConfigItemDto> pageConfigItem(@RequestBody ConfigItemQuery configItemQuery)
-    {
+    public PageInfo<ConfigItemDto> pageConfigItem(@RequestBody ConfigItemQuery configItemQuery) {
         return configItemService
                 .pageConfigItem(configItemQuery, configItemQuery.getPageNum(), configItemQuery.getPageSize());
     }
@@ -55,17 +53,14 @@ public class ConfigItemApi
      * jun.liu  2018/11/27 - 13:53
      **/
     @RequestMapping(value = "/save")
-    public Boolean save(@RequestBody ConfigItemDto configItemDto)
-    {
-        if (StringUtils.isBlank(configItemDto.getItemKey()) || StringUtils.isBlank(configItemDto.getItemValue()))
-        {
+    public Boolean save(@RequestBody ConfigItemDto configItemDto) {
+        if (StringUtils.isBlank(configItemDto.getItemKey()) || StringUtils.isBlank(configItemDto.getItemValue())) {
             log.info("新增配置项失败,参数不能为空");
             throw new RuntimeException("参数不能为空");
         }
         configItemDto.setCreateTime(new Date());
         int a = configItemService.save(ConfigItemDto.convertToEntity(configItemDto));
-        if (a > 0)
-        {
+        if (a > 0) {
             return true;
         }
         return false;
@@ -80,18 +75,15 @@ public class ConfigItemApi
      * jun.liu  2018/11/27 - 14:06
      **/
     @RequestMapping(value = "/update")
-    public Boolean update(@RequestBody ConfigItemDto configItemDto)
-    {
+    public Boolean update(@RequestBody ConfigItemDto configItemDto) {
         if (null == configItemDto.getId() || StringUtils.isBlank(configItemDto.getItemKey()) || StringUtils
-                .isBlank(configItemDto.getItemValue()))
-        {
+                .isBlank(configItemDto.getItemValue())) {
             log.info("修改配置项失败,id:{}、key:{}、value:{}不能为空", configItemDto.getId(), configItemDto
                     .getItemKey(), configItemDto.getItemValue());
             throw new RuntimeException("修改配置项失败,参数不能为空");
         }
         ConfigItem configItem = configItemService.getConfigItemById(configItemDto.getId());
-        if (configItem == null)
-        {
+        if (configItem == null) {
             log.info("通过id:" + configItemDto.getId() + ",获取configItem失败");
             throw new RuntimeException("获取对象失败");
         }
@@ -101,8 +93,7 @@ public class ConfigItemApi
         configItem.setItemType(configItemDto.getItemType());
         configItem.setUpdateTime(new Date());
         int a = configItemService.update(configItem);
-        if (a > 0)
-        {
+        if (a > 0) {
             return true;
         }
         return false;
@@ -117,10 +108,8 @@ public class ConfigItemApi
      * jun.liu  2018/11/27 - 14:39
      **/
     @RequestMapping(value = "/batchDelete/{ids}")
-    public Integer enableOrDisable(@PathVariable("ids") String ids)
-    {
-        if (StringUtils.isBlank(ids))
-        {
+    public Integer enableOrDisable(@PathVariable("ids") String ids) {
+        if (StringUtils.isBlank(ids)) {
             log.info("启用/禁用配置项失败,数据为空");
             throw new RuntimeException("数据不能为空");
         }

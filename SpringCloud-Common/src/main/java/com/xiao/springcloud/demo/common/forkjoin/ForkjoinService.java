@@ -16,13 +16,11 @@ import java.util.concurrent.ForkJoinPool;
  * @since JDK 1.8
  */
 @Service
-public class ForkjoinService
-{
+public class ForkjoinService {
     @Autowired
     private ForkJoinPool forkJoinPool;
 
-    public Integer addNumbers(List<Integer> numbers)
-    {
+    public Integer addNumbers(List<Integer> numbers) {
         ForkjoinTask forkjoinTask = new ForkjoinTask(numbers, 0, numbers.size());
         Integer count = forkJoinPool.invoke(forkjoinTask);
         return count;

@@ -14,11 +14,9 @@ import com.xiao.springcloud.demo.common.disruptor.data.DataEvent;
  * @version 1.0, 2019/3/21 15:17
  * @since JDK 1.8
  */
-public class DataEventFactory implements EventFactory<DataEvent>
-{
+public class DataEventFactory implements EventFactory<DataEvent> {
     @Override
-    public DataEvent newInstance()
-    {
+    public DataEvent newInstance() {
         return new DataEvent();
     }
 }

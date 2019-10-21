@@ -20,8 +20,7 @@ import java.util.Date;
  * @since Purcotton-Search B01
  */
 @Data
-public class ElasticSearchDoc
-{
+public class ElasticSearchDoc {
     /**
      * 文档id
      */

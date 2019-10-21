@@ -12,8 +12,7 @@ import com.xiao.custom.config.web.auth.entity.UserDetail;
  * @version 1.0, 2019/5/8 10:22
  * @since JDK 1.8
  */
-public interface AuthUserService
-{
+public interface AuthUserService {
     /**
      * 注册用户
      *

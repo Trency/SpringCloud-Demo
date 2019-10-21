@@ -12,8 +12,7 @@ import com.xiao.custom.config.pojo.query.ClientHostInfoQuery;
  * @version 1.0, 2019/3/27 14:13
  * @since JDK 1.8
  */
-public interface ClientHostService
-{
+public interface ClientHostService {
     /**
      * 分页查询客户端信息
      *

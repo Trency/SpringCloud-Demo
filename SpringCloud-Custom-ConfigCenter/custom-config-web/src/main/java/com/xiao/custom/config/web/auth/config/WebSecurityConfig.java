@@ -28,8 +28,7 @@ import javax.annotation.Resource;
 @Configuration
 @EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter
-{
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -47,8 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     private String anonymousUrls;
 
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception
-    {
+    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
                 // 设置UserDetailsService
                 .userDetailsService(configUserDetailsService)
@@ -62,14 +60,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
      * @return
      */
     @Bean
-    public PasswordEncoder passwordEncoder()
-    {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception
-    {
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
         // 基于token 接口间鉴权
         //        tokenConfigure(httpSecurity);
 
@@ -89,8 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .accessDeniedHandler(accessDeniedHandler);
     }
 
-    private void sessionConfig(HttpSecurity httpSecurity) throws Exception
-    {
+    private void sessionConfig(HttpSecurity httpSecurity) throws Exception {
         //默认采用httpsession的方式
         SessionCreationPolicy sessionPolicy = SessionCreationPolicy.IF_REQUIRED;
         //屏蔽csrf，否则post无法访问
@@ -100,8 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 
     }
 
-    private void tokenConfigure(HttpSecurity httpSecurity) throws Exception
-    {
+    private void tokenConfigure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 // 由于使用的是JWT，我们这里不需要csrf
                 .csrf().disable()
@@ -110,16 +104,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     }
 
     @Override
-    public void configure(WebSecurity web)
-    {
+    public void configure(WebSecurity web) {
         //忽略鉴权的请求
         web.ignoring().antMatchers("/html/assets/**").antMatchers("/favicon.ico");
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception
-    {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 }

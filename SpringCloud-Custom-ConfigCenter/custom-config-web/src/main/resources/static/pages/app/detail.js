@@ -62,8 +62,7 @@
                             if (res.success) {
                                 App.success('保存成功');
                                 App.openModule("detail", "应用管理", "app/app.html");
-                            }
-                            else {
+                            } else {
                                 App.error("添加应用错误，对应的应用、环境已经存在");
                             }
                         })

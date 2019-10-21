@@ -44,7 +44,7 @@ metadata:
   namespace: custom-manager #指定命名空间
 spec:
   #nodeSelector:
-    #gpu: "true" # 节点选择器仅pod部署到包含gpu=true的节点上
+  #gpu: "true" # 节点选择器仅pod部署到包含gpu=true的节点上
   containers:
     - image: luksa/kubia  #镜像路径
       name: kubia # 容器名称

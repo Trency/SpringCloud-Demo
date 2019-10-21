@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResponseUserToken
-{
+public class ResponseUserToken {
     private String token;
     private UserDetail userDetail;
 }

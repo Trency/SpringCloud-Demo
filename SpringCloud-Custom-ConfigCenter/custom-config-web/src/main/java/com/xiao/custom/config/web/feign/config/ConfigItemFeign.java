@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @FeignClient(value = Constants.CONFIG_SERVICE)
 @RequestMapping(value = "/configItem")
-public interface ConfigItemFeign
-{
+public interface ConfigItemFeign {
     @RequestMapping(value = "/page")
     PageInfo<ConfigItemDto> pageConfigItem(@RequestBody ConfigItemQuery configItemQuery);
 

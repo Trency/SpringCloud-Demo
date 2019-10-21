@@ -14,8 +14,7 @@ import org.springframework.context.ApplicationEvent;
  */
 @Setter
 @Getter
-public class ServiceEvent extends ApplicationEvent
-{
+public class ServiceEvent extends ApplicationEvent {
     /**
      * 事件类型
      */
@@ -24,8 +23,7 @@ public class ServiceEvent extends ApplicationEvent
     /**
      * Create a new ApplicationEvent.
      */
-    public ServiceEvent(Object source, String event)
-    {
+    public ServiceEvent(Object source, String event) {
         super(source);
         this.event = event;
     }

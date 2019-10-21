@@ -22,18 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/search")
 @Slf4j
-public class SearchRestService
-{
+public class SearchRestService {
     @Autowired
     private SearchService searchService;
 
     @RequestMapping("/keywords")
-    public SearchCommodityResultDo search(@RequestBody SearchRequestDo searchRequestDo)
-    {
+    public SearchCommodityResultDo search(@RequestBody SearchRequestDo searchRequestDo) {
         //索引为必填
         if (StringUtils.isBlank(searchRequestDo.getIndex()) || (StringUtils.isBlank(searchRequestDo.getKeyWords())
-                && StringUtils.isBlank(searchRequestDo.getOprtCatNo())))
-        {
+                && StringUtils.isBlank(searchRequestDo.getOprtCatNo()))) {
             log.error("搜索的index或者keyWords不能为空!");
             return new SearchCommodityResultDo();
         }
@@ -41,12 +38,10 @@ public class SearchRestService
     }
 
     @RequestMapping("/searchMenu")
-    public SearchMenusDo searchMenu(@RequestBody SearchRequestDo searchRequestDo)
-    {
+    public SearchMenusDo searchMenu(@RequestBody SearchRequestDo searchRequestDo) {
         //索引为必填
         if (StringUtils.isBlank(searchRequestDo.getIndex()) || (StringUtils.isBlank(searchRequestDo.getKeyWords())
-                && StringUtils.isBlank(searchRequestDo.getOprtCatNo())))
-        {
+                && StringUtils.isBlank(searchRequestDo.getOprtCatNo()))) {
             log.error("搜索的index或者keyWords不能为空!");
             return new SearchMenusDo();
         }
@@ -56,17 +51,16 @@ public class SearchRestService
     /**
      * [简要描述]: 根据查询条件获取商品总数
      * [详细描述]:
+     *
      * @param searchRequestDo : 查询条件
      * @return int
      * mjye  2019-03-05 - 14:35
      **/
     @RequestMapping("/commodityTotal")
-    public Long commodityTotal(@RequestBody SearchRequestDo searchRequestDo)
-    {
+    public Long commodityTotal(@RequestBody SearchRequestDo searchRequestDo) {
         //索引为必填
         if (StringUtils.isBlank(searchRequestDo.getIndex()) || (StringUtils.isBlank(searchRequestDo.getKeyWords())
-                && StringUtils.isBlank(searchRequestDo.getOprtCatNo())))
-        {
+                && StringUtils.isBlank(searchRequestDo.getOprtCatNo()))) {
             log.error("搜索的index或者keyWords不能为空!");
             return 0L;
         }

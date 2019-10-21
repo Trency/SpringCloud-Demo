@@ -11,7 +11,6 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class  DataEvent
-{
+public class DataEvent {
     private TableData data;
 }

@@ -7,8 +7,8 @@
         <result column="group_id" property="groupId" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, item_id, group_id
-  </sql>
+        id, item_id, group_id
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -16,16 +16,15 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_config_item_group_relation
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_config_item_group_relation
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation"
             useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-    insert into t_config_item_group_relation (id, item_id, group_id
-      )
-    values (#{id,jdbcType=BIGINT}, #{itemId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}
-      )
-  </insert>
+        insert into t_config_item_group_relation (id, item_id, group_id)
+        values (#{id,jdbcType=BIGINT}, #{itemId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT})
+    </insert>
     <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation">
         insert into t_config_item_group_relation
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -65,11 +64,11 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ConfigItemGroupRelation">
-    update t_config_item_group_relation
-    set item_id = #{itemId,jdbcType=BIGINT},
-      group_id = #{groupId,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update t_config_item_group_relation
+        set item_id  = #{itemId,jdbcType=BIGINT},
+            group_id = #{groupId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
     <insert id="batchSave">
         insert into t_config_item_group_relation(item_id, group_id)
@@ -102,6 +101,8 @@
 
     <!-- 统计配置项关联的配置项组的数量 -->
     <select id="countByItemId" resultType="java.lang.Integer">
-        select count(id) from t_config_item_group_relation where item_id = #{itemId};
+        select count(id)
+        from t_config_item_group_relation
+        where item_id = #{itemId};
     </select>
 </mapper>

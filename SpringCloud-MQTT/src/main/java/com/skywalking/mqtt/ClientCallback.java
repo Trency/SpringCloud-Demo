@@ -1,19 +1,13 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :ClientCallback.java
  * 创建人  :llxiao
  * 创建时间:2018年4月16日
-*/
+ */
 
 package com.skywalking.mqtt;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.MqttSecurityException;
+import org.eclipse.paho.client.mqttv3.*;
 
 /**
  * [简要描述]:<br/>
@@ -23,33 +17,25 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
  * @version 1.0, 2018年4月16日
  * @since 项目名称 项目版本
  */
-public class ClientCallback implements MqttCallback
-{
+public class ClientCallback implements MqttCallback {
     private MqttClient client;
     private MqttConnectOptions options;
 
-    public ClientCallback(MqttClient client, MqttConnectOptions options)
-    {
+    public ClientCallback(MqttClient client, MqttConnectOptions options) {
         this.client = client;
         this.options = options;
     }
 
     @Override
-    public void connectionLost(Throwable cause)
-    {
+    public void connectionLost(Throwable cause) {
         // 连接丢失后，一般在这里面进行重连
         System.out.println("连接断开，可以做重连");
-        try
-        {
+        try {
             client.connect(options);
-        }
-        catch (MqttSecurityException e)
-        {
+        } catch (MqttSecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        catch (MqttException e)
-        {
+        } catch (MqttException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -66,22 +52,19 @@ public class ClientCallback implements MqttCallback
     }
 
     @Override
-    public void messageArrived(String topic, MqttMessage message) throws Exception
-    {
+    public void messageArrived(String topic, MqttMessage message) throws Exception {
         // subscribe后得到的消息会执行到这里面
         System.out.println("接收消息主题 : " + topic);
         System.out.println("接收消息Qos : " + message.getQos());
         String msg = new String(message.getPayload());
         System.out.println("接收消息到服务端内容 : " + msg);
-        if (msg.contains("close"))
-        {
+        if (msg.contains("close")) {
             client.close();
         }
     }
 
     @Override
-    public void deliveryComplete(IMqttDeliveryToken token)
-    {
+    public void deliveryComplete(IMqttDeliveryToken token) {
         System.out.println("deliveryComplete---------" + token.isComplete());
     }
 }

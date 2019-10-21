@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @since JDK 1.8
  */
 @FeignClient(name = "pref-producer-service", fallbackFactory = ProducerFeignFactory.class, path = "/api")
-public interface ProducerFeign
-{
+public interface ProducerFeign {
     @CacheResult
     @RequestMapping("/timeout")
     @Cacheable(value = CacheConstants.CFG_DATA_CACHE)

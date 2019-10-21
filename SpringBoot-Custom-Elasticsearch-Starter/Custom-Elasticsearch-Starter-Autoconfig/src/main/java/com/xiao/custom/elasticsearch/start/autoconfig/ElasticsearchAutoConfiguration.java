@@ -34,33 +34,27 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties(ElasticsearchProperties.class)
 @Slf4j
-public class ElasticsearchAutoConfiguration implements DisposableBean
-{
+public class ElasticsearchAutoConfiguration implements DisposableBean {
     private RestHighLevelClient restHighLevelClient;
 
     @Bean
     @ConditionalOnMissingBean
-    public RestHighLevelClient restHighLevelClient(ElasticsearchProperties elasticsearchProperties)
-    {
-        if (log.isDebugEnabled())
-        {
+    public RestHighLevelClient restHighLevelClient(ElasticsearchProperties elasticsearchProperties) {
+        if (log.isDebugEnabled()) {
             log.debug("初始化Elasticsearch Rest High Level Client....");
         }
         List<HostInfo> hosts = elasticsearchProperties.getHosts();
-        if (CollectionUtils.isEmpty(hosts))
-        {
+        if (CollectionUtils.isEmpty(hosts)) {
             throw new RuntimeException("Elasticsearch host配置为空，请检查：spring.elasticsearch.rest.hosts的配置是否正确");
         }
 
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug("Elasticsearch host: {}", JSONObject.toJSONString(hosts));
         }
 
         HttpHost[] httpHosts = new HttpHost[hosts.size()];
         int i = 0;
-        for (HostInfo host : hosts)
-        {
+        for (HostInfo host : hosts) {
             httpHosts[i++] = new HttpHost(host.getHostname(), host.getPort(), host.getSchema());
         }
 
@@ -93,8 +87,7 @@ public class ElasticsearchAutoConfiguration implements DisposableBean
 
             // 鉴权设置
             if (StringUtils.isNotBlank(elasticsearchProperties.getUsername()) && StringUtils
-                    .isNotBlank(elasticsearchProperties.getPassword()))
-            {
+                    .isNotBlank(elasticsearchProperties.getPassword())) {
                 CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
                 credentialsProvider
                         .setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(elasticsearchProperties
@@ -105,8 +98,7 @@ public class ElasticsearchAutoConfiguration implements DisposableBean
             return httpClientBuilder;
         });
 
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug("初始化Elasticsearch Rest High Level Client 成功!");
         }
         restHighLevelClient = new RestHighLevelClient(restClientBuilder);
@@ -116,13 +108,12 @@ public class ElasticsearchAutoConfiguration implements DisposableBean
     /**
      * Invoked by a BeanFactory on destruction of a singleton.
      *
-     * @exception Exception in case of shutdown errors.
-     * Exceptions will get logged but not rethrown to allow
-     * other beans to release their resources too.
+     * @throws Exception in case of shutdown errors.
+     *                   Exceptions will get logged but not rethrown to allow
+     *                   other beans to release their resources too.
      */
     @Override
-    public void destroy() throws Exception
-    {
+    public void destroy() throws Exception {
         restHighLevelClient.close();
     }
 }

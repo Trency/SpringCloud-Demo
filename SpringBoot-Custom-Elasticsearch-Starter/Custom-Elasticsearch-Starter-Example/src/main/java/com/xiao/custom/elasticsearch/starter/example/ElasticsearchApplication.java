@@ -12,10 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since JDK 1.8
  */
 @SpringBootApplication
-public class ElasticsearchApplication
-{
-    public static void main(String[] args)
-    {
+public class ElasticsearchApplication {
+    public static void main(String[] args) {
         SpringApplication.run(ElasticsearchApplication.class, args);
     }
 }

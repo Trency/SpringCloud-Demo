@@ -3,16 +3,16 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:1111/eureka/
-server: 
+server:
   port: 1112
 
 #服务名称
 spring:
   application:
     name: provider-1112
-#  #服务链路跟踪到zipkin服务
-#  zipkin:
-#    base-url: http://localhost:1115
+  #  #服务链路跟踪到zipkin服务
+  #  zipkin:
+  #    base-url: http://localhost:1115
   ##  zipkin 链路跟踪配置
   sleuth:
     enabled: true

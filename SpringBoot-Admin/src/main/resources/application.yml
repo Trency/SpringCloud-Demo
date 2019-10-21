@@ -2,18 +2,18 @@ info:
   groupId: @project.groupId@
   artifactId: @project.artifactId@
   version: @project.version@
-###################
-# 邮件通知配置
-##################
-#spring:
-  #mail:
+    ###################
+    # 邮件通知配置
+    ##################
+    #spring:
+    #mail:
     #host: smtphm.qiye.163.com
     #username: # 用户名
     #password: # 密码
-  #boot:
+    #boot:
     #admin:
-      #notify:
-        #mail:
-        #from: # 发件人
-        #to: # 收件人
-        #enabled: true
+    #notify:
+    #mail:
+    #from: # 发件人
+    #to: # 收件人
+  #enabled: true

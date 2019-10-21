@@ -8,8 +8,7 @@ package com.xiao.hystrix.demo.consumer.common;
  * @version 1.0, 2019/8/8 18:34
  * @since JDK 1.8
  */
-public interface CacheConstants
-{
+public interface CacheConstants {
     String CFG_DATA_CACHE = "cfgDataCache";
     String BIZ_DATA_CACHE = "bizDataCache";
 }

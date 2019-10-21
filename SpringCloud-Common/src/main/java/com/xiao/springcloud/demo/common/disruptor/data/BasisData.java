@@ -13,8 +13,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class BasisData
-{
+public class BasisData {
     /**
      * 事件名称
      */

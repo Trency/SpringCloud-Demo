@@ -15,8 +15,7 @@ package com.xiao.springcloud.demo.common.validator;
  * @version 1.0, 2017年12月27日
  * @since JDK1.8
  */
-public interface VerifyConstants
-{
+public interface VerifyConstants {
 
     /**
      * 电话校验

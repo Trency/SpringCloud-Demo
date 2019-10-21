@@ -21,6 +21,5 @@ import java.lang.annotation.*;
 @Configuration
 @Import(CustomEnvironmentRepositoryConfiguration.class)
 @EnableConfigServer
-public @interface CustomEnableConfigServer
-{
+public @interface CustomEnableConfigServer {
 }

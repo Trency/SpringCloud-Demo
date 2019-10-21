@@ -24,8 +24,8 @@
         <result column="region_name" property="regionName" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, application, application_name, label, profile, create_time, update_time, region_id
-  </sql>
+        id, application, application_name, label, profile, create_time, update_time, region_id
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -33,18 +33,19 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_application
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_application
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.winner.config.center.pojo.db.entity.Application"
             useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-    insert into t_application (id, application, application_name,
-      label, profile, create_time, 
-      update_time, region_id)
-    values (#{id,jdbcType=BIGINT}, #{application,jdbcType=VARCHAR}, #{applicationName,jdbcType=VARCHAR}, 
-      #{label,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{regionId,jdbcType=BIGINT})
-  </insert>
+        insert into t_application (id, application, application_name,
+                                   label, profile, create_time,
+                                   update_time, region_id)
+        values (#{id,jdbcType=BIGINT}, #{application,jdbcType=VARCHAR}, #{applicationName,jdbcType=VARCHAR},
+                #{label,jdbcType=VARCHAR}, #{profile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP}, #{regionId,jdbcType=BIGINT})
+    </insert>
     <insert id="insertSelective" parameterType="com.winner.config.center.pojo.db.entity.Application">
         insert into t_application
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -128,16 +129,16 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.winner.config.center.pojo.db.entity.Application">
-    update t_application
-    set application = #{application,jdbcType=VARCHAR},
-      application_name = #{applicationName,jdbcType=VARCHAR},
-      label = #{label,jdbcType=VARCHAR},
-      profile = #{profile,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      region_id = #{regionId,jdbcType=BIGINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update t_application
+        set application      = #{application,jdbcType=VARCHAR},
+            application_name = #{applicationName,jdbcType=VARCHAR},
+            label            = #{label,jdbcType=VARCHAR},
+            profile          = #{profile,jdbcType=VARCHAR},
+            create_time      = #{createTime,jdbcType=TIMESTAMP},
+            update_time      = #{updateTime,jdbcType=TIMESTAMP},
+            region_id        = #{regionId,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
 
     <select id="pageApplicationConfig" resultMap="DtoResultMap"
             parameterType="com.winner.config.center.pojo.db.query.AppQuery">
@@ -163,6 +164,8 @@
 
     <!-- 区域ID统计应用 -->
     <select id="countByRegionId" resultType="java.lang.Integer">
-        select count(*) from t_application where region_id = #{regionId}
+        select count(*)
+        from t_application
+        where region_id = #{regionId}
     </select>
 </mapper>

@@ -14,12 +14,10 @@ import lombok.extern.slf4j.Slf4j;
  * @since JDK 1.8
  */
 @Slf4j
-public class DisruptorExceptionHandler implements ExceptionHandler<DataEvent>
-{
+public class DisruptorExceptionHandler implements ExceptionHandler<DataEvent> {
     private DisruptorService disruptorService;
 
-    public DisruptorExceptionHandler(DisruptorService disruptorService)
-    {
+    public DisruptorExceptionHandler(DisruptorService disruptorService) {
         this.disruptorService = disruptorService;
     }
 
@@ -27,8 +25,7 @@ public class DisruptorExceptionHandler implements ExceptionHandler<DataEvent>
      * 事件处理异常
      */
     @Override
-    public void handleEventException(Throwable throwable, long sequence, DataEvent dataEvent)
-    {
+    public void handleEventException(Throwable throwable, long sequence, DataEvent dataEvent) {
         //事件处理异常里面进行补偿执行
         disruptorService.execute(dataEvent.getBasisData());
         log.error(">>> Disruptor事件处理异常，进行立即执行补偿操作..........");
@@ -41,8 +38,7 @@ public class DisruptorExceptionHandler implements ExceptionHandler<DataEvent>
      * @param throwable
      */
     @Override
-    public void handleOnStartException(Throwable throwable)
-    {
+    public void handleOnStartException(Throwable throwable) {
         log.error(">>> Disruptor 启动异常：{}", throwable.getMessage());
     }
 
@@ -52,8 +48,7 @@ public class DisruptorExceptionHandler implements ExceptionHandler<DataEvent>
      * @param throwable
      */
     @Override
-    public void handleOnShutdownException(Throwable throwable)
-    {
+    public void handleOnShutdownException(Throwable throwable) {
         log.error(">>> Disruptro 关闭异常：{}", throwable.getMessage());
     }
 }

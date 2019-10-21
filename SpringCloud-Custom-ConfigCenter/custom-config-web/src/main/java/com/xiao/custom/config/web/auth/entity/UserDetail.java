@@ -15,8 +15,7 @@ import java.util.List;
  * @author : JoeTao
  * createAt: 2018/9/14
  */
-public class UserDetail implements UserDetails
-{
+public class UserDetail implements UserDetails {
     private long id;
     private String username;
     private String password;
@@ -24,8 +23,7 @@ public class UserDetail implements UserDetails
     private Role role;
     private Date lastPasswordResetDate;
 
-    public UserDetail(AuthUser user)
-    {
+    public UserDetail(AuthUser user) {
         this.id = user.getId();
         this.role = user.getRole();
         this.username = user.getUsername();
@@ -33,8 +31,7 @@ public class UserDetail implements UserDetails
         this.nickname = user.getNickname();
     }
 
-    public UserDetail(AuthUser user, Role role)
-    {
+    public UserDetail(AuthUser user, Role role) {
         this.id = user.getId();
         this.role = role;
         this.username = user.getUsername();
@@ -42,9 +39,8 @@ public class UserDetail implements UserDetails
     }
 
     public UserDetail(long id, String username, Role role,
-            //            Date lastPasswordResetDate,
-            String password)
-    {
+                      //            Date lastPasswordResetDate,
+                      String password) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -52,15 +48,13 @@ public class UserDetail implements UserDetails
         //        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
-    public UserDetail(String username, String password, Role role)
-    {
+    public UserDetail(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public UserDetail(long id, String username, String password)
-    {
+    public UserDetail(long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -68,36 +62,43 @@ public class UserDetail implements UserDetails
 
     //返回分配给用户的角色列表
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(role.getName()));
         return authorities;
     }
 
-    public long getId()
-    {
+    public long getId() {
         return id;
     }
 
-    @Override
-    public String getPassword()
-    {
-        return password;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
-    public String getUsername()
-    {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
      * 账户是否未过期
      */
     @Override
-    public boolean isAccountNonExpired()
-    {
+    public boolean isAccountNonExpired() {
         return true;
     }
 
@@ -105,8 +106,7 @@ public class UserDetail implements UserDetails
      * 账户是否未锁定
      */
     @Override
-    public boolean isAccountNonLocked()
-    {
+    public boolean isAccountNonLocked() {
         return true;
     }
 
@@ -114,8 +114,7 @@ public class UserDetail implements UserDetails
      * 密码是否未过期
      */
     @Override
-    public boolean isCredentialsNonExpired()
-    {
+    public boolean isCredentialsNonExpired() {
         return true;
     }
 
@@ -123,52 +122,30 @@ public class UserDetail implements UserDetails
      * 账户是否激活
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return true;
     }
 
-    public Date getLastPasswordResetDate()
-    {
-        if (null != lastPasswordResetDate)
-        {
+    public Date getLastPasswordResetDate() {
+        if (null != lastPasswordResetDate) {
             return new Date(lastPasswordResetDate.getTime());
         }
         return null;
     }
 
-    public Role getRole()
-    {
-        return role;
-    }
-
-    public void setRole(Role role)
-    {
-        this.role = role;
-    }
-
-    public void setId(long id)
-    {
-        this.id = id;
-    }
-
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-
-    public void setLastPasswordResetDate(Date lastPasswordResetDate)
-    {
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = new Date(lastPasswordResetDate.getTime());
     }
 
-    public String getNickname()
-    {
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getNickname() {
         return nickname;
     }
 }

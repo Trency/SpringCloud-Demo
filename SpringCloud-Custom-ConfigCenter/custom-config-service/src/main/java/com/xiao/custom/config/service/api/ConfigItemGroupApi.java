@@ -30,8 +30,7 @@ import java.util.Date;
 @RestController
 @RequestMapping(value = "/configItemGroup")
 @Slf4j
-public class ConfigItemGroupApi
-{
+public class ConfigItemGroupApi {
     @Autowired
     private ConfigItemGroupService configItemGroupService;
     @Autowired
@@ -48,8 +47,7 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/27 - 15:35
      **/
     @RequestMapping(value = "/page")
-    public PageInfo<ConfigItemGroupDto> pageConfigItemGroup(@RequestBody ConfigItemGroupQuery configItemGroupQuery)
-    {
+    public PageInfo<ConfigItemGroupDto> pageConfigItemGroup(@RequestBody ConfigItemGroupQuery configItemGroupQuery) {
         return configItemGroupService
                 .pageConfigItemGroup(configItemGroupQuery, configItemGroupQuery.getPageNum(), configItemGroupQuery
                         .getPageSize());
@@ -64,17 +62,14 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/27 - 15:44
      **/
     @RequestMapping(value = "/save")
-    public Boolean save(@RequestBody ConfigItemGroupDto configItemGroupDto)
-    {
-        if (StringUtils.isBlank(configItemGroupDto.getGroupName()))
-        {
+    public Boolean save(@RequestBody ConfigItemGroupDto configItemGroupDto) {
+        if (StringUtils.isBlank(configItemGroupDto.getGroupName())) {
             log.info("新增配置组失败,参数不能为空");
             throw new RuntimeException("参数不能为空");
         }
         configItemGroupDto.setCreateTime(new Date());
         int a = configItemGroupService.save(ConfigItemGroupDto.convertToEntity(configItemGroupDto));
-        if (a > 0)
-        {
+        if (a > 0) {
             return true;
         }
         return false;
@@ -89,10 +84,8 @@ public class ConfigItemGroupApi
      * jun.liu  2018/12/13 - 9:48
      **/
     @RequestMapping(value = "/select/{id}")
-    public ConfigItemGroupDto getConfigItemGroupById(@PathVariable("id") Long id)
-    {
-        if (null == id)
-        {
+    public ConfigItemGroupDto getConfigItemGroupById(@PathVariable("id") Long id) {
+        if (null == id) {
             log.info("获取组失败，id不能为空");
             throw new RuntimeException("参数不能为空");
         }
@@ -108,17 +101,14 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/27 - 16:08
      **/
     @RequestMapping(value = "/update")
-    public Boolean update(@RequestBody ConfigItemGroupDto configItemGroupDto)
-    {
+    public Boolean update(@RequestBody ConfigItemGroupDto configItemGroupDto) {
         if (StringUtils.isBlank(configItemGroupDto.getGroupName()) || StringUtils
-                .isBlank(configItemGroupDto.getGroupDesc()))
-        {
+                .isBlank(configItemGroupDto.getGroupDesc())) {
             log.info("修改配置组失败,参数不能为空");
             throw new RuntimeException("参数不能为空");
         }
         ConfigItemGroup configItemGroup = configItemGroupService.getConfigItemGroupById(configItemGroupDto.getId());
-        if (configItemGroup == null)
-        {
+        if (configItemGroup == null) {
             log.info("通过id:" + configItemGroupDto.getId() + ",获取对象失败");
             throw new RuntimeException("获取对象失败");
         }
@@ -126,8 +116,7 @@ public class ConfigItemGroupApi
         configItemGroup.setGroupDesc(configItemGroupDto.getGroupDesc());
         configItemGroup.setUpdateTime(new Date());
         int a = configItemGroupService.update(configItemGroup);
-        if (a > 0)
-        {
+        if (a > 0) {
             return true;
         }
         return false;
@@ -142,10 +131,8 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/27 - 16:19
      **/
     @RequestMapping(value = "/delete/{ids}")
-    public Integer delete(@PathVariable("ids") String ids)
-    {
-        if (StringUtils.isBlank(ids))
-        {
+    public Integer delete(@PathVariable("ids") String ids) {
+        if (StringUtils.isBlank(ids)) {
             log.info("删除失败,id不能为空");
             throw new RuntimeException("参数不能为空");
         }
@@ -164,10 +151,8 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/27 - 16:38
      **/
     @RequestMapping(value = "/isRefGroup")
-    public PageInfo<ConfigItemDto> pageRefConfigItemWithGroup(@RequestBody ConfigItemQuery configItemQuery)
-    {
-        if (null == configItemQuery.getGroupId())
-        {
+    public PageInfo<ConfigItemDto> pageRefConfigItemWithGroup(@RequestBody ConfigItemQuery configItemQuery) {
+        if (null == configItemQuery.getGroupId()) {
             log.info("获取已关联当前group的配置项失败，groupId不能为空");
             throw new RuntimeException("参数不能为空");
         }
@@ -185,10 +170,8 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/28 - 10:01
      **/
     @RequestMapping(value = "/notRefGroup")
-    public PageInfo<ConfigItemDto> pageNotRefConfigItemWithGroup(@RequestBody ConfigItemQuery configItemQuery)
-    {
-        if (null == configItemQuery.getGroupId())
-        {
+    public PageInfo<ConfigItemDto> pageNotRefConfigItemWithGroup(@RequestBody ConfigItemQuery configItemQuery) {
+        if (null == configItemQuery.getGroupId()) {
             log.info("获取未关联当前group的配置项失败，groupId不能为空");
             throw new RuntimeException("参数不能为空");
         }
@@ -205,17 +188,14 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/28 - 9:26
      **/
     @RequestMapping(value = "/batchSave/{groupId}/{itemIds}")
-    public Boolean batchSave(@PathVariable("itemIds") String itemIds, @PathVariable("groupId") Long groupId)
-    {
-        if (StringUtils.isBlank(itemIds) || groupId == null)
-        {
+    public Boolean batchSave(@PathVariable("itemIds") String itemIds, @PathVariable("groupId") Long groupId) {
+        if (StringUtils.isBlank(itemIds) || groupId == null) {
             log.info("新增配置项和组绑定关系失败，itemIds和groupId不能为空");
             throw new RuntimeException("参数不能为空");
         }
         String[] itemIdArr = itemIds.split(",");
         int a = configItemGroupRelationService.batchSave(itemIdArr, groupId);
-        if (a > 0)
-        {
+        if (a > 0) {
             return true;
         }
         return false;
@@ -231,17 +211,14 @@ public class ConfigItemGroupApi
      * jun.liu  2018/11/28 - 15:12
      **/
     @RequestMapping(value = "/batchDelete/{groupId}/{itemIds}")
-    public Boolean batchDelete(@PathVariable("itemIds") String itemIds, @PathVariable("groupId") Long groupId)
-    {
-        if (StringUtils.isBlank(itemIds) || groupId == null)
-        {
+    public Boolean batchDelete(@PathVariable("itemIds") String itemIds, @PathVariable("groupId") Long groupId) {
+        if (StringUtils.isBlank(itemIds) || groupId == null) {
             log.info("删除配置项和组绑定关系失败，itemIds和groupId不能为空");
             throw new RuntimeException("参数不能为空");
         }
         String[] itemIdArr = itemIds.split(",");
         int a = configItemGroupRelationService.batchDelete(itemIdArr, groupId);
-        if (a > 0)
-        {
+        if (a > 0) {
             return true;
         }
         return false;

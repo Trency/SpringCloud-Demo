@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :AnalyzeType.java
  * 创建人  :llxiao
  * 创建时间:2018年1月13日
-*/
+ */
 
 package com.xiao.spring.cloud.search.es.common;
 
@@ -15,8 +15,7 @@ package com.xiao.spring.cloud.search.es.common;
  * @version 1.0, 2018年1月13日
  * @since Purcotton-Search B01
  */
-public enum AnalyzeType
-{
+public enum AnalyzeType {
     /**
      * IK中文标准分词器,eg:我是中国人 -->"我","是","中国人"
      */
@@ -33,18 +32,16 @@ public enum AnalyzeType
 
     private String type;
 
-    private AnalyzeType(String type)
-    {
+    private AnalyzeType(String type) {
         this.type = type;
     }
 
     /**
      * 返回type属性
-     * 
+     *
      * @return type属性
      */
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 

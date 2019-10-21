@@ -19,8 +19,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @version 1.0, 2018年1月11日
  * @since Purcotton-Search B01
  */
-public class SearchResultDo
-{
+public class SearchResultDo {
     /**
      * 返回文档
      */
@@ -40,14 +39,11 @@ public class SearchResultDo
      *
      * @return
      */
-    public SearchResultDo setHighlight()
-    {
-        if (StringUtils.isNotBlank(highlightTitle))
-        {
+    public SearchResultDo setHighlight() {
+        if (StringUtils.isNotBlank(highlightTitle)) {
             doc.setTitle(highlightTitle);
         }
-        if (StringUtils.isNoneBlank(highlightSubTitle))
-        {
+        if (StringUtils.isNoneBlank(highlightSubTitle)) {
             doc.setSubTitle(highlightSubTitle);
         }
         return this;
@@ -58,8 +54,7 @@ public class SearchResultDo
      *
      * @return doc属性
      */
-    public ElasticSearchDoc getDoc()
-    {
+    public ElasticSearchDoc getDoc() {
         return doc;
     }
 
@@ -68,8 +63,7 @@ public class SearchResultDo
      *
      * @param doc doc属性
      */
-    public void setDoc(ElasticSearchDoc doc)
-    {
+    public void setDoc(ElasticSearchDoc doc) {
         this.doc = doc;
     }
 
@@ -78,8 +72,7 @@ public class SearchResultDo
      *
      * @return highlightTitle属性
      */
-    public String getHighlightTitle()
-    {
+    public String getHighlightTitle() {
         return highlightTitle;
     }
 
@@ -88,8 +81,7 @@ public class SearchResultDo
      *
      * @param highlightTitle highlightTitle属性
      */
-    public void setHighlightTitle(String highlightTitle)
-    {
+    public void setHighlightTitle(String highlightTitle) {
         this.highlightTitle = highlightTitle;
     }
 
@@ -98,8 +90,7 @@ public class SearchResultDo
      *
      * @return highlightSubTitle属性
      */
-    public String getHighlightSubTitle()
-    {
+    public String getHighlightSubTitle() {
         return highlightSubTitle;
     }
 
@@ -108,8 +99,7 @@ public class SearchResultDo
      *
      * @param highlightSubTitle highlightSubTitle属性
      */
-    public void setHighlightSubTitle(String highlightSubTitle)
-    {
+    public void setHighlightSubTitle(String highlightSubTitle) {
         this.highlightSubTitle = highlightSubTitle;
     }
 
@@ -121,8 +111,7 @@ public class SearchResultDo
      * @see Object#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 

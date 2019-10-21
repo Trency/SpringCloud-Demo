@@ -21,24 +21,20 @@ import java.io.IOException;
  * @since JDK 1.8
  */
 @Configuration
-public class SpringDataRedissonConfig
-{
+public class SpringDataRedissonConfig {
     @Bean
-    public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson)
-    {
+    public RedissonConnectionFactory redissonConnectionFactory(RedissonClient redisson) {
         return new RedissonConnectionFactory(redisson);
     }
 
     @Bean(destroyMethod = "shutdown")
-    public RedissonClient redisson(@Value("classpath:/redisson.yml") Resource configFile) throws IOException
-    {
+    public RedissonClient redisson(@Value("classpath:/redisson.yml") Resource configFile) throws IOException {
         Config config = Config.fromYAML(configFile.getInputStream());
         return Redisson.create(config);
     }
 
     @Bean
-    public RedisTemplate redisTemplate(RedissonConnectionFactory redissonConnectionFactory)
-    {
+    public RedisTemplate redisTemplate(RedissonConnectionFactory redissonConnectionFactory) {
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(redissonConnectionFactory);
         // 自定义的各种序列化

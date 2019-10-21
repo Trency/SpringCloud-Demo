@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class SearchCommoPropOptionDto
-{
+public class SearchCommoPropOptionDto {
 
     //属性选项编号
     private String optionNo;

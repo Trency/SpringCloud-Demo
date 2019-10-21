@@ -20,21 +20,19 @@ import java.io.PrintWriter;
  */
 @Component("restAuthenticationAccessDeniedHandler")
 @Slf4j
-public class RestAccessDeniedHandler implements AccessDeniedHandler
-{
+public class RestAccessDeniedHandler implements AccessDeniedHandler {
     /**
      * 登陆状态下，权限不足执行该方法
      *
      * @param httpServletRequest
      * @param response
      * @param e
-     * @exception IOException
-     * @exception ServletException
+     * @throws IOException
+     * @throws ServletException
      */
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse response, AccessDeniedException e)
-            throws IOException
-    {
+            throws IOException {
         log.error("权限不足：" + e.getMessage());
         //浏览器方式
         webBrowser(response);
@@ -42,8 +40,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler
         //        api(response, e);
     }
 
-    private void api(HttpServletResponse response, AccessDeniedException e) throws IOException
-    {
+    private void api(HttpServletResponse response, AccessDeniedException e) throws IOException {
         // 接口返回以json格式
         response.setStatus(200);
         response.setCharacterEncoding("UTF-8");
@@ -54,8 +51,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler
         printWriter.flush();
     }
 
-    private void webBrowser(HttpServletResponse response) throws IOException
-    {
+    private void webBrowser(HttpServletResponse response) throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.sendError(HttpStatus.FORBIDDEN.value(), "没有访问权限");

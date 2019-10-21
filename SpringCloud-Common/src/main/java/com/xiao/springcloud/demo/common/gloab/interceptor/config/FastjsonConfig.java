@@ -24,12 +24,10 @@ import java.util.List;
 @ConditionalOnClass(com.alibaba.fastjson.JSON.class)
 @ConditionalOnMissingBean(FastJsonHttpMessageConverter.class)
 @ConditionalOnWebApplication
-public class FastjsonConfig
-{
+public class FastjsonConfig {
 
     @Bean
-    public FastJsonHttpMessageConverter fastJsonHttpMessageConverter()
-    {
+    public FastJsonHttpMessageConverter fastJsonHttpMessageConverter() {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         converter.setFastJsonConfig(fastjsonConfig());
         converter.setSupportedMediaTypes(getSupportedMediaType());
@@ -40,8 +38,7 @@ public class FastjsonConfig
     /**
      * fastjson的配置
      */
-    public FastJsonConfig fastjsonConfig()
-    {
+    public FastJsonConfig fastjsonConfig() {
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(
                 //SerializerFeature.PrettyFormat,  //格式化输出 ，仅限调试使用
@@ -62,8 +59,7 @@ public class FastjsonConfig
     /**
      * 支持的mediaType类型
      */
-    public List<MediaType> getSupportedMediaType()
-    {
+    public List<MediaType> getSupportedMediaType() {
         ArrayList<MediaType> mediaTypes = new ArrayList<>();
 
         mediaTypes.add(MediaType.APPLICATION_JSON);

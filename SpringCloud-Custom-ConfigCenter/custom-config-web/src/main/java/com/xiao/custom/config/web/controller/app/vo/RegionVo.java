@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class RegionVo
-{
+public class RegionVo {
     private String label;
     private Long value;
 }

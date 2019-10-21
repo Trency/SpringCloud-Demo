@@ -15,32 +15,27 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * [详细描述]: 可能产生的问题：<br>
  * 1.由于服务消费者并不提供这些接口，对于开发者来说容易造成误解<br>
  * 2.由于加载了一些外部服务的接口定义，还存在与自身接口定义冲突的潜在风险<br>
+ *
  * @author llxiao
  * @version 1.0, 2018/9/30 09:58
  * @since JDK 1.8
  */
 @Configuration
-@ConditionalOnClass({ Feign.class })
-public class FeignConfiguration
-{
+@ConditionalOnClass({Feign.class})
+public class FeignConfiguration {
     @Bean
-    public WebMvcRegistrations feignWebRegistrations()
-    {
-        return new WebMvcRegistrationsAdapter()
-        {
+    public WebMvcRegistrations feignWebRegistrations() {
+        return new WebMvcRegistrationsAdapter() {
             @Override
-            public RequestMappingHandlerMapping getRequestMappingHandlerMapping()
-            {
+            public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
                 return new FeignRequestMappingHandlerMapping();
             }
         };
     }
 
-    private static class FeignRequestMappingHandlerMapping extends RequestMappingHandlerMapping
-    {
+    private static class FeignRequestMappingHandlerMapping extends RequestMappingHandlerMapping {
         @Override
-        protected boolean isHandler(Class<?> beanType)
-        {
+        protected boolean isHandler(Class<?> beanType) {
             // 不能被@FeignClient注解修饰的类才会进行解析加载
             return super.isHandler(beanType) && !AnnotatedElementUtils.hasAnnotation(beanType, FeignClient.class);
         }

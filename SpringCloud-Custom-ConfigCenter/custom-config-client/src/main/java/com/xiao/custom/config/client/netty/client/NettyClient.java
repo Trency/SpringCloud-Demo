@@ -36,8 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @since JDK 1.8
  */
 @Slf4j
-public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, DisposableBean
-{
+public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, DisposableBean {
     private String nettyServerHost = "localhost";
     private int nettyServerPort = 8999;
 
@@ -58,22 +57,18 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
 
     private Channel channel;
 
-    public NettyClient()
-    {
+    public NettyClient() {
         log.info(">>> 初始化netty 客户端......");
     }
 
     @Override
-    public void destroy() throws Exception
-    {
+    public void destroy() throws Exception {
     }
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)
-    {
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         //是否使用自定义配置中心
-        if (!started.get() && configClientProperties.isCustom())
-        {
+        if (!started.get() && configClientProperties.isCustom()) {
             log.info(">>> 配置中心服务地址:{}", configClientProperties.getUri());
             nettyServerHost = parseHost(configClientProperties.getUri());
             nettyServerPort = configClientProperties.getNettyPort();
@@ -89,18 +84,15 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
      * [详细描述]:<br/>
      *
      * @param message :
-     * llxiao  2019/4/1 - 11:38
+     *                llxiao  2019/4/1 - 11:38
      **/
-    public void pushMessage(Message message)
-    {
-        if (null != message && started.get())
-        {
+    public void pushMessage(Message message) {
+        if (null != message && started.get()) {
             channel.writeAndFlush(message);
         }
     }
 
-    private void login()
-    {
+    private void login() {
         Message message = new Message();
         message.setCommand(CommandEnum.LOGIN.getStatus());
         message.setServerPort(configClientProperties.getServerPort());
@@ -115,33 +107,26 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
      * @param uri
      * @return
      */
-    private String parseHost(String uri)
-    {
+    private String parseHost(String uri) {
         URL url = null;
-        try
-        {
+        try {
             url = new URL(uri);
-        }
-        catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             log.error("解析地址错误!");
         }
         return url.getHost();
     }
 
-    private void init()
-    {
+    private void init() {
         reConnectExecutor = new ScheduledThreadPoolExecutor(1, NamedThreadFactory
                 .create("Netty client reconnect-", true));
         EventLoopGroup group = new NioEventLoopGroup();
 
         boot = new Bootstrap();
         boot.group(group).channel(NioSocketChannel.class).option(ChannelOption.TCP_NODELAY, true);
-        boot.handler(new ChannelInitializer<Channel>()
-        {
+        boot.handler(new ChannelInitializer<Channel>() {
             @Override
-            protected void initChannel(Channel channel) throws Exception
-            {
+            protected void initChannel(Channel channel) throws Exception {
                 ChannelPipeline pipeline = channel.pipeline();
                 //监听读写动作，10S后无服务器响应信息，4S后无客户端写动作，触发userEventTriggered发起心跳
                 pipeline.addLast(new IdleStateHandler(10, 4, 0));
@@ -156,37 +141,29 @@ public class NettyClient implements ApplicationListener<ContextRefreshedEvent>, 
         });
     }
 
-    private void connect()
-    {
+    private void connect() {
         log.info(">>> 客户端建立netty 连接，服务端-IP:{},Port:{}....", nettyServerHost, nettyServerPort);
-        try
-        {
+        try {
             final ChannelFuture sync = boot.connect(nettyServerHost, nettyServerPort).sync();
             channel = sync.channel();
             started.set(sync.isSuccess());
             login();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error(">>> 连接服务端异常，等待重连....", e);
         }
     }
 
-    private void check()
-    {
+    private void check() {
 
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug(">>> 执行检测任务.....");
         }
 
-        if (!started.get())
-        {
+        if (!started.get()) {
             log.info(">>> 执行客户端重连操作...");
             connect();
 
-            if (started.get())
-            {
+            if (started.get()) {
                 //重连成功后再次刷新下配置文件
                 refresher.refresh();
             }

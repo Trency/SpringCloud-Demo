@@ -31,31 +31,26 @@ import java.util.concurrent.TimeUnit;
  * @since Purcotton-Search B01
  */
 @Service
-public class SearchLogServiceImpl implements ISearchLogService
-{
+public class SearchLogServiceImpl implements ISearchLogService {
     /**
      * 日志记录
      */
     private static final Log LOG = LogFactory.getLog(SearchLogServiceImpl.class);
-
-    /**
-     * 最大1千个有界队列
-     */
-    private final ArrayBlockingQueue<SearchLogDo> queue = new ArrayBlockingQueue<>(1000);
-
     /**
      * 批处理数量
      */
     private static final int BATCH_SIZE = 20;
-
+    /**
+     * 最大1千个有界队列
+     */
+    private final ArrayBlockingQueue<SearchLogDo> queue = new ArrayBlockingQueue<>(1000);
     /**
      * 定时执行任务
      */
     private ScheduledExecutorService schedule = new ScheduledThreadPoolExecutor(5, new SearchThreadFactory());
 
     @PostConstruct
-    public void init()
-    {
+    public void init() {
         // 这个是按照固定的时间来执行，简单来说：到点执行
         // initialDelay延迟时间 period周期时间 每个60秒 延迟10秒执行一个线程
         schedule.scheduleAtFixedRate(new BatchSaveSearchLogThread(queue, BATCH_SIZE), 10, 60, TimeUnit.SECONDS);
@@ -70,10 +65,8 @@ public class SearchLogServiceImpl implements ISearchLogService
      * @see
      */
     @Override
-    public void addSearchLog(SearchLogDo searchLog)
-    {
-        if (!queue.offer(searchLog))
-        {
+    public void addSearchLog(SearchLogDo searchLog) {
+        if (!queue.offer(searchLog)) {
             // 饱和策略
             LOG.warn("日志队列已满...................");
         }
@@ -84,8 +77,7 @@ public class SearchLogServiceImpl implements ISearchLogService
      * [详细描述]:<br/>
      */
     @PreDestroy
-    public void destroy()
-    {
+    public void destroy() {
         schedule.shutdown();
     }
 }

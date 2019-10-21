@@ -2,24 +2,25 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta content="webkit|ie-comp|ie-stand" name="renderer">
+    <meta content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"
+          name="viewport"/>
     <title>用户中心</title>
-    <link rel="shortcut icon" href="/favicon.ico"/>
-    <link rel="bookmark" href="/favicon.ico"/>
-    <script type="text/javascript" src="plugin/babel/polyfill.min.js" ></script>
-    <script type="text/javascript" src="plugin/common/env.js" ></script>
-    <script type="text/javascript" src="plugin/jquery/3.3.1/jquery.min.js" ></script>
-    <script type="text/javascript" src="plugin/common/common.js" ></script>
-    <link rel="stylesheet" type="text/css" href="plugin/element/styles/index.css" />
-    <script type="text/javascript" src="plugin/iview/js/vue.min.js" ></script>
-    <script type="text/javascript" src="plugin/element/js/index.js" ></script>
-    <script type="text/javascript" src="plugin/jquery/jquery.history.js" ></script>
-    <script type="text/javascript" src="plugin/mock/mock-min.js"></script>
-    <script type="text/javascript" src="mock/mock.js"></script>
-    <script type="text/javascript" src="mock/index.js"></script>
-    <link rel="stylesheet" type="text/css" href="pages/index/index.css" />
-    <link rel="stylesheet" type="text/css" href="plugin/element/styles/fonts/iconfont.css" />
+    <link href="/favicon.ico" rel="shortcut icon"/>
+    <link href="/favicon.ico" rel="bookmark"/>
+    <script src="plugin/babel/polyfill.min.js" type="text/javascript"></script>
+    <script src="plugin/common/env.js" type="text/javascript"></script>
+    <script src="plugin/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    <script src="plugin/common/common.js" type="text/javascript"></script>
+    <link href="plugin/element/styles/index.css" rel="stylesheet" type="text/css"/>
+    <script src="plugin/iview/js/vue.min.js" type="text/javascript"></script>
+    <script src="plugin/element/js/index.js" type="text/javascript"></script>
+    <script src="plugin/jquery/jquery.history.js" type="text/javascript"></script>
+    <script src="plugin/mock/mock-min.js" type="text/javascript"></script>
+    <script src="mock/mock.js" type="text/javascript"></script>
+    <script src="mock/index.js" type="text/javascript"></script>
+    <link href="pages/index/index.css" rel="stylesheet" type="text/css"/>
+    <link href="plugin/element/styles/fonts/iconfont.css" rel="stylesheet" type="text/css"/>
     <!-- UE -->
     <!--<script type="text/javascript" src="plugin/ueditor/UE/ueditor.config.js" ></script>-->
     <!--<script type="text/javascript" src="plugin/ueditor/UE/ueditor.all.js" ></script>-->
@@ -37,87 +38,88 @@
 
 </head>
 
-<body >
-    <div id="app" class="main" >
-        <el-container >
-            <el-aside :width="menuWidth+'px'" class="main-aside" >
-                <el-scrollbar :wrap-style="wrapStyle" view-class="view-box" :native="false" >
-                    <el-menu :default-active="activeName" :default-openeds="openedNames" @select="menuSelect"
-                             background-color="#383e4b" :collapse-transition="false"
-                             text-color="#fff" ref="elMenu"
-                             active-text-color="#ffd04b" :collapse="collapsed" >
-                        <template v-for="item in menuList" >
-                            <el-submenu :index="item.menuId" v-if="item.children && item.children.length" >
-                                <template slot="title">
-                                    <i v-if="item.iconCls" :class="item.iconCls"></i>
-                                    <span slot="title" v-text="item.name" ></span>
-                                </template>
-                                <el-menu-item :index="sub.menuId" v-for="sub in item.children">
-                                    <i v-if="sub.iconCls" :class="sub.iconCls"></i>
-                                    <span slot="title" :title="sub.name" v-text="sub.name" ></span>
-                                </el-menu-item>
-                            </el-submenu>
-                            <el-menu-item v-else :index="item.menuId" >
-                                <i v-if="item.iconCls" :class="item.iconCls"></i>
-                                <span slot="title" :title="item.name" v-text="item.name" ></span>
+<body>
+<div class="main" id="app">
+    <el-container>
+        <el-aside :width="menuWidth+'px'" class="main-aside">
+            <el-scrollbar :native="false" :wrap-style="wrapStyle" view-class="view-box">
+                <el-menu :collapse="collapsed" :collapse-transition="false" :default-active="activeName"
+                         :default-openeds="openedNames" @select="menuSelect"
+                         active-text-color="#ffd04b" background-color="#383e4b"
+                         ref="elMenu" text-color="#fff">
+                    <template v-for="item in menuList">
+                        <el-submenu :index="item.menuId" v-if="item.children && item.children.length">
+                            <template slot="title">
+                                <i :class="item.iconCls" v-if="item.iconCls"></i>
+                                <span slot="title" v-text="item.name"></span>
+                            </template>
+                            <el-menu-item :index="sub.menuId" v-for="sub in item.children">
+                                <i :class="sub.iconCls" v-if="sub.iconCls"></i>
+                                <span :title="sub.name" slot="title" v-text="sub.name"></span>
                             </el-menu-item>
-                        </template>
-                    </el-menu>
-                </el-scrollbar>
-                <div class="close-menu" @click="closeMenu" >
-                   <div>
-                       <i class="el-icon-d-arrow-left" v-if="!collapsed" ></i>
-                       <i class="el-icon-d-arrow-right" v-if="collapsed" ></i>
-                   </div>
+                        </el-submenu>
+                        <el-menu-item :index="item.menuId" v-else>
+                            <i :class="item.iconCls" v-if="item.iconCls"></i>
+                            <span :title="item.name" slot="title" v-text="item.name"></span>
+                        </el-menu-item>
+                    </template>
+                </el-menu>
+            </el-scrollbar>
+            <div @click="closeMenu" class="close-menu">
+                <div>
+                    <i class="el-icon-d-arrow-left" v-if="!collapsed"></i>
+                    <i class="el-icon-d-arrow-right" v-if="collapsed"></i>
                 </div>
-            </el-aside>
-            <el-main style="padding:0px;margin:0px;">
-                <el-container>
-                    <el-header style="padding:0px;height: 40px;width: 100%">
-                        <div class="tag-nav-wrapper" >
-                            <tags-nav ref="tagsNav" :value="activeName"  :list="tagNavList" @close="closeNav" @click="handTags" />
-                        </div>
-                    </el-header>
-                    <el-scrollbar :wrap-style="'height:'+(pageHeight-40)+'px;'"  view-class="view-box" :native="false" >
-                        <el-main>
-                            <transition name="fade" mode="out-in" appear>
-                                <keep-alive :include="cacheList" >
-                                    <component ref="moduleComp" :is="componentId"  ></component>
-                                </keep-alive>
-                            </transition>
-                        </el-main>
-                    </el-scrollbar>
-                </el-container>
-            </el-main>
-        </el-container>
-    </div>
-
-    <!-- 组件注册装置 -->
-    <div id="componentRegister" style="display: none;" ></div>
-
-    <script type="text/x-template" id="tags-nav">
-        <div class="tags-nav">
-            <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handleMouseScroll" @mousewheel="handleMouseScroll">
-                <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px',padding:'0px'}">
-                    <div class="nav-tag-body" >
-                        <el-tag style="margin:3px 1px;cursor: pointer;"
-                                v-for="item in list"
-                                :key="item.name"
-                                :closable="item.menuId != '#1'"
-                                :name="item.menuId "
-                                @click.native="$emit('click',item)" @close="$emit('close',item)"
-                                :type="value == item.menuId ? '':'info' " >
-                            <i v-if="item.iconCls" :class="item.iconCls"></i>
-                            {{item.name}}
-                        </el-tag>
+            </div>
+        </el-aside>
+        <el-main style="padding:0px;margin:0px;">
+            <el-container>
+                <el-header style="padding:0px;height: 40px;width: 100%">
+                    <div class="tag-nav-wrapper">
+                        <tags-nav :list="tagNavList" :value="activeName" @click="handTags" @close="closeNav"
+                                  ref="tagsNav"/>
                     </div>
+                </el-header>
+                <el-scrollbar :native="false" :wrap-style="'height:'+(pageHeight-40)+'px;'" view-class="view-box">
+                    <el-main>
+                        <transition appear mode="out-in" name="fade">
+                            <keep-alive :include="cacheList">
+                                <component :is="componentId" ref="moduleComp"></component>
+                            </keep-alive>
+                        </transition>
+                    </el-main>
+                </el-scrollbar>
+            </el-container>
+        </el-main>
+    </el-container>
+</div>
+
+<!-- 组件注册装置 -->
+<div id="componentRegister" style="display: none;"></div>
+
+<script id="tags-nav" type="text/x-template">
+    <div class="tags-nav">
+        <div class="scroll-outer" ref="scrollOuter" @DOMMouseScroll="handleMouseScroll" @mousewheel="handleMouseScroll">
+            <div ref="scrollBody" class="scroll-body" :style="{left: tagBodyLeft + 'px',padding:'0px'}">
+                <div class="nav-tag-body">
+                    <el-tag style="margin:3px 1px;cursor: pointer;"
+                            v-for="item in list"
+                            :key="item.name"
+                            :closable="item.menuId != '#1'"
+                            :name="item.menuId "
+                            @click.native="$emit('click',item)" @close="$emit('close',item)"
+                            :type="value == item.menuId ? '':'info' ">
+                        <i v-if="item.iconCls" :class="item.iconCls"></i>
+                        {{item.name}}
+                    </el-tag>
                 </div>
             </div>
         </div>
-    </script>
+    </div>
+</script>
 
-    <!-- 页面脚本 -->
-    <script type="text/javascript" src="pages/index/compents.js"></script>
-    <script type="text/javascript" src="pages/index/index.js"></script>
+<!-- 页面脚本 -->
+<script src="pages/index/compents.js" type="text/javascript"></script>
+<script src="pages/index/index.js" type="text/javascript"></script>
 </body>
 </html>

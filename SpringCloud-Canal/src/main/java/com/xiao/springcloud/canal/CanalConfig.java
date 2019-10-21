@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Data
-public class CanalConfig
-{
+public class CanalConfig {
     @Value("${spring.cache.server.cluster:false}")
     private boolean cluster;
 

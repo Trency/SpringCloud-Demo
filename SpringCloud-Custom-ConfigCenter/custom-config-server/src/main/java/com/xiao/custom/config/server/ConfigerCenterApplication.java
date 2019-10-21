@@ -16,10 +16,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @SpringBootApplication(scanBasePackages = "com.xiao.custom.config")
 @CustomEnableConfigServer
 @EnableEurekaServer
-public class ConfigerCenterApplication
-{
-    public static void main(String[] args)
-    {
+public class ConfigerCenterApplication {
+    public static void main(String[] args) {
         SpringApplication.run(ConfigerCenterApplication.class, args);
     }
 }

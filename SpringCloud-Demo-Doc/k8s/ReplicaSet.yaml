@@ -12,7 +12,7 @@ spec:
   replicas: 3
   selector:
     #matchLabels:  # 使用matchLabels 简单选择器
-      #app: kubia
+    #app: kubia
     matchExpressions:  ## 标表达式选择器 ,可以有多个表达式
       - key: app  #要求该pod包含标签app，且标签的值必须是kubia
         operator: In  #运算符：In NotIn Exists DoesNotExists

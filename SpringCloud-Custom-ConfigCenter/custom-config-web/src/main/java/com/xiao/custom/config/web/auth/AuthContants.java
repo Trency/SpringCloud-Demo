@@ -8,8 +8,7 @@ package com.xiao.custom.config.web.auth;
  * @version 1.0, 2019/5/9 14:55
  * @since JDK 1.8
  */
-public interface AuthContants
-{
+public interface AuthContants {
     /**
      * 自定义token头
      */

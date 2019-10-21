@@ -8,8 +8,7 @@ package com.xiao.custom.config.server.manager;
  * @version 1.0, 2019/1/28 11:26
  * @since JDK 1.8
  */
-public interface ClientManagerService
-{
+public interface ClientManagerService {
     /**
      * 在线
      */
@@ -24,10 +23,10 @@ public interface ClientManagerService
      * [详细描述]:<br/>
      *
      * @param serviceName : 应用名
-     * @param profile: 应用环境
-     * @param hostIp : 应用对应服务的IP
-     * @param hostPort : 应用对应服务的端口
-     * llxiao  2019/1/28 - 11:38
+     * @param profile:    应用环境
+     * @param hostIp      : 应用对应服务的IP
+     * @param hostPort    : 应用对应服务的端口
+     *                    llxiao  2019/1/28 - 11:38
      **/
     void setClientHost(String serviceName, String profile, String hostIp, int hostPort);
 
@@ -35,10 +34,10 @@ public interface ClientManagerService
      * [简要描述]:更新状态<br/>
      * [详细描述]:<br/>
      *
-     * @param hostIp : 客户端IP
+     * @param hostIp    : 客户端IP
      * @param nettyPort : 客户端PORT
-     * @param status : 0在线，1离线
-     * llxiao  2019/4/1 - 10:34
+     * @param status    : 0在线，1离线
+     *                  llxiao  2019/4/1 - 10:34
      **/
     void updateStatus(String hostIp, int nettyPort, int status);
 
@@ -46,9 +45,9 @@ public interface ClientManagerService
      * [简要描述]:更新应用的服务信息与NETTY连接的IP信息<br/>
      * [详细描述]:<br/>
      *
-     * @param hostIp :
-     * @param hostPort :
-     * @param nettyPort :
+     * @param hostIp      :
+     * @param hostPort    :
+     * @param nettyPort   :
      * @param nettyHostIp :
      * @return void
      * llxiao  2019/4/1 - 11:49

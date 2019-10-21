@@ -12,18 +12,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class LombokPlugin extends PluginAdapter
-{
+public class LombokPlugin extends PluginAdapter {
 
     @Override
-    public boolean validate(List<String> list)
-    {
+    public boolean validate(List<String> list) {
         return true;
     }
 
     @Override
-    public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable)
-    {
+    public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         //添加domain的import
         topLevelClass.addImportedType("lombok.Data");
         topLevelClass.addImportedType("lombok.Builder");
@@ -45,8 +42,7 @@ public class LombokPlugin extends PluginAdapter
 
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass,
-            IntrospectedTable introspectedTable)
-    {
+                                   IntrospectedTable introspectedTable) {
         //Mapper文件的注释
         interfaze.addJavaDocLine("/**");
         interfaze.addJavaDocLine("* Created by Mybatis Generator on " + date2Str(new Date()));
@@ -56,30 +52,26 @@ public class LombokPlugin extends PluginAdapter
 
     @Override
     public boolean modelSetterMethodGenerated(Method method, TopLevelClass topLevelClass,
-            IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType)
-    {
+                                              IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         //不生成getter
         return false;
     }
 
     @Override
     public boolean modelGetterMethodGenerated(Method method, TopLevelClass topLevelClass,
-            IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType)
-    {
+                                              IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         //不生成setter
         return false;
     }
 
     @Override
     public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
-            IntrospectedTable introspectedTable, ModelClassType modelClassType)
-    {
+                                       IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         field.addJavaDocLine("//" + introspectedColumn.getRemarks());
         return true;
     }
 
-    private String date2Str(Date date)
-    {
+    private String date2Str(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         return sdf.format(date);
     }

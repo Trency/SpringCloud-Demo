@@ -24,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = Constants.CONFIG_SERVICE)
 @RequestMapping("/application")
-public interface ApplicationFeign
-{
+public interface ApplicationFeign {
     /**
      * [简要描述]:分页获取<br/>
      * [详细描述]:<br/>
@@ -97,7 +96,7 @@ public interface ApplicationFeign
      * [详细描述]:<br/>
      *
      * @param groupIds :
-     * @param appId :
+     * @param appId    :
      * @return java.lang.Boolean
      * jun.liu  2018/11/28 - 15:39
      **/
@@ -120,7 +119,7 @@ public interface ApplicationFeign
      * [详细描述]:<br/>
      *
      * @param groupIds :
-     * @param appId :
+     * @param appId    :
      * @return java.lang.Boolean
      * llxiao  2019/1/2 - 14:48
      **/

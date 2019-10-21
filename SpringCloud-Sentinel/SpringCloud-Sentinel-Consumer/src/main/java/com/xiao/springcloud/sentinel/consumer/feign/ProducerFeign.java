@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Component
 @FeignClient(name = "sentinel-producer-service", fallback = ProducerFeignFallBack.class, configuration = FeignConfiguration.class)
 @RequestMapping("/api")
-public interface ProducerFeign
-{
+public interface ProducerFeign {
     @RequestMapping("/timeout")
     String timeout(@RequestParam("input") String input);
 

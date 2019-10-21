@@ -23,8 +23,7 @@ import java.io.IOException;
  * @since JDK 1.8
  */
 @Slf4j
-public class FastJsonCodec implements Codec
-{
+public class FastJsonCodec implements Codec {
 
     public static final FastJsonCodec INSTANCE = new FastJsonCodec();
     private Encoder encoder = null;
@@ -32,15 +31,11 @@ public class FastJsonCodec implements Codec
     private Encoder keyEncoder = null;
     private Decoder<Object> keyDecoder = null;
 
-    public FastJsonCodec()
-    {
-        this.encoder = new Encoder()
-        {
-            public ByteBuf encode(Object in) throws IOException
-            {
+    public FastJsonCodec() {
+        this.encoder = new Encoder() {
+            public ByteBuf encode(Object in) throws IOException {
                 ByteBuf out = ByteBufAllocator.DEFAULT.buffer();
-                try
-                {
+                try {
                     SerializerObject serial = new SerializerObject(in);
                     ByteBufOutputStream os = new ByteBufOutputStream(out);
 
@@ -49,46 +44,35 @@ public class FastJsonCodec implements Codec
                             SerializerFeature.WriteClassName,//写入类名便于序列化解析
                             SerializerFeature.WriteNullStringAsEmpty);
                     return os.buffer();
-                }
-                catch (IOException var4)
-                {
+                } catch (IOException var4) {
                     out.release();
                     throw var4;
                 }
             }
         };
-        this.decoder = new Decoder<Object>()
-        {
-            public Object decode(ByteBuf buf, State state) throws IOException
-            {
+        this.decoder = new Decoder<Object>() {
+            public Object decode(ByteBuf buf, State state) throws IOException {
                 SerializerObject serial = JSON.parseObject(new ByteBufInputStream(buf), SerializerObject.class);
                 return serial.getValue();
             }
         };
 
-        this.keyEncoder = new Encoder()
-        {
-            public ByteBuf encode(Object in) throws IOException
-            {
+        this.keyEncoder = new Encoder() {
+            public ByteBuf encode(Object in) throws IOException {
                 ByteBuf out = ByteBufAllocator.DEFAULT.buffer();
-                try
-                {
+                try {
                     ByteBufOutputStream os = new ByteBufOutputStream(out);
                     JSON.writeJSONString(os, in);
                     return os.buffer();
-                }
-                catch (IOException var4)
-                {
+                } catch (IOException var4) {
                     out.release();
                     throw var4;
                 }
             }
         };
 
-        this.keyDecoder = new Decoder<Object>()
-        {
-            public Object decode(ByteBuf buf, State state) throws IOException
-            {
+        this.keyDecoder = new Decoder<Object>() {
+            public Object decode(ByteBuf buf, State state) throws IOException {
                 return JSON.parseObject(new ByteBufInputStream(buf), String.class);
             }
         };
@@ -96,38 +80,32 @@ public class FastJsonCodec implements Codec
     }
 
     @Override
-    public Decoder<Object> getMapValueDecoder()
-    {
+    public Decoder<Object> getMapValueDecoder() {
         return decoder;
     }
 
     @Override
-    public Encoder getMapValueEncoder()
-    {
+    public Encoder getMapValueEncoder() {
         return encoder;
     }
 
     @Override
-    public Decoder<Object> getMapKeyDecoder()
-    {
+    public Decoder<Object> getMapKeyDecoder() {
         return keyDecoder;
     }
 
     @Override
-    public Encoder getMapKeyEncoder()
-    {
+    public Encoder getMapKeyEncoder() {
         return keyEncoder;
     }
 
     @Override
-    public Decoder<Object> getValueDecoder()
-    {
+    public Decoder<Object> getValueDecoder() {
         return decoder;
     }
 
     @Override
-    public Encoder getValueEncoder()
-    {
+    public Encoder getValueEncoder() {
         return encoder;
     }
 

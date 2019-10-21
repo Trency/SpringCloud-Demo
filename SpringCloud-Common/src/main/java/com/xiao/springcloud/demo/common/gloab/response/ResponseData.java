@@ -49,6 +49,30 @@ public class ResponseData implements Serializable {
         this.data = data;
     }
 
+    public static SuccessResponseData success() {
+        return new SuccessResponseData(null);
+    }
+
+    public static SuccessResponseData success(Object data) {
+        return new SuccessResponseData(data);
+    }
+
+    public static SuccessResponseData success(Integer code, String message, Object data) {
+        return new SuccessResponseData(code, message, data);
+    }
+
+    public static ErrorResponseData error(String message) {
+        return new ErrorResponseData(message);
+    }
+
+    public static ErrorResponseData error(Integer code, String message) {
+        return new ErrorResponseData(code, message);
+    }
+
+    public static ErrorResponseData error(Integer code, String message, Object object) {
+        return new ErrorResponseData(code, message, object);
+    }
+
     public Boolean getSuccess() {
         return success;
     }
@@ -79,29 +103,5 @@ public class ResponseData implements Serializable {
 
     public void setCode(Integer code) {
         this.code = code;
-    }
-
-    public static SuccessResponseData success() {
-        return new SuccessResponseData(null);
-    }
-
-    public static SuccessResponseData success(Object data) {
-        return new SuccessResponseData(data);
-    }
-
-    public static SuccessResponseData success(Integer code, String message, Object data) {
-        return new SuccessResponseData(code, message, data);
-    }
-
-    public static ErrorResponseData error(String message) {
-        return new ErrorResponseData(message);
-    }
-
-    public static ErrorResponseData error(Integer code, String message) {
-        return new ErrorResponseData(code, message);
-    }
-
-    public static ErrorResponseData error(Integer code, String message, Object object) {
-        return new ErrorResponseData(code, message, object);
     }
 }

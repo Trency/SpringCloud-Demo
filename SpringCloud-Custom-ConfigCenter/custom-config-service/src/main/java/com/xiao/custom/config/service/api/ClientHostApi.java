@@ -22,8 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/clientInfo")
 @Slf4j
-public class ClientHostApi
-{
+public class ClientHostApi {
     @Autowired
     private ClientHostService clientHostService;
 
@@ -34,8 +33,7 @@ public class ClientHostApi
      * @return
      */
     @RequestMapping("/page")
-    public PageInfo<ClientHostInfoDto> pageQuery(@RequestBody ClientHostInfoQuery query)
-    {
+    public PageInfo<ClientHostInfoDto> pageQuery(@RequestBody ClientHostInfoQuery query) {
         return clientHostService.pageQuery(query);
     }
 
@@ -48,14 +46,10 @@ public class ClientHostApi
      * llxiao  2019/3/27 - 15:46
      **/
     @RequestMapping("/del")
-    public boolean deleteById(@RequestParam("id") Long id)
-    {
-        if (null != id)
-        {
+    public boolean deleteById(@RequestParam("id") Long id) {
+        if (null != id) {
             clientHostService.delete(id);
-        }
-        else
-        {
+        } else {
             return false;
         }
 

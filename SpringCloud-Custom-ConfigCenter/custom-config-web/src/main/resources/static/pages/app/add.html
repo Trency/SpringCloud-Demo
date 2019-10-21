@@ -1,46 +1,47 @@
 <template>
     <div>
-        <el-tabs value="base" type="border-card">
-            <el-tab-pane label="基本信息" name="base" :style="tabStyle">
-                <el-form ref="appData" :model="appData" label-width="100px" :rules="rules">
-                    <el-form-item label="应用名" required prop="application">
-                        <el-input v-model="appData.application" style="width:400px;" clearable placeholder="请输入应用名"></el-input>
+        <el-tabs type="border-card" value="base">
+            <el-tab-pane :style="tabStyle" label="基本信息" name="base">
+                <el-form :model="appData" :rules="rules" label-width="100px" ref="appData">
+                    <el-form-item label="应用名" prop="application" required>
+                        <el-input clearable placeholder="请输入应用名" style="width:400px;"
+                                  v-model="appData.application"></el-input>
                     </el-form-item>
                     <el-form-item label="标签">
-                        <el-input v-model="appData.label" style="width:400px;" placeholder="默认master"></el-input>
+                        <el-input placeholder="默认master" style="width:400px;" v-model="appData.label"></el-input>
                     </el-form-item>
-                    <el-form-item label="选择环境" required prop="profile">
-                        <el-select v-model="appData.profile" placeholder="请选择环境" style="width:230px;" clearable>
+                    <el-form-item label="选择环境" prop="profile" required>
+                        <el-select clearable placeholder="请选择环境" style="width:230px;" v-model="appData.profile">
                             <el-option label="开发环境" value="dev"></el-option>
                             <el-option label="测试环境" value="test"></el-option>
                             <el-option label="生产环境" value="prod"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="选择区域" required prop="region">
-                        <el-select v-model="appData.region" clearable placeholder="请选择区域" clearable>
+                    <el-form-item label="选择区域" prop="region" required>
+                        <el-select clearable clearable placeholder="请选择区域" v-model="appData.region">
                             <el-option
-                                    v-for="region in regions"
                                     :key="region.value"
                                     :label="region.label"
-                                    :value="region.value">
+                                    :value="region.value"
+                                    v-for="region in regions">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <!--<el-form-item label="关联配置">-->
-                        <!--<el-button type="primary" icon="el-icon-setting" size="small" @click="relation">选择配置项组-->
-                        <!--</el-button>-->
+                    <!--<el-button type="primary" icon="el-icon-setting" size="small" @click="relation">选择配置项组-->
+                    <!--</el-button>-->
                     <!--</el-form-item>-->
-                    <el-form-item label="应用描述" prop="applicationName" clearable>
-                        <el-input v-model="appData.applicationName" style="width:400px;"></el-input>
+                    <el-form-item clearable label="应用描述" prop="applicationName">
+                        <el-input style="width:400px;" v-model="appData.applicationName"></el-input>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
             <div style="padding: 10px;">
                 <el-button-group>
-                    <el-button ref="submit" type="primary" icon="el-icon-check" size="small" @click="submit('appData')">
+                    <el-button @click="submit('appData')" icon="el-icon-check" ref="submit" size="small" type="primary">
                         保存
                     </el-button>
-                    <el-button type="error" icon="el-icon-close" size="small" @click="App.closeCurrentTagNav()">取消
+                    <el-button @click="App.closeCurrentTagNav()" icon="el-icon-close" size="small" type="error">取消
                     </el-button>
                 </el-button-group>
             </div>
@@ -49,4 +50,4 @@
     </div>
 
 </template>
-<script type="text/javascript" src="pages/app/add.js"></script>
+<script src="pages/app/add.js" type="text/javascript"></script>

@@ -8,8 +8,7 @@ package com.xiao.springcloud.demo.common.disruptor.data;
  * @version 1.0, 2019/6/4 08:43
  * @since JDK 1.8
  */
-public enum EventEnum
-{
+public enum EventEnum {
     /**
      * 日志事件
      */
@@ -17,13 +16,11 @@ public enum EventEnum
 
     private String event;
 
-    EventEnum(String event)
-    {
+    EventEnum(String event) {
         this.event = event;
     }
 
-    public String getEvent()
-    {
+    public String getEvent() {
         return event;
     }
-    }
+}

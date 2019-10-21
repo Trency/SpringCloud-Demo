@@ -10,8 +10,7 @@ import com.xiao.custom.config.pojo.entity.ApplicationItemGroupRelation;
  * @version 1.0, 2018/11/27 08:58
  * @since JDK 1.8
  */
-public interface ApplicationItemGroupRelationService
-{
+public interface ApplicationItemGroupRelationService {
     Integer save(ApplicationItemGroupRelation applicationItemGroupRelation);
 
     Integer update(ApplicationItemGroupRelation applicationItemGroupRelation);

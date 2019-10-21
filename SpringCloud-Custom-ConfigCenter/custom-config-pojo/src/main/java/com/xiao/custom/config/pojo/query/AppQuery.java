@@ -12,8 +12,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class AppQuery extends BaseQuery
-{
+public class AppQuery extends BaseQuery {
     //应用
     private String application;
 

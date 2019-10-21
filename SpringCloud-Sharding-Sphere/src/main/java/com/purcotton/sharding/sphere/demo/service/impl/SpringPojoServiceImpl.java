@@ -20,8 +20,7 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional
-public class SpringPojoServiceImpl extends BasisCommonService
-{
+public class SpringPojoServiceImpl extends BasisCommonService {
     @Resource
     private OrderRepository orderRepository;
 
@@ -29,26 +28,22 @@ public class SpringPojoServiceImpl extends BasisCommonService
     private OrderItemRepository orderItemRepository;
 
     @Override
-    protected OrderRepository getOrderRepository()
-    {
+    protected OrderRepository getOrderRepository() {
         return orderRepository;
     }
 
     @Override
-    protected OrderItemRepository getOrderItemRepository()
-    {
+    protected OrderItemRepository getOrderItemRepository() {
         return orderItemRepository;
     }
 
     @Override
-    protected Order newOrder()
-    {
+    protected Order newOrder() {
         return new Order();
     }
 
     @Override
-    protected OrderItem newOrderItem()
-    {
+    protected OrderItem newOrderItem() {
         return new OrderItem();
     }
 }

@@ -16,8 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Inherited//说明子类可以继承父类中的该注解
 @Target(ElementType.METHOD)//既可以在方法上，也可以在类上
 @Documented//说明该注解将被包含在javadoc中
-public @interface LogAnnotation
-{
+public @interface LogAnnotation {
     String value() default "";
 
     /**

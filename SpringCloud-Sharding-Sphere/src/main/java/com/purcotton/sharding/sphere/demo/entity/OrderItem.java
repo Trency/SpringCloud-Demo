@@ -14,16 +14,14 @@ import java.io.Serializable;
  * @since JDK 1.8
  */
 @Data
-public class OrderItem implements Serializable
-{
+public class OrderItem implements Serializable {
     private long orderItemId;
     private long orderId;
     private int userId;
     private String status;
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
 }

@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/region")
 @Slf4j
-public class RegionController
-{
+public class RegionController {
     @Autowired
     private RegionFeign regionFeign;
 
@@ -34,8 +33,7 @@ public class RegionController
      * mjye  2018/12/20 - 15:52
      **/
     @RequestMapping(value = "/queryRegion")
-    public PageInfo<RegionDto> pageConfigItem(@RequestBody RegionQuery regionQuery)
-    {
+    public PageInfo<RegionDto> pageConfigItem(@RequestBody RegionQuery regionQuery) {
         return regionFeign.queryRegion(regionQuery);
     }
 
@@ -47,10 +45,8 @@ public class RegionController
      * mjye  2018/12/20 - 17:28
      **/
     @RequestMapping(value = "/delectRegion/{ids}")
-    public Boolean delectRegion(@PathVariable("ids") String ids)
-    {
-        if (null == ids)
-        {
+    public Boolean delectRegion(@PathVariable("ids") String ids) {
+        if (null == ids) {
             log.info("删除区域信息失败，id不能为空");
             throw new RuntimeException("参数不能为空");
         }
@@ -83,21 +79,15 @@ public class RegionController
      * mjye  2018/12/20 - 17:31
      **/
     @PostMapping(value = "/addRegion")
-    public Boolean addRegion(@RequestBody RegionDto regionDto)
-    {
-        if (null == regionDto.getId())
-        {
-            if (StringUtils.isBlank(regionDto.getRegionDesc()) || StringUtils.isBlank(regionDto.getRegionName()))
-            {
+    public Boolean addRegion(@RequestBody RegionDto regionDto) {
+        if (null == regionDto.getId()) {
+            if (StringUtils.isBlank(regionDto.getRegionDesc()) || StringUtils.isBlank(regionDto.getRegionName())) {
                 log.info("新增区域信息失败,参数不能为空");
                 throw new RuntimeException("参数不能为空");
             }
             return regionFeign.addRegion(regionDto);
-        }
-        else
-        {
-            if (StringUtils.isBlank(regionDto.getRegionDesc()) || StringUtils.isBlank(regionDto.getRegionName()))
-            {
+        } else {
+            if (StringUtils.isBlank(regionDto.getRegionDesc()) || StringUtils.isBlank(regionDto.getRegionName())) {
                 log.info("更改区域信息失败,参数不能为空");
                 throw new RuntimeException("参数不能为空");
             }

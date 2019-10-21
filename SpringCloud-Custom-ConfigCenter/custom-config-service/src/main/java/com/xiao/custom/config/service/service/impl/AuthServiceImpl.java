@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since JDK 1.8
  */
 @Service
-public class AuthServiceImpl implements AuthService
-{
+public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthMapper authMapper;
 
@@ -30,11 +29,9 @@ public class AuthServiceImpl implements AuthService
      * @return
      */
     @Override
-    public AuthUser findByUsername(String username)
-    {
+    public AuthUser findByUsername(String username) {
         AuthUser authUser = null;
-        if (StringUtils.isNotBlank(username))
-        {
+        if (StringUtils.isNotBlank(username)) {
             authUser = authMapper.findByUsername(username);
             Role role = authMapper.findRoleByUserId(authUser.getId());
             authUser.setRole(role);
@@ -50,10 +47,8 @@ public class AuthServiceImpl implements AuthService
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insert(AuthUser userDetail)
-    {
-        if (null != userDetail)
-        {
+    public void insert(AuthUser userDetail) {
+        if (null != userDetail) {
             authMapper.insert(userDetail);
         }
 
@@ -68,8 +63,7 @@ public class AuthServiceImpl implements AuthService
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int insertRole(long userId, long roleId)
-    {
+    public int insertRole(long userId, long roleId) {
         return authMapper.insertRole(userId, roleId);
     }
 
@@ -80,8 +74,7 @@ public class AuthServiceImpl implements AuthService
      * @return
      */
     @Override
-    public Role findRoleById(long roleId)
-    {
+    public Role findRoleById(long roleId) {
         return authMapper.findRoleById(roleId);
     }
 
@@ -92,8 +85,7 @@ public class AuthServiceImpl implements AuthService
      * @return
      */
     @Override
-    public Role findRoleByUserId(long userId)
-    {
+    public Role findRoleByUserId(long userId) {
         return authMapper.findRoleByUserId(userId);
     }
 }

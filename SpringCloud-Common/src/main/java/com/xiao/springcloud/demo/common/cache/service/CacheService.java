@@ -14,8 +14,7 @@ import java.util.Set;
  * @version 1.0, 2018/10/11 13:45
  * @since JDK 1.8
  */
-public interface CacheService
-{
+public interface CacheService {
 
     /**
      * [简要描述]:缓存中获取一个string<br/>
@@ -31,9 +30,9 @@ public interface CacheService
      * [简要描述]:添加一个string到缓存<br/>
      * [详细描述]:<br/>
      *
-     * @param key : K
+     * @param key   : K
      * @param value : V
-     * llxiao  2018/10/11 - 16:02
+     *              llxiao  2018/10/11 - 16:02
      **/
     void set(String key, String value);
 
@@ -42,7 +41,7 @@ public interface CacheService
      * [详细描述]:<br/>
      *
      * @param list : 批量string数据
-     * llxiao  2018/10/15 - 10:07
+     *             llxiao  2018/10/15 - 10:07
      **/
     void batchSet(List<EntryDto<String>> list);
 
@@ -50,10 +49,10 @@ public interface CacheService
      * [简要描述]:添加一个string到缓存<br/>
      * [详细描述]:<br/>
      *
-     * @param key : K
-     * @param value : V
+     * @param key       : K
+     * @param value     : V
      * @param leaseTime : 存活时间，单位秒
-     * llxiao  2018/10/11 - 16:02
+     *                  llxiao  2018/10/11 - 16:02
      **/
     void set(String key, String value, long leaseTime);
 
@@ -71,9 +70,9 @@ public interface CacheService
      * [简要描述]:添加一个对象到缓存<br/>
      * [详细描述]:<br/>
      *
-     * @param key : key
+     * @param key   : key
      * @param value : 值
-     * llxiao  2018/10/11 - 15:59
+     *              llxiao  2018/10/11 - 15:59
      **/
     <T> void setObject(String key, T value);
 
@@ -82,7 +81,7 @@ public interface CacheService
      * [详细描述]:<br/>
      *
      * @param objs : 数据集合
-     * llxiao  2018/10/15 - 10:08
+     *             llxiao  2018/10/15 - 10:08
      **/
     <T> void batchSetObj(List<EntryDto<Object>> objs);
 
@@ -90,10 +89,10 @@ public interface CacheService
      * [简要描述]:添加一个对象到缓存<br/>
      * [详细描述]:<br/>
      *
-     * @param key : key
-     * @param value : 值
+     * @param key       : key
+     * @param value     : 值
      * @param leaseTime : 存活时间，单位秒
-     * llxiao  2018/10/11 - 15:59
+     *                  llxiao  2018/10/11 - 15:59
      **/
     <T> void setObject(String key, T value, long leaseTime);
 
@@ -101,7 +100,7 @@ public interface CacheService
      * [简要描述]:从map中获取指定key的值<br/>
      * [详细描述]:<br/>
      *
-     * @param key : K
+     * @param key   : K
      * @param field : 属性名
      * @return java.lang.Object
      * llxiao  2018/10/11 - 16:23
@@ -112,10 +111,10 @@ public interface CacheService
      * [简要描述]:设置一个值到map中<br/>
      * [详细描述]:<br/>
      *
-     * @param key : K
+     * @param key   : K
      * @param field : 属性名
      * @param value : 属性值
-     * llxiao  2018/10/11 - 16:32
+     *              llxiao  2018/10/11 - 16:32
      **/
     <T> void hset(String key, String field, T value);
 
@@ -133,9 +132,9 @@ public interface CacheService
      * [简要描述]:设置map集<br/>
      * [详细描述]:<br/>
      *
-     * @param key ：key
+     * @param key  ：key
      * @param maps : 集合
-     * llxiao  2018/10/11 - 19:47
+     *             llxiao  2018/10/11 - 19:47
      **/
     <T> void hsetAll(String key, Map<String, T> maps);
 
@@ -144,7 +143,7 @@ public interface CacheService
      * [详细描述]:<br/>
      *
      * @param maps :  KEY,MAP集合
-     * llxiao  2018/10/15 - 11:16
+     *             llxiao  2018/10/15 - 11:16
      **/
     <T> void batchHset(List<EntryDto<Map<String, Object>>> maps);
 
@@ -152,9 +151,9 @@ public interface CacheService
      * [简要描述]:Set中添加一个元素<br/>
      * [详细描述]:<br/>
      *
-     * @param key : K
+     * @param key   : K
      * @param value : 值
-     * llxiao  2018/10/11 - 19:57
+     *              llxiao  2018/10/11 - 19:57
      **/
     <T> void addSet(String key, T value);
 
@@ -172,9 +171,9 @@ public interface CacheService
      * [简要描述]:Set中移除一个元素<br/>
      * [详细描述]:<br/>
      *
-     * @param key : K
+     * @param key   : K
      * @param value : 元素
-     * llxiao  2018/10/11 - 20:00
+     *              llxiao  2018/10/11 - 20:00
      **/
     <T> void removeSet(String key, T value);
 
@@ -203,7 +202,7 @@ public interface CacheService
      * [详细描述]:<br/>
      *
      * @param key : key
-     * llxiao  2018/10/15 - 14:40
+     *            llxiao  2018/10/15 - 14:40
      **/
     void delObject(String key);
 
@@ -212,7 +211,7 @@ public interface CacheService
      * [详细描述]:<br/>
      *
      * @param key : KEY
-     * llxiao  2018/10/15 - 14:41
+     *            llxiao  2018/10/15 - 14:41
      **/
     void delMap(String key);
 

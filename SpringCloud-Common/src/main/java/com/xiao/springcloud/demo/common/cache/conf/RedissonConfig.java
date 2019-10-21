@@ -21,8 +21,7 @@ import java.net.URLConnection;
 @Slf4j
 // 属性值存在该配置才会生效
 @ConditionalOnProperty(name = RedissonConfig.REDISSON_FILE_NAME)
-public class RedissonConfig
-{
+public class RedissonConfig {
     public static final String REDISSON_FILE_NAME = "redisson.fileName";
 
     @Value("${spring.cloud.config.uri:}")
@@ -36,18 +35,15 @@ public class RedissonConfig
     private String redissionFileName;
 
     // 配置中心读取ression.yml文件
-    private String getYamlFromConfig() throws IOException
-    {
+    private String getYamlFromConfig() throws IOException {
         String uri = configUrl + label + "/" + redissionFileName + "-" + profile + ".yml";
         log.info("redission配置文件uri:" + uri);
         URL url = new URL(uri);
         URLConnection connection = url.openConnection();
         StringBuilder buffer = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream())))
-        {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             String msg = null;
-            while ((msg = br.readLine()) != null)
-            {
+            while ((msg = br.readLine()) != null) {
                 buffer.append(msg).append("\r\n");
             }
         }
@@ -55,12 +51,10 @@ public class RedissonConfig
     }
 
     @Bean
-    public Config config() throws IOException
-    {
+    public Config config() throws IOException {
 
         Config config = Config.fromYAML(getYamlFromConfig());
-        if (config.isClusterConfig())
-        {
+        if (config.isClusterConfig()) {
             config.useClusterServers().setLoadBalancer(new RoundRobinLoadBalancer());
         }
 
@@ -68,8 +62,7 @@ public class RedissonConfig
     }
 
     @Bean(destroyMethod = "shutdown")
-    public RedissonClient redissonClient(Config config) throws IOException
-    {
+    public RedissonClient redissonClient(Config config) throws IOException {
         log.info("create RedissonClient, config is : {}", config.toJSON());
 
         //序列化统一使用fastjson

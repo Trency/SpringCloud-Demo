@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/auth")
 @Slf4j
-public class AuthApi
-{
+public class AuthApi {
     @Autowired
     private AuthService authService;
 
@@ -33,8 +32,7 @@ public class AuthApi
      * @return
      */
     @RequestMapping("/findByUsername")
-    public AuthUser findByUsername(@RequestParam("username") String username)
-    {
+    public AuthUser findByUsername(@RequestParam("username") String username) {
         return authService.findByUsername(username);
     }
 
@@ -44,8 +42,7 @@ public class AuthApi
      * @param userDetail
      */
     @RequestMapping("/insert")
-    public void insert(@RequestBody AuthUser userDetail)
-    {
+    public void insert(@RequestBody AuthUser userDetail) {
         authService.insert(userDetail);
     }
 
@@ -57,8 +54,7 @@ public class AuthApi
      * @return
      */
     @RequestMapping("/insertRole")
-    public int insertRole(@RequestParam("userId") long userId, @RequestParam("roleId") long roleId)
-    {
+    public int insertRole(@RequestParam("userId") long userId, @RequestParam("roleId") long roleId) {
         return authService.insertRole(userId, roleId);
     }
 
@@ -69,8 +65,7 @@ public class AuthApi
      * @return
      */
     @RequestMapping("/findRoleById")
-    public Role findRoleById(long roleId)
-    {
+    public Role findRoleById(long roleId) {
         return authService.findRoleById(roleId);
     }
 
@@ -81,8 +76,7 @@ public class AuthApi
      * @return
      */
     @RequestMapping("/findRoleByUserId")
-    public Role findRoleByUserId(long userId)
-    {
+    public Role findRoleByUserId(long userId) {
         return authService.findRoleByUserId(userId);
     }
 }

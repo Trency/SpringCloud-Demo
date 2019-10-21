@@ -10,8 +10,7 @@ import java.util.List;
 /**
  * Created by Mybatis Generator on 2018/11/23
  */
-public interface RegionMapper
-{
+public interface RegionMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(Region record);

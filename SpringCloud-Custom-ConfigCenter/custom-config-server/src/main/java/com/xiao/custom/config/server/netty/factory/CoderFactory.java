@@ -12,15 +12,12 @@ import com.xiao.custom.config.server.netty.dto.Message;
  * @version 1.0, 2019/3/30 14:31
  * @since JDK 1.8
  */
-public class CoderFactory
-{
-    public static ProtoDecoder newDecoder()
-    {
+public class CoderFactory {
+    public static ProtoDecoder newDecoder() {
         return new ProtoDecoder(Message.class);
     }
 
-    public static ProtoEncoder newEncoder()
-    {
+    public static ProtoEncoder newEncoder() {
         return new ProtoEncoder(Message.class);
     }
 }

@@ -12,12 +12,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  * @version 1.0, 2018/10/9 11:07
  * @since JDK 1.8
  */
-public class SearchTest extends SearchApplicationTest
-{
+public class SearchTest extends SearchApplicationTest {
 
     @Test
-    public void testSearch() throws Exception
-    {
+    public void testSearch() throws Exception {
         this.isPrint = true;
         String json = "{\"index\":\"purcotton\",\"keyWords\":\"棉柔巾\"}";
         ResultActions actions = this.testBasePostApi("/search/keywords", null, json)

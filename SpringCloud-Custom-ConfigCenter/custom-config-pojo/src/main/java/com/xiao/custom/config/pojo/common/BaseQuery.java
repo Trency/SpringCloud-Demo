@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class BaseQuery
-{
+public class BaseQuery {
     int pageNum = 1;
 
     int pageSize = 10;

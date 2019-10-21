@@ -3,11 +3,10 @@ spring:
     rest:
       clusterName: omni-dev-es
       hosts:
-        -
-          hostname: 192.168.206.210
+        - hostname: 192.168.206.210
           port: 9200
           schema: http
-        #-
+          #-
           #hostname: 192.168.206.212
           #port: 9200
           #schema: http

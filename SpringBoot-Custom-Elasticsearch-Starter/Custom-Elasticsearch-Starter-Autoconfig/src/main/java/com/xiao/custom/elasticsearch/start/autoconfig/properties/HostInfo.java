@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class HostInfo
-{
+public class HostInfo {
     private String hostname;
     private int port;
     private String schema;

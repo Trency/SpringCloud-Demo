@@ -15,8 +15,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfigItemGroupDto
-{
+public class ConfigItemGroupDto {
     //
     private Long id;
 
@@ -32,11 +31,9 @@ public class ConfigItemGroupDto
     //
     private Date updateTime;
 
-    public static ConfigItemGroup convertToEntity(ConfigItemGroupDto configItemGroupDto)
-    {
+    public static ConfigItemGroup convertToEntity(ConfigItemGroupDto configItemGroupDto) {
         ConfigItemGroup configItemGroup = null;
-        if (configItemGroupDto != null)
-        {
+        if (configItemGroupDto != null) {
             configItemGroup = new ConfigItemGroup();
             configItemGroup.setCreateTime(configItemGroupDto.getCreateTime());
             configItemGroup.setGroupDesc(configItemGroupDto.getGroupDesc());
@@ -47,11 +44,9 @@ public class ConfigItemGroupDto
         return configItemGroup;
     }
 
-    public static ConfigItemGroupDto convertToDto(ConfigItemGroup configItemGroup)
-    {
+    public static ConfigItemGroupDto convertToDto(ConfigItemGroup configItemGroup) {
         ConfigItemGroupDto dto = null;
-        if (configItemGroup != null)
-        {
+        if (configItemGroup != null) {
             dto = new ConfigItemGroupDto();
             dto.setCreateTime(configItemGroup.getCreateTime());
             dto.setGroupDesc(configItemGroup.getGroupDesc());

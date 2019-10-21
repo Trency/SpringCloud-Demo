@@ -11,8 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version 1.0, 2019/3/25 14:49
  * @since JDK 1.8
  */
-public class DisruptorThreadFactory implements ThreadFactory
-{
+public class DisruptorThreadFactory implements ThreadFactory {
     private static final AtomicLong THREAD_NUMBER = new AtomicLong(1);
 
     private static final ThreadGroup THREAD_GROUP = new ThreadGroup("disruptor");
@@ -21,10 +20,20 @@ public class DisruptorThreadFactory implements ThreadFactory
 
     private final String namePrefix;
 
-    private DisruptorThreadFactory(final String namePrefix, final boolean daemon)
-    {
+    private DisruptorThreadFactory(final String namePrefix, final boolean daemon) {
         this.namePrefix = namePrefix;
         DisruptorThreadFactory.daemon = daemon;
+    }
+
+    /**
+     * 自定义线程factory
+     *
+     * @param namePrefix
+     * @param daemon
+     * @return
+     */
+    public static ThreadFactory create(final String namePrefix, final boolean daemon) {
+        return new DisruptorThreadFactory(namePrefix, daemon);
     }
 
     /**
@@ -36,27 +45,13 @@ public class DisruptorThreadFactory implements ThreadFactory
      * create a thread is rejected
      */
     @Override
-    public Thread newThread(Runnable r)
-    {
+    public Thread newThread(Runnable r) {
         Thread thread = new Thread(THREAD_GROUP, r,
                 THREAD_GROUP.getName() + "-" + namePrefix + "-" + THREAD_NUMBER.getAndIncrement());
         thread.setDaemon(daemon);
-        if (thread.getPriority() != Thread.NORM_PRIORITY)
-        {
+        if (thread.getPriority() != Thread.NORM_PRIORITY) {
             thread.setPriority(Thread.NORM_PRIORITY);
         }
         return thread;
-    }
-
-    /**
-     * 自定义线程factory
-     *
-     * @param namePrefix
-     * @param daemon
-     * @return
-     */
-    public static ThreadFactory create(final String namePrefix, final boolean daemon)
-    {
-        return new DisruptorThreadFactory(namePrefix, daemon);
     }
 }

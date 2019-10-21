@@ -11,11 +11,9 @@ import com.xiao.hystrix.demo.consumer.feign.impl.ProducerFeignFallBack;
  * @since JDK 1.8
  */
 //@Configuration
-public class FeignConfiguration
-{
+public class FeignConfiguration {
     //    @Bean
-    public ProducerFeignFallBack feignFallBack()
-    {
+    public ProducerFeignFallBack feignFallBack() {
         return new ProducerFeignFallBack();
     }
 }

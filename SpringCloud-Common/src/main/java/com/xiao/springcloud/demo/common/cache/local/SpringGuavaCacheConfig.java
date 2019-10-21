@@ -17,11 +17,9 @@ import java.util.concurrent.TimeUnit;
  * @since JDK 1.8
  */
 @Configuration
-public class SpringGuavaCacheConfig
-{
+public class SpringGuavaCacheConfig {
     @Bean
-    public CacheManager cacheManager()
-    {
+    public CacheManager cacheManager() {
         GuavaCacheManager cacheManager = new GuavaCacheManager();
         cacheManager
                 // 3S过期时间，初始容量1000个，最大10000个

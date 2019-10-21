@@ -19,11 +19,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnBean(DynamicConfigSource.class)
 @Slf4j
-public class InitHystrixConfiguration
-{
+public class InitHystrixConfiguration {
     @Bean
-    public DynamicConfiguration dynamicConfiguration(DynamicConfigSource dynamicConfigSource)
-    {
+    public DynamicConfiguration dynamicConfiguration(DynamicConfigSource dynamicConfigSource) {
         log.info("初始化Hystrix 动态加载配置服务.....");
         // 延迟3000ms启动，每隔6S中执行一次，是否忽略删除配置
         DynamicConfiguration dynamicConfiguration = new DynamicConfiguration(dynamicConfigSource, new FixedDelayPollingScheduler(

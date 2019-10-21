@@ -20,7 +20,7 @@ spec:
         app: kubia  #定义标签 app=kubia
     spec:
       containers:
-      - name: kubia  # pod名称
-        image: luksa/kubia  # 所需镜像
-        ports:  #对外部指定的端口
-          - containerPort: 8080
+        - name: kubia  # pod名称
+          image: luksa/kubia  # 所需镜像
+          ports:  #对外部指定的端口
+            - containerPort: 8080

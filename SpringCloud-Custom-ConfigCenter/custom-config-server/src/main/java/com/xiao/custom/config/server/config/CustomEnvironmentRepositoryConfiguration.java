@@ -19,8 +19,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  * @since JDK 1.8
  */
 @Configuration
-public class CustomEnvironmentRepositoryConfiguration
-{
+public class CustomEnvironmentRepositoryConfiguration {
     @Autowired
     private RepositoryService repositoryService;
 
@@ -28,14 +27,12 @@ public class CustomEnvironmentRepositoryConfiguration
     private ClientManagerService clientManagerService;
 
     @Bean
-    public EnvironmentRepository environmentRepository()
-    {
+    public EnvironmentRepository environmentRepository() {
         return new CustomEnvironmentRepository(repositoryService, clientManagerService);
     }
 
     @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(JdbcTemplate template)
-    {
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplate(JdbcTemplate template) {
         return new NamedParameterJdbcTemplate(template);
     }
 

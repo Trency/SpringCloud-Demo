@@ -19,19 +19,18 @@ import java.io.IOException;
 
 /**
  * 首页转发
+ *
  * @author zhdong
  * Date 2018/8/23
  */
 @Controller
-public class IndexController
-{
+public class IndexController {
 
     @Value("${omni.channel.admin.page.index:index/index}")
     private String indexPage;
 
     @RequestMapping(value = "/")
-    public String index(HttpServletRequest req, HttpServletResponse resp) throws IOException
-    {
+    public String index(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         return indexPage;
     }
 

@@ -10,47 +10,51 @@ var App = (function ($) {
     var app = {
         MainVueApp: null,
         currentLoading: null,
-        currentMoule:null
+        currentMoule: null
     };
 
-    app.start = function(vue){
+    app.start = function (vue) {
         app.MainVueApp = new Vue(vue);
     }
 
     var localData = {};
 
     /*************** 设置本地缓存 ****************/
-    app.putData = function(key,data){
+    app.putData = function (key, data) {
         localData[key] = data;
-        try{
-            window.localStorage.setItem(localPrefix+key,JSON.stringify(data));
-        }catch (e) { console.log("存储异常："+e) }
+        try {
+            window.localStorage.setItem(localPrefix + key, JSON.stringify(data));
+        } catch (e) {
+            console.log("存储异常：" + e)
+        }
     }
-    app.getData = function(key){
+    app.getData = function (key) {
         var data = localData[key];
-        if ( !data ){
+        if (!data) {
             try {
                 data = window.localStorage.getItem(localPrefix + key);
                 if (data != null && data != undefined) {
                     return JSON.parse(data);
                 }
-            }catch (e) { console.log("存储异常："+e) }
+            } catch (e) {
+                console.log("存储异常：" + e)
+            }
         }
         return data;
     }
     /*************** 设置本地缓存 ****************/
 
-    app.removeData = function(key){
+    app.removeData = function (key) {
         delete localData[key];
         window.localStorage.removeItem(localPrefix + key);
     }
 
     /* 关闭当前页面 */
-    app.closeCurrentTagNav = function(){
-       this.MainVueApp.closeCurrentTagNav();
+    app.closeCurrentTagNav = function () {
+        this.MainVueApp.closeCurrentTagNav();
     };
 
-    app.isEmpty = function(obj){
+    app.isEmpty = function (obj) {
         return obj == null || obj == undefined || obj == "";
     }
 
@@ -58,14 +62,14 @@ var App = (function ($) {
     app.Pager = function (p) {
         p = p || {};
         //判断是什么page类型
-        if ( p.content ){
+        if (p.content) {
             //mongo类型
             this.list = p.content || [];
             this.pageNum = p.number || 1;
             this.pageSize = p.size || 10;
             this.pages = p.totalPages || 1;
             this.total = p.totalElements || 0;
-        }else{
+        } else {
             this.list = p.list || [];
             this.pageNum = p.pageNum || 1;
             this.pageSize = p.pageSize || 10;
@@ -84,14 +88,14 @@ var App = (function ($) {
         this.pages = p.totalPages || 1;
         this.total = p.totalElements || 0;
     }
-    
+
 
     /* 获取oss访问地址 */
     app.getOssAccessUrl = function (buck, key) {
         return "http://" + buck + "." + OSSAccessDomain + "/" + key;
     }
 
-    app.getPath = function(url){
+    app.getPath = function (url) {
         url = contextPath + url;
         if (url.substring(0, 2) == "//") {
             url = url.substring(1);
@@ -145,8 +149,8 @@ var App = (function ($) {
             } else {
                 moduleComp.tableAptHeight = computedHeight(headH || 0);
             }
-            if ( navigator.userAgent.indexOf("Firefox") != -1){
-                App.MainVueApp.moduleHeight = (document.body.clientHeight-60) + 'px';
+            if (navigator.userAgent.indexOf("Firefox") != -1) {
+                App.MainVueApp.moduleHeight = (document.body.clientHeight - 60) + 'px';
             }
         };
 
@@ -155,10 +159,10 @@ var App = (function ($) {
         var count_ = 0;
         $(window).off('resize').on('resize', function () {
             var self_ = ++count_;
-            if ( self_ < count_){
+            if (self_ < count_) {
                 return;
             }
-            setTimeout(work_,500)
+            setTimeout(work_, 500)
         });
     }
 
@@ -171,7 +175,7 @@ var App = (function ($) {
         }
     }
 
-    app.moule =function(compent){
+    app.moule = function (compent) {
         this.currentMoule = compent;
     }
 
@@ -206,30 +210,30 @@ var App = (function ($) {
     //弹出提示toast
     app.info = function (msg, timeout, closable) {
         this.MainVueApp.$message({
-            type:"info",
+            type: "info",
             showClose: closable || true,
-            message:msg,
-            duration: timeout || 3*1000,
+            message: msg,
+            duration: timeout || 3 * 1000,
         });
     }
 
     //弹出成功toast
     app.success = function (msg, timeout, closable) {
         this.MainVueApp.$message({
-            type:"success",
+            type: "success",
             showClose: closable || true,
-            message:msg,
-            duration: timeout || 3*1000,
+            message: msg,
+            duration: timeout || 3 * 1000,
         });
     }
 
     //弹出警告toast
     app.warning = function (msg, timeout, closable) {
         this.MainVueApp.$message({
-            type:"warning",
+            type: "warning",
             showClose: closable || true,
-            message:msg,
-            duration: timeout || 3*1000,
+            message: msg,
+            duration: timeout || 3 * 1000,
         });
     }
 
@@ -254,7 +258,7 @@ var App = (function ($) {
             dataType: "json",
             showLoad: true,
             cached: false,
-            loadArea:null,
+            loadArea: null,
             setUrl: function (url) {
                 this.url = contextPath + url;
                 if (this.url.substring(0, 2) == "//") {
@@ -292,21 +296,21 @@ var App = (function ($) {
                 return this;
             },
             beforeSend: function (xhr) {
-                if ( this.loadArea ){
-                    this.loadArea.$set(this.loadArea,'loading',true)
-                }else{
+                if (this.loadArea) {
+                    this.loadArea.$set(this.loadArea, 'loading', true)
+                } else {
                     this.showLoad && App.showLoadding(null, null, xhr);
                 }
-                this.beforeCallback && this.beforeCallback.call(this,xhr);
+                this.beforeCallback && this.beforeCallback.call(this, xhr);
                 // 设置token 本地获取token
                 var token = window.localStorage.getItem('M-Auth-Token');
                 xhr.setRequestHeader('M-Auth-Token', token);
             },
             complete: function () {
 
-                if ( this.loadArea ){
-                    this.loadArea.$set(this.loadArea,'loading',false)
-                }else{
+                if (this.loadArea) {
+                    this.loadArea.$set(this.loadArea, 'loading', false)
+                } else {
                     this.showLoad && App.hideLoading();
                 }
                 this.completeCallback && this.completeCallback();
@@ -318,7 +322,7 @@ var App = (function ($) {
                 if (res.success) {
                     //如果激活了缓存，则保存缓存
                     if ((!this.type || this.type.toLowerCase() == 'get') && this.cached) {
-                        app.requestCache.set(this.url,$.extend(true,{},res))
+                        app.requestCache.set(this.url, $.extend(true, {}, res))
                     }
                     this.successCallback && this.successCallback(res);
                 } else {
@@ -344,21 +348,18 @@ var App = (function ($) {
                 }
                 if (xhr.status == 403) {
                     app.error('您没有浏览该页面的权限');
-                }
-                else if (xhr.status == 404) {
+                } else if (xhr.status == 404) {
                     app.error('您访问的页面不存在');
-                }
-                else if (xhr.status == 500) {
+                } else if (xhr.status == 500) {
                     var dataJson = xhr.responseJSON || JSON.parse(xhr.responseText);
                     if (dataJson.message) {
                         app.error(dataJson.message);
                     } else {
                         app.error('页面内部错误，请联系管理员');
                     }
-                }
-                else if (xhr.status == 405) {
+                } else if (xhr.status == 405) {
                     app.error('请求方法错误');
-                }else{
+                } else {
                     console.log(xhr)
                     app.error('无法访问服务器，请检查网络');
                 }
@@ -411,10 +412,10 @@ var App = (function ($) {
             //判断是否从缓存中获取
             if (finalOpt.cached) {
                 var ps = finalOpt.data ? $.param(finalOpt.data) : "";
-                var key = finalOpt.url.indexOf('?') == -1 && ps ? finalOpt.url + "?" + ps :finalOpt.url + ps;
+                var key = finalOpt.url.indexOf('?') == -1 && ps ? finalOpt.url + "?" + ps : finalOpt.url + ps;
                 var exitsCache = app.requestCache.get(key);
                 if (exitsCache) {
-                    finalOpt.successCallback && finalOpt.successCallback($.extend(true,{},exitsCache));
+                    finalOpt.successCallback && finalOpt.successCallback($.extend(true, {}, exitsCache));
                     return;
                 }
             }
@@ -424,13 +425,13 @@ var App = (function ($) {
         return finalOpt;
     }
 
-    var convertParam = function(data){
-        for (var r in data){
+    var convertParam = function (data) {
+        for (var r in data) {
             var d = data[r];
             //将集合转换为正确的数组格式
-            if ( d && $.isArray(d) && d.length ){
-                d.forEach((item,i)=>{
-                    data[r+"["+i+"]"] = item;
+            if (d && $.isArray(d) && d.length) {
+                d.forEach((item, i) => {
+                    data[r + "[" + i + "]"] = item;
                 });
                 delete data[r];
             }
@@ -438,7 +439,7 @@ var App = (function ($) {
         return data;
     }
 
-    app.post = function(options, data){
+    app.post = function (options, data) {
         return app.request(options, data).post();
     }
 
@@ -454,7 +455,7 @@ var App = (function ($) {
         mainApp.addSubPageTag(tabNav);
     }
 
-    app.openResource = function(url){
+    app.openResource = function (url) {
         window.location.hash = url;
     }
 
@@ -475,7 +476,7 @@ function JS_UUID() {
     return uuid.toString(36) + "-" + rdn.toString(36);
 }
 
-Date.prototype.format = function(format) {
+Date.prototype.format = function (format) {
     var date = {
         "M+": this.getMonth() + 1,
         "d+": this.getDate(),

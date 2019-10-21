@@ -15,38 +15,32 @@ import org.springframework.stereotype.Service;
  * @since JDK 1.8
  */
 @Service
-public class ConfigItemGroupRelationServiceImpl implements ConfigItemGroupRelationService
-{
+public class ConfigItemGroupRelationServiceImpl implements ConfigItemGroupRelationService {
     @Autowired
     private ConfigItemGroupRelationMapper configItemGroupRelationMapper;
 
     @Override
-    public Integer save(ConfigItemGroupRelation configItemGroupRelation)
-    {
+    public Integer save(ConfigItemGroupRelation configItemGroupRelation) {
         return configItemGroupRelationMapper.insert(configItemGroupRelation);
     }
 
     @Override
-    public Integer update(ConfigItemGroupRelation configItemGroupRelation)
-    {
+    public Integer update(ConfigItemGroupRelation configItemGroupRelation) {
         return configItemGroupRelationMapper.updateByPrimaryKey(configItemGroupRelation);
     }
 
     @Override
-    public void delete(Long id)
-    {
+    public void delete(Long id) {
         configItemGroupRelationMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public int batchSave(String[] itemIdArr, Long groupId)
-    {
+    public int batchSave(String[] itemIdArr, Long groupId) {
         return configItemGroupRelationMapper.batchSave(itemIdArr, groupId);
     }
 
     @Override
-    public int batchDelete(String[] itemIdArr, Long groupId)
-    {
+    public int batchDelete(String[] itemIdArr, Long groupId) {
         return configItemGroupRelationMapper.batchDelete(itemIdArr, groupId);
     }
 }

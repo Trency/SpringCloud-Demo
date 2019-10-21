@@ -5,8 +5,7 @@ package com.xiao.custom.config.web.auth.util;
  * 状态码
  * Created by jt on 2018/3/8.
  */
-public enum ResultCode
-{
+public enum ResultCode {
     /*
     请求返回状态码和说明信息
      */
@@ -25,19 +24,16 @@ public enum ResultCode
     private int code;
     private String msg;
 
-    ResultCode(int code, String msg)
-    {
+    ResultCode(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
-    public int getCode()
-    {
+    public int getCode() {
         return code;
     }
 
-    public String getMsg()
-    {
+    public String getMsg() {
         return msg;
     }
 

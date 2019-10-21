@@ -17,8 +17,7 @@ import java.util.List;
  */
 @Data
 @ConfigurationProperties(prefix = ElasticsearchProperties.ELASTIC_SEARCH_PREFIX)
-public class ElasticsearchProperties
-{
+public class ElasticsearchProperties {
     public static final String ELASTIC_SEARCH_PREFIX = "spring.elasticsearch.rest";
 
     /**

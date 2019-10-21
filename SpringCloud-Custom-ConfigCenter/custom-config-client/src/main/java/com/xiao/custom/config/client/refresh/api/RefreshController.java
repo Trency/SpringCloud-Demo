@@ -1,10 +1,8 @@
 package com.xiao.custom.config.client.refresh.api;
 
 import com.xiao.custom.config.client.refresh.service.ConfigRefreshService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * [简要描述]: 配置刷新rest服务
@@ -16,14 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 //@RestController
 //@RequestMapping("/config")
-public class RefreshController
-{
+public class RefreshController {
     /**
      * 成功标识
      */
     private static final int SUCCESS = 0;
 
-//    @Autowired
+    //    @Autowired
     private ConfigRefreshService configRefreshService;
 
     /**
@@ -33,8 +30,7 @@ public class RefreshController
      * llxiao  2019/1/29 - 14:23
      **/
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
-    public int refresh()
-    {
+    public int refresh() {
         configRefreshService.refresh();
         return SUCCESS;
     }

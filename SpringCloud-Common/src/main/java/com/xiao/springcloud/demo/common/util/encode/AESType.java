@@ -15,8 +15,7 @@ package com.xiao.springcloud.demo.common.util.encode;
  * @version 1.0, 2017年3月13日
  * @since smile V100R001C00
  */
-public enum AESType
-{
+public enum AESType {
     AES_128(128),
     AES_192(192),
     AES_256(256);
@@ -26,18 +25,15 @@ public enum AESType
      */
     public int value;
 
-    AESType(int value)
-    {
+    AESType(int value) {
         this.value = value;
     }
 
-    public int getValue()
-    {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(int value)
-    {
+    public void setValue(int value) {
         this.value = value;
     }
 

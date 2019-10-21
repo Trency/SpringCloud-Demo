@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
  * @since JDK 1.8
  */
 @Service
-public class DisruptorServiceImpl implements DisruptorService
-{
+public class DisruptorServiceImpl implements DisruptorService {
     @Autowired
     ApplicationContext applicationContext;
 
@@ -26,11 +25,10 @@ public class DisruptorServiceImpl implements DisruptorService
      * [详细描述]:<br/>
      *
      * @param basisData : 待处理数据
-     * mjye  2019-04-24 - 15:32
+     *                  mjye  2019-04-24 - 15:32
      **/
     @Override
-    public void execute(BasisData basisData)
-    {
+    public void execute(BasisData basisData) {
         ServiceEvent event = new ServiceEvent(basisData, basisData.getEvent());
         applicationContext.publishEvent(event);
     }

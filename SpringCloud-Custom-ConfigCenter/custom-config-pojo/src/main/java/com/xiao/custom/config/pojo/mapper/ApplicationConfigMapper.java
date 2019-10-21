@@ -10,8 +10,7 @@ import java.util.List;
  * 应用对应的私有配置属性
  * Created by Mybatis Generator on 2019/01/07
  */
-public interface ApplicationConfigMapper
-{
+public interface ApplicationConfigMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(ApplicationConfig record);

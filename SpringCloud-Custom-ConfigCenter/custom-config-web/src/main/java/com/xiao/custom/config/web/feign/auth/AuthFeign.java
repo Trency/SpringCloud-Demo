@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(value = Constants.CONFIG_SERVICE)
 @RequestMapping(value = "/auth")
-public interface AuthFeign
-{
+public interface AuthFeign {
     /**
      * 根据用户名查找用户
      *

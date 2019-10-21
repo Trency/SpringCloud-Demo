@@ -10,9 +10,9 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8888/eureka/
-      #开启健康检查（需要spring-boot-starter-actuator依赖）
-      #healthcheck:
-       #enable: true
+        #开启健康检查（需要spring-boot-starter-actuator依赖）
+        #healthcheck:
+      #enable: true
 feign:
   #请求和响应进行GZIP压缩，以提高通信效率
   compression:
@@ -58,12 +58,12 @@ hystrix:
   command:
     default:
       #fallback:
-        # 是否关闭回退方法
-        #enable: true
+      # 是否关闭回退方法
+      #enable: true
       execution:
         #关闭超时熔断功能
         #timeout:
-         #enable: false
+        #enable: false
         isolation:
           thread:
             #设置熔断超时时间，默认1S，容易出现 fallback available 异常

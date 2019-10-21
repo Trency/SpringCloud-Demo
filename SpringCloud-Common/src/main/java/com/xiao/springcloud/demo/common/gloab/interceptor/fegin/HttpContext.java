@@ -11,21 +11,17 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author zhdong
  */
-public class HttpContext
-{
+public class HttpContext {
 
-    public static String getIp()
-    {
+    public static String getIp() {
         return HttpContext.getRequest().getRemoteHost();
     }
 
-    public static HttpServletResponse getResponse() throws NullPointerException
-    {
+    public static HttpServletResponse getResponse() throws NullPointerException {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
     }
 
-    public static HttpServletRequest getRequest() throws NullPointerException
-    {
+    public static HttpServletRequest getRequest() throws NullPointerException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
         return request;

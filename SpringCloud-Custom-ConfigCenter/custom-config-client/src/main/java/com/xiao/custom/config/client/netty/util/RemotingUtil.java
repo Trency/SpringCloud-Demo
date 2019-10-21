@@ -30,8 +30,7 @@ import java.util.Enumeration;
  * @version $Id: RemotingUtil.java, v 0.1 Mar 30, 2016 11:51:02 AM jiangping Exp $
  */
 @Slf4j
-public class RemotingUtil
-{
+public class RemotingUtil {
 
     /**
      * Parse the remote address of the channel.
@@ -39,10 +38,8 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseRemoteAddress(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseRemoteAddress(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final SocketAddress remote = channel.remoteAddress();
@@ -55,10 +52,8 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseLocalAddress(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseLocalAddress(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final SocketAddress local = channel.localAddress();
@@ -71,15 +66,12 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseRemoteIP(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseRemoteIP(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
-        if (remote != null)
-        {
+        if (remote != null) {
             return remote.getAddress().getHostAddress();
         }
         return StringUtils.EMPTY;
@@ -93,15 +85,12 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseRemoteHostName(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseRemoteHostName(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
-        if (remote != null)
-        {
+        if (remote != null) {
             return remote.getAddress().getHostName();
         }
         return StringUtils.EMPTY;
@@ -113,15 +102,12 @@ public class RemotingUtil
      * @param channel
      * @return
      */
-    public static String parseLocalIP(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static String parseLocalIP(final Channel channel) {
+        if (null == channel) {
             return StringUtils.EMPTY;
         }
         final InetSocketAddress local = (InetSocketAddress) channel.localAddress();
-        if (local != null)
-        {
+        if (local != null) {
             return local.getAddress().getHostAddress();
         }
         return StringUtils.EMPTY;
@@ -133,15 +119,12 @@ public class RemotingUtil
      * @param channel
      * @return int
      */
-    public static int parseRemotePort(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static int parseRemotePort(final Channel channel) {
+        if (null == channel) {
             return -1;
         }
         final InetSocketAddress remote = (InetSocketAddress) channel.remoteAddress();
-        if (remote != null)
-        {
+        if (remote != null) {
             return remote.getPort();
         }
         return -1;
@@ -153,15 +136,12 @@ public class RemotingUtil
      * @param channel
      * @return int
      */
-    public static int parseLocalPort(final Channel channel)
-    {
-        if (null == channel)
-        {
+    public static int parseLocalPort(final Channel channel) {
+        if (null == channel) {
             return -1;
         }
         final InetSocketAddress local = (InetSocketAddress) channel.localAddress();
-        if (local != null)
-        {
+        if (local != null) {
             return local.getPort();
         }
         return -1;
@@ -176,10 +156,8 @@ public class RemotingUtil
      * @param socketAddress
      * @return String
      */
-    public static String parseSocketAddressToString(SocketAddress socketAddress)
-    {
-        if (socketAddress != null)
-        {
+    public static String parseSocketAddressToString(SocketAddress socketAddress) {
+        if (socketAddress != null) {
             return doParse(socketAddress.toString().trim());
         }
         return StringUtils.EMPTY;
@@ -193,14 +171,11 @@ public class RemotingUtil
      * @param socketAddress
      * @return String
      */
-    public static String parseSocketAddressToHostIp(SocketAddress socketAddress)
-    {
+    public static String parseSocketAddressToHostIp(SocketAddress socketAddress) {
         final InetSocketAddress addrs = (InetSocketAddress) socketAddress;
-        if (addrs != null)
-        {
+        if (addrs != null) {
             InetAddress addr = addrs.getAddress();
-            if (null != addr)
-            {
+            if (null != addr) {
                 return addr.getHostAddress();
             }
         }
@@ -213,18 +188,13 @@ public class RemotingUtil
      * @param url
      * @return
      */
-    public static String getHost(String url)
-    {
+    public static String getHost(String url) {
         String host = "";
-        if (StringUtils.isNotBlank(url))
-        {
-            try
-            {
+        if (StringUtils.isNotBlank(url)) {
+            try {
                 URL u = new URL(url);
                 host = u.getHost();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 log.error("Url错误，获取不到主机信息!");
             }
         }
@@ -239,15 +209,11 @@ public class RemotingUtil
      * @return java.lang.String
      * llxiao  2019/4/3 - 16:52
      **/
-    public static String getLocalHost()
-    {
+    public static String getLocalHost() {
         InetAddress inetAddress = getLocalHostLANAddress();
-        if (null != inetAddress)
-        {
+        if (null != inetAddress) {
             return inetAddress.getHostName();
-        }
-        else
-        {
+        } else {
             return "";
         }
     }
@@ -259,49 +225,36 @@ public class RemotingUtil
      * @return java.net.InetAddress
      * llxiao  2019/4/3 - 16:44
      **/
-    public static InetAddress getLocalHostLANAddress()
-    {
+    public static InetAddress getLocalHostLANAddress() {
         InetAddress jdkSuppliedAddress = null;
-        try
-        {
+        try {
             InetAddress candidateAddress = null;
             InetAddress inetAddr;
             NetworkInterface iface;
             // 遍历所有的网络接口
-            for (Enumeration ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements(); )
-            {
+            for (Enumeration ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements(); ) {
                 iface = (NetworkInterface) ifaces.nextElement();
                 // 在所有的接口下再遍历IP
-                for (Enumeration inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); )
-                {
+                for (Enumeration inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); ) {
                     inetAddr = (InetAddress) inetAddrs.nextElement();
-                    if (!inetAddr.isLoopbackAddress())
-                    {// 排除loopback类型地址
-                        if (inetAddr.isSiteLocalAddress())
-                        {
+                    if (!inetAddr.isLoopbackAddress()) {// 排除loopback类型地址
+                        if (inetAddr.isSiteLocalAddress()) {
                             // 如果是site-local地址，就是它了
                             return inetAddr;
-                        }
-                        else if (candidateAddress == null)
-                        {
+                        } else if (candidateAddress == null) {
                             // site-local类型的地址未被发现，先记录候选地址
                             candidateAddress = inetAddr;
                         }
                     }
                 }
             }
-            if (candidateAddress != null)
-            {
+            if (candidateAddress != null) {
                 jdkSuppliedAddress = candidateAddress;
-            }
-            else
-            {
+            } else {
                 // 如果没有发现 non-loopback地址.只能用最次选的方案
                 jdkSuppliedAddress = InetAddress.getLocalHost();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             log.error("获取本地IP地址错误，错误信息:", e);
         }
         return jdkSuppliedAddress;
@@ -316,23 +269,16 @@ public class RemotingUtil
      * @param addr
      * @return
      */
-    private static String doParse(String addr)
-    {
-        if (StringUtils.isBlank(addr))
-        {
+    private static String doParse(String addr) {
+        if (StringUtils.isBlank(addr)) {
             return StringUtils.EMPTY;
         }
-        if (addr.charAt(0) == '/')
-        {
+        if (addr.charAt(0) == '/') {
             return addr.substring(1);
-        }
-        else
-        {
+        } else {
             int len = addr.length();
-            for (int i = 1; i < len; ++i)
-            {
-                if (addr.charAt(i) == '/')
-                {
+            for (int i = 1; i < len; ++i) {
+                if (addr.charAt(i) == '/') {
                     return addr.substring(i + 1);
                 }
             }

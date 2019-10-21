@@ -1,9 +1,9 @@
 /*
- * Winner 
+ * Winner
  * 文件名  :SearchLogThreadPool.java
  * 创建人  :llxiao
  * 创建时间:2018年2月24日
-*/
+ */
 
 package com.xiao.spring.cloud.search.es.log.thread;
 
@@ -21,8 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version 1.0, 2018年2月24日
  * @since Purcotton-Search B01
  */
-public class SearchLogThreadPool extends ThreadPoolExecutor
-{
+public class SearchLogThreadPool extends ThreadPoolExecutor {
 
     /**
      * 日志记录器
@@ -48,16 +47,15 @@ public class SearchLogThreadPool extends ThreadPoolExecutor
      * [简要描述]:<br/>
      * [详细描述]:<br/>
      *
-     * @author llxiao
      * @param corePoolSize
      * @param maximumPoolSize
      * @param keepAliveTime
      * @param unit
      * @param workQueue
+     * @author llxiao
      */
     public SearchLogThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
-            BlockingQueue<Runnable> workQueue)
-    {
+                               BlockingQueue<Runnable> workQueue) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
     }
 
@@ -65,17 +63,16 @@ public class SearchLogThreadPool extends ThreadPoolExecutor
      * [简要描述]:<br/>
      * [详细描述]:<br/>
      *
-     * @author llxiao
      * @param corePoolSize
      * @param maximumPoolSize
      * @param keepAliveTime
      * @param unit
      * @param workQueue
      * @param threadFactory
+     * @author llxiao
      */
     public SearchLogThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
-            BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory)
-    {
+                               BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory);
     }
 
@@ -83,17 +80,16 @@ public class SearchLogThreadPool extends ThreadPoolExecutor
      * [简要描述]:<br/>
      * [详细描述]:<br/>
      *
-     * @author llxiao
      * @param corePoolSize
      * @param maximumPoolSize
      * @param keepAliveTime
      * @param unit
      * @param workQueue
      * @param handler
+     * @author llxiao
      */
     public SearchLogThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
-            BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler)
-    {
+                               BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
     }
 
@@ -101,7 +97,6 @@ public class SearchLogThreadPool extends ThreadPoolExecutor
      * [简要描述]:<br/>
      * [详细描述]:<br/>
      *
-     * @author llxiao
      * @param corePoolSize
      * @param maximumPoolSize
      * @param keepAliveTime
@@ -109,29 +104,27 @@ public class SearchLogThreadPool extends ThreadPoolExecutor
      * @param workQueue
      * @param threadFactory
      * @param handler
+     * @author llxiao
      */
     public SearchLogThreadPool(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit,
-            BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)
-    {
+                               BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
     }
 
     /**
      * [简要描述]:线程执行之前调用方法<br/>
      * [详细描述]:出现RuntimeException时不会调用此方法<br/>
-     * 
-     * @author llxiao
+     *
      * @param t
      * @param r
+     * @author llxiao
      * @see ThreadPoolExecutor#beforeExecute(Thread,
-     *      Runnable)
+     * Runnable)
      */
     @Override
-    protected void beforeExecute(Thread t, Runnable r)
-    {
+    protected void beforeExecute(Thread t, Runnable r) {
         super.beforeExecute(t, r);
-        if (LOG.isDebugEnabled())
-        {
+        if (LOG.isDebugEnabled()) {
             LOG.debug(t.getName() + " starting...");
         }
         startTime.set(System.nanoTime());
@@ -141,29 +134,24 @@ public class SearchLogThreadPool extends ThreadPoolExecutor
      * [简要描述]:线程执行之后调用方法<br/>
      * [详细描述]:run正常运行完成或抛出异常会调用该方法，但出现ERROR不会执行此方法<br/>
      *
-     * @author llxiao
      * @param r
      * @param t
+     * @author llxiao
      * @see ThreadPoolExecutor#afterExecute(Runnable,
-     *      Throwable)
+     * Throwable)
      */
     @Override
-    protected void afterExecute(Runnable r, Throwable t)
-    {
-        try
-        {
+    protected void afterExecute(Runnable r, Throwable t) {
+        try {
             long endTime = System.nanoTime();
             long taskTime = endTime - startTime.get();
             totalTime.addAndGet(taskTime);
             numTasks.incrementAndGet();
-            if (LOG.isDebugEnabled())
-            {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Thread " + r + " end and cost time:" + taskTime);
                 LOG.debug("Throwable:" + t);
             }
-        }
-        finally
-        {
+        } finally {
             super.afterExecute(r, t);
         }
     }
@@ -176,14 +164,10 @@ public class SearchLogThreadPool extends ThreadPoolExecutor
      * @see ThreadPoolExecutor#terminated()
      */
     @Override
-    protected void terminated()
-    {
-        try
-        {
+    protected void terminated() {
+        try {
             LOG.info("Thread terminated: avg time=" + (totalTime.get() / numTasks.get()));
-        }
-        finally
-        {
+        } finally {
             super.terminated();
         }
     }

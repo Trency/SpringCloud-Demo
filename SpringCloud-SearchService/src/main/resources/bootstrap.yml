@@ -1,10 +1,10 @@
 spring:
   #cloud:
-    #config:
-      #uri: http://120.77.46.245:8808/omni-config-server/
-      #profile: @env@
-      #label: master
-      #name: omni-search-service
+  #config:
+  #uri: http://120.77.46.245:8808/omni-config-server/
+  #profile: @env@
+  #label: master
+  #name: omni-search-service
   application:
     name: omni-search-service
   logstash:

@@ -9,14 +9,13 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
-* Created by Mybatis Generator on 2018/11/23
-*/
+ * Created by Mybatis Generator on 2018/11/23
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationDto
-{
+public class ApplicationDto {
     //
     private Long id;
 
@@ -46,11 +45,9 @@ public class ApplicationDto
 
     private String groupIds;
 
-    public static Application convertToEntity(ApplicationDto applicationConfigDto)
-    {
+    public static Application convertToEntity(ApplicationDto applicationConfigDto) {
         Application applicationConfig = null;
-        if (applicationConfigDto != null)
-        {
+        if (applicationConfigDto != null) {
             applicationConfig = new Application();
             applicationConfig.setApplicationName(applicationConfigDto.getApplicationName());
             applicationConfig.setCreateTime(applicationConfigDto.getCreateTime());

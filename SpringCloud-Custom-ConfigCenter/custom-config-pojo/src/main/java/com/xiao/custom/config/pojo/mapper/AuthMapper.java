@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
  * createAt: 2018/9/17
  */
 @Repository
-public interface AuthMapper
-{
+public interface AuthMapper {
     /**
      * 根据用户名查找用户
      *

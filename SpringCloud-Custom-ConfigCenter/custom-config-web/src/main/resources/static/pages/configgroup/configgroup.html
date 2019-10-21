@@ -3,26 +3,26 @@
         <el-card class="box-card">
             <div slot="header">
                 <el-button-group>
-                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="open('新增配置组')">新增
+                    <el-button @click="open('新增配置组')" icon="el-icon-plus" size="mini" type="primary">新增
                     </el-button>
                     <!--<el-button size="mini" type="danger" icon="el-icon-tickets" @click="del()">删除-->
                     <!--</el-button>-->
                     <!-- 添加API的页面 -->
-                    <el-button size="mini" type="success" icon="el-icon-search" @click="onSubmit"
-                               style="margin-left: 20px">查询
+                    <el-button @click="onSubmit" icon="el-icon-search" size="mini" style="margin-left: 20px"
+                               type="success">查询
                     </el-button>
-                    <el-button size="mini" type="info" icon="el-icon-refresh" @click="resetForm('form')">重置
+                    <el-button @click="resetForm('form')" icon="el-icon-refresh" size="mini" type="info">重置
                     </el-button>
                 </el-button-group>
                 <br/><br/>
-                <el-form :model="form" ref="form" size="small" style="width: 100%;" inline>
+                <el-form :model="form" inline ref="form" size="small" style="width: 100%;">
                     <el-form-item label="配置组名称">
-                        <el-input size="small" v-model="form.groupName" placeholder="请输入组名称"
-                                  style="width:230px;"></el-input>
+                        <el-input placeholder="请输入组名称" size="small" style="width:230px;"
+                                  v-model="form.groupName"></el-input>
                     </el-form-item>
                     <el-form-item label="配置组描述">
-                        <el-input size="small" v-model="form.groupDesc" placeholder="请输入描述信息"
-                                  style="width:230px;"></el-input>
+                        <el-input placeholder="请输入描述信息" size="small" style="width:230px;"
+                                  v-model="form.groupDesc"></el-input>
                     </el-form-item>
                     <!--<el-form-item>-->
                     <!--<el-date-picker-->
@@ -42,58 +42,58 @@
                     <!--</el-form-item>-->
                 </el-form>
             </div>
-            <el-table size="mini" ref="table" :data="tableData" stripe @selection-change="selectChagne"
-                      highlight-current-row style="width: 100%" :height="tableHeight-65">
-                <el-table-column type="index" min-width="5%"></el-table-column>
-                <el-table-column type="selection" min-width="5%"></el-table-column>
-                <el-table-column prop="groupName" label="配置项组名称" min-width="20%">
+            <el-table :data="tableData" :height="tableHeight-65" @selection-change="selectChagne" highlight-current-row ref="table"
+                      size="mini" stripe style="width: 100%">
+                <el-table-column min-width="5%" type="index"></el-table-column>
+                <el-table-column min-width="5%" type="selection"></el-table-column>
+                <el-table-column label="配置项组名称" min-width="20%" prop="groupName">
                 </el-table-column>
-                <el-table-column prop="groupDesc" label="配置组描述" min-width="20%">
+                <el-table-column label="配置组描述" min-width="20%" prop="groupDesc">
                 </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" min-width="15%">
+                <el-table-column label="创建时间" min-width="15%" prop="createTime">
                 </el-table-column>
-                <el-table-column prop="updateTime" label="更新时间" min-width="15%">
+                <el-table-column label="更新时间" min-width="15%" prop="updateTime">
                 </el-table-column>
-                <el-table-column label="操作" fixed="right" min-width="20%">
+                <el-table-column fixed="right" label="操作" min-width="20%">
                     <template slot-scope="scope">
                         <el-button-group>
-                            <el-button size="mini" type="primary" @click="refItem(scope.row)">查看关联项
+                            <el-button @click="refItem(scope.row)" size="mini" type="primary">查看关联项
                             </el-button>
-                            <el-button size="mini" type="primary" @click="open('修改配置组',scope.row)">编辑
+                            <el-button @click="open('修改配置组',scope.row)" size="mini" type="primary">编辑
                             </el-button>
-                            <el-button size="mini" type="danger" @click="del(scope.row)">删除
+                            <el-button @click="del(scope.row)" size="mini" type="danger">删除
                             </el-button>
                         </el-button-group>
                     </template>
                 </el-table-column>
             </el-table>
             <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :page-sizes="[5, 10, 20, 50]"
-                    layout="total, sizes, prev, pager, next, jumper"
                     :current-page="tableCurrentPage"
                     :page-size="tablePageSize"
-                    :total="tableTotal">
+                    :page-sizes="[5, 10, 20, 50]"
+                    :total="tableTotal"
+                    @current-change="handleCurrentChange"
+                    @size-change="handleSizeChange"
+                    layout="total, sizes, prev, pager, next, jumper">
             </el-pagination>
 
-            <el-dialog width="400px" :title="title" :visible.sync="dialogFormVisible">
-                <el-form :rules="rules" ref="createForm" :model="createForm">
+            <el-dialog :title="title" :visible.sync="dialogFormVisible" width="400px">
+                <el-form :model="createForm" :rules="rules" ref="createForm">
                     <el-form-item label="配置组名称" prop="groupName">
-                        <el-input v-model="createForm.groupName" placeholder="配置组名称"
-                                  style="width:230px;"></el-input>
+                        <el-input placeholder="配置组名称" style="width:230px;"
+                                  v-model="createForm.groupName"></el-input>
                     </el-form-item>
                     <el-form-item label="配置组描述" prop="groupDesc">
-                        <el-input v-model="createForm.groupDesc" placeholder="配置组描述"
-                                  style="width:230px;"></el-input>
+                        <el-input placeholder="配置组描述" style="width:230px;"
+                                  v-model="createForm.groupDesc"></el-input>
                     </el-form-item>
                 </el-form>
-                <div slot="footer" class="dialog-footer">
+                <div class="dialog-footer" slot="footer">
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="create('createForm')">确 定</el-button>
+                    <el-button @click="create('createForm')" type="primary">确 定</el-button>
                 </div>
             </el-dialog>
         </el-card>
     </div>
 </template>
-<script type="text/javascript" src="pages/configgroup/configgroup.js"></script>
+<script src="pages/configgroup/configgroup.js" type="text/javascript"></script>

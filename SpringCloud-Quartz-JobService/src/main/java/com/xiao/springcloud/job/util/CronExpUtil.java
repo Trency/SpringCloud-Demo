@@ -16,8 +16,7 @@ import java.util.Date;
  * @version 1.0, 2019/7/2 18:52
  * @since JDK 1.8
  */
-public class CronExpUtil
-{
+public class CronExpUtil {
     /**
      * [简要描述]:Quartz 表达式校验<br/>
      * [详细描述]:<br/>
@@ -28,25 +27,19 @@ public class CronExpUtil
      * @return boolean
      * llxiao  2019/7/2 - 18:53
      **/
-    public static boolean validator(String cronExp)
-    {
+    public static boolean validator(String cronExp) {
         boolean flag = false;
-        if (StringUtils.isNotEmpty(cronExp))
-        {
+        if (StringUtils.isNotEmpty(cronExp)) {
             // 校验表达式的格式是否正确
             flag = CronExpression.isValidExpression(cronExp);
-            if (flag)
-            {
+            if (flag) {
                 CronTrigger cronTrigger = new CronTriggerImpl();
-                try
-                {
+                try {
                     // 校验 表达式是否有效。比如过期的，失效的等
                     ((CronTriggerImpl) cronTrigger).setCronExpression(cronExp);
                     Date date = ((CronTriggerImpl) cronTrigger).computeFirstFireTime(null);
                     flag = date != null && date.after(new Date());
-                }
-                catch (ParseException e)
-                {
+                } catch (ParseException e) {
                     flag = false;
                 }
             }

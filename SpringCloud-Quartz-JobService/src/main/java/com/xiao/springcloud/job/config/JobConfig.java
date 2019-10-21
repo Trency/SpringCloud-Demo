@@ -7,23 +7,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 @Configuration
-public class JobConfig
-{
+public class JobConfig {
 
     @Autowired
     private TaskSchedulerFactory taskSchedulerFactory;
 
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean()
-    {
+    public SchedulerFactoryBean schedulerFactoryBean() {
         SchedulerFactoryBean bean = new SchedulerFactoryBean();
         bean.setJobFactory(taskSchedulerFactory);
         return bean;
     }
 
     @Bean
-    public Scheduler scheduler()
-    {
+    public Scheduler scheduler() {
         return schedulerFactoryBean().getScheduler();
     }
 

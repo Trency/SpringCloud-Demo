@@ -28,8 +28,7 @@ import java.util.concurrent.*;
  */
 @Component
 @Slf4j
-public class DisruptorProducer implements DisposableBean, ApplicationListener<ContextRefreshedEvent>
-{
+public class DisruptorProducer implements DisposableBean, ApplicationListener<ContextRefreshedEvent> {
     /**
      * RingBuffer 大小，必须是 2 的 N 次方；
      */
@@ -58,8 +57,7 @@ public class DisruptorProducer implements DisposableBean, ApplicationListener<Co
     private int threads;
 
     @Autowired
-    public DisruptorProducer(DisruptorService disruptorService)
-    {
+    public DisruptorProducer(DisruptorService disruptorService) {
 
         threads = Runtime.getRuntime().availableProcessors();
         this.disruptorService = disruptorService;
@@ -67,8 +65,7 @@ public class DisruptorProducer implements DisposableBean, ApplicationListener<Co
         //单生产者
         isMultiProducer = true;
         ProducerType producerType = ProducerType.SINGLE;
-        if (isMultiProducer)
-        {
+        if (isMultiProducer) {
             //多生产者
             producerType = ProducerType.MULTI;
         }
@@ -88,38 +85,31 @@ public class DisruptorProducer implements DisposableBean, ApplicationListener<Co
      * [详细描述]:<br/>
      *
      * @param dataList : 待处理的数据
-     * llxiao  2019/3/25 - 15:10
+     *                 llxiao  2019/3/25 - 15:10
      **/
-    public void send(List<TableData> dataList)
-    {
-        if (log.isDebugEnabled())
-        {
+    public void send(List<TableData> dataList) {
+        if (log.isDebugEnabled()) {
             log.debug("批量发送数据给消费者，总数量：{}", CollectionUtil.isNotEmpty(dataList) ? 0 : dataList.size());
         }
-        if (CollectionUtil.isNotEmpty(dataList))
-        {
+        if (CollectionUtil.isNotEmpty(dataList)) {
             executor.execute(() ->
             {
-                for (TableData tableData : dataList)
-                {
+                for (TableData tableData : dataList) {
                     translator(tableData);
                 }
             });
         }
     }
 
-    private void translator(TableData tableData)
-    {
+    private void translator(TableData tableData) {
         EventTranslatorOneArg<DataEvent, TableData> eventTranslatorOneArg = (event, sequence, message1) -> event
                 .setData(tableData);
         ringBuffer.publishEvent(eventTranslatorOneArg, tableData);
     }
 
     @Override
-    public void destroy() throws Exception
-    {
-        if (isStart)
-        {
+    public void destroy() throws Exception {
+        if (isStart) {
             //关闭 disruptor，方法会堵塞，直至所有的事件都得到处理；
             disruptor.shutdown();
         }
@@ -127,20 +117,17 @@ public class DisruptorProducer implements DisposableBean, ApplicationListener<Co
     }
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent)
-    {
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         log.info(">>> Disruptor producer 启动......");
         doStart();
     }
 
-    private void doStart()
-    {
+    private void doStart() {
         //CPU可使用数量
         final Executor executor = new ThreadPoolExecutor(threads, threads, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), DisruptorThreadFactory
                 .create("Disruptor consumer-", false), new ThreadPoolExecutor.AbortPolicy());
         DisruptorConsumer[] disruptorConsumers = new DisruptorConsumer[threads];
-        for (int i = 0; i < threads; i++)
-        {
+        for (int i = 0; i < threads; i++) {
             disruptorConsumers[i] = new DisruptorConsumer(disruptorService, executor);
         }
         //设置消费者Handler

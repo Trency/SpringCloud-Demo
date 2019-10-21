@@ -24,29 +24,29 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties("health.config")
 public class ConfigClientHealthProperties {
-	/**
-	 * Flag to indicate that the config server health indicator should be installed.
-	 */
-	boolean enabled;
+    /**
+     * Flag to indicate that the config server health indicator should be installed.
+     */
+    boolean enabled;
 
-	/**
-	 * Time to live for cached result, in milliseconds. Default 300000 (5 min).
-	 */
-	private long timeToLive = 60 * 5 * 1000;
+    /**
+     * Time to live for cached result, in milliseconds. Default 300000 (5 min).
+     */
+    private long timeToLive = 60 * 5 * 1000;
 
-	public boolean isEnabled() {
-		return this.enabled;
-	}
+    public boolean isEnabled() {
+        return this.enabled;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public long getTimeToLive() {
-		return timeToLive;
-	}
+    public long getTimeToLive() {
+        return timeToLive;
+    }
 
-	public void setTimeToLive(long timeToLive) {
-		this.timeToLive = timeToLive;
-	}
+    public void setTimeToLive(long timeToLive) {
+        this.timeToLive = timeToLive;
+    }
 }

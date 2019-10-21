@@ -20,24 +20,19 @@ import java.io.IOException;
  * @version 1.0, 2019/9/29 10:55
  * @since JDK 1.8
  */
-public class ImageDHashUtil
-{
+public class ImageDHashUtil {
     /**
      * 计算dHash方法
      *
      * @param file 文件
      * @return hash
      */
-    private static String getDHash(File file)
-    {
+    private static String getDHash(File file) {
         //读取文件
         BufferedImage srcImage;
-        try
-        {
+        try {
             srcImage = ImageIO.read(file);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -51,10 +46,8 @@ public class ImageDHashUtil
         int[][] grayPix = new int[width][height];
         StringBuffer figure = new StringBuffer();
 
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 //图片灰度化
                 int rgb = buffImg.getRGB(x, y);
                 int r = rgb >> 16 & 0xff;
@@ -64,8 +57,7 @@ public class ImageDHashUtil
                 grayPix[x][y] = gray;
 
                 //开始计算dHash 总共有9*8像素 每行相对有8个差异值 总共有 8*8=64 个
-                if (x != 0)
-                {
+                if (x != 0) {
                     long bit = grayPix[x - 1][y] > grayPix[x][y] ? 1 : 0;
                     figure.append(bit);
                 }
@@ -85,20 +77,14 @@ public class ImageDHashUtil
      * @param str2
      * @return 距离
      */
-    private static long getHammingDistance(String str1, String str2)
-    {
+    private static long getHammingDistance(String str1, String str2) {
         int distance;
-        if (str1 == null || str2 == null || str1.length() != str2.length())
-        {
+        if (str1 == null || str2 == null || str1.length() != str2.length()) {
             distance = -1;
-        }
-        else
-        {
+        } else {
             distance = 0;
-            for (int i = 0; i < str1.length(); i++)
-            {
-                if (str1.charAt(i) != str2.charAt(i))
-                {
+            for (int i = 0; i < str1.length(); i++) {
+                if (str1.charAt(i) != str2.charAt(i)) {
                     distance++;
                 }
             }
@@ -107,8 +93,7 @@ public class ImageDHashUtil
     }
 
     //DHashUtil 参数值为待处理文件夹
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         File image0 = new File("D:/image/4200014361-000/_m_01.jpg");
         File image1 = new File("D:/image/4200014361-000/_m_01-1.jpg");
         File image2 = new File("D:/image/4200014361-000/_m_02.jpg");

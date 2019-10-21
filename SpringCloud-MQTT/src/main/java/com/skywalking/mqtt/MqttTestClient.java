@@ -29,8 +29,7 @@ import java.security.SecureRandom;
  * @version 1.0, 2018年4月16日
  * @since 项目名称 项目版本
  */
-public class MqttTestClient
-{
+public class MqttTestClient {
     private String clientId;
 
     private MqttClient client;
@@ -41,17 +40,21 @@ public class MqttTestClient
     //
     // private String passWord = "admin123";
 
-    public MqttTestClient(String clientId)
-    {
+    public MqttTestClient(String clientId) {
         this.clientId = clientId;
     }
 
-    private void start() throws MqttException
-    {
+    public static void main(String[] args) throws MqttException {
+        String clientId = "javaClient:" + System.currentTimeMillis();
+        MqttTestClient client = new MqttTestClient(clientId);
+        client.start();
+        System.out.println(clientId);
+    }
+
+    private void start() throws MqttException {
         String host = "tcp://39.108.176.226:1883";
 
-        try
-        {
+        try {
             // host为主机名，clientid即连接MQTT的客户端ID，一般以唯一标识符表示，MemoryPersistence设置clientid的保存形式，默认为以内存保存
             client = new MqttClient(host, clientId, new MemoryPersistence());
             // MQTT的连接设置
@@ -76,42 +79,34 @@ public class MqttTestClient
             client.connect(options);
             client.setCallback(new ClientCallback(client, options));
             // 订阅消息
-            int[] Qos = { 1
+            int[] Qos = {1
             };
-            String[] topic1 = { "PTP/test"
+            String[] topic1 = {"PTP/test"
             };
             client.subscribe(topic1, Qos);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             client.close();
         }
     }
 
-    private SocketFactory setSSLSocketFactory()
-    {
+    private SocketFactory setSSLSocketFactory() {
         SSLSocketFactory factory = null;
-        try
-        {
+        try {
             SSLContext sslContext = SSLContext.getInstance("TLS");
             TrustManager[] trustAllCerts = getTrustManagers();
             sslContext.init(null, trustAllCerts, new SecureRandom());
             factory = sslContext.getSocketFactory();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return factory;
     }
 
-    private TrustManager[] sslTrustManagers()
-    {
+    private TrustManager[] sslTrustManagers() {
         TrustManager[] trustManagers = null;
-        try
-        {
+        try {
             // p12文件ssl
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
             InputStream instream = MqttTestClient.class.getClassLoader().getResourceAsStream("client.p12");
@@ -125,26 +120,15 @@ public class MqttTestClient
             TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
             tmf.init(keyStore);
             trustManagers = tmf.getTrustManagers();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return trustManagers;
     }
 
-    private TrustManager[] getTrustManagers()
-    {
+    private TrustManager[] getTrustManagers() {
         TrustManager[] trustAllCerts = new TrustManager[1];
         trustAllCerts[0] = new PurTrustManager();
         return trustAllCerts;
-    }
-
-    public static void main(String[] args) throws MqttException
-    {
-        String clientId = "javaClient:" + System.currentTimeMillis();
-        MqttTestClient client = new MqttTestClient(clientId);
-        client.start();
-        System.out.println(clientId);
     }
 }

@@ -10,8 +10,8 @@
         <result column="profile" property="profile" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, application, create_time, update_time, status, profile
-  </sql>
+        id, application, create_time, update_time, status, profile
+    </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -19,17 +19,16 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from t_client_application
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
+        delete
+        from t_client_application
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
     <insert id="insert" parameterType="com.xiao.custom.config.pojo.entity.ClientApplication">
-    insert into t_client_application (id, application, create_time, 
-      update_time, status, profile
-      )
-    values (#{id,jdbcType=BIGINT}, #{application,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{profile,jdbcType=VARCHAR}
-      )
-  </insert>
+        insert into t_client_application (id, application, create_time,
+                                          update_time, status, profile)
+        values (#{id,jdbcType=BIGINT}, #{application,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{profile,jdbcType=VARCHAR})
+    </insert>
     <insert id="insertSelective" parameterType="com.xiao.custom.config.pojo.entity.ClientApplication">
         insert into t_client_application
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -95,16 +94,20 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.xiao.custom.config.pojo.entity.ClientApplication">
-    update t_client_application
-    set application = #{application,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER},
-      profile = #{profile,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
+        update t_client_application
+        set application = #{application,jdbcType=VARCHAR},
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+            status      = #{status,jdbcType=INTEGER},
+            profile     = #{profile,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
     <!-- 标记应用已下线 -->
     <update id="updateStatus">
-        update t_client_application set status = #{status},update_time = now() where application = #{application} and profile = #{profile}
+        update t_client_application
+        set status      = #{status},
+            update_time = now()
+        where application = #{application}
+          and profile = #{profile}
     </update>
 </mapper>

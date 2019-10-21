@@ -15,21 +15,17 @@ import io.netty.handler.codec.MessageToByteEncoder;
  * @since JDK 1.8
  */
 @ChannelHandler.Sharable
-public class ProtoEncoder extends MessageToByteEncoder<Object>
-{
+public class ProtoEncoder extends MessageToByteEncoder<Object> {
     private Class<?> genericClass;
 
-    public ProtoEncoder(Class cls)
-    {
+    public ProtoEncoder(Class cls) {
         this.genericClass = cls;
     }
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, Object msg, ByteBuf byteBuf) throws Exception
-    {
+    protected void encode(ChannelHandlerContext channelHandlerContext, Object msg, ByteBuf byteBuf) throws Exception {
         // 序列化
-        if (genericClass.isInstance(msg))
-        {
+        if (genericClass.isInstance(msg)) {
             byte[] data = ProtostuffUtil.serialize(msg);
             byteBuf.writeInt(data.length);
             byteBuf.writeBytes(data);

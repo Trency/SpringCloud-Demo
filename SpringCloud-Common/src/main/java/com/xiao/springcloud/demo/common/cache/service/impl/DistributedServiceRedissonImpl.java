@@ -26,8 +26,7 @@ import java.util.concurrent.TimeUnit;
 //仅仅在当前上下文中存在某个对象时，才会实例化一个Bean
 @ConditionalOnBean(RedissonConfig.class)
 //如果存在它修饰的类的bean，则不需要再创建这个bean
-public class DistributedServiceRedissonImpl implements DistributedService
-{
+public class DistributedServiceRedissonImpl implements DistributedService {
     @Autowired
     private RedissonClient redissonClient;
 
@@ -43,8 +42,7 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * llxiao  2018/10/11 - 9:06
      **/
     @Override
-    public RLock getRLock(String lockKey)
-    {
+    public RLock getRLock(String lockKey) {
         RLock lock = redissonClient.getLock(lockKey);
         lock.lock();
         return lock;
@@ -54,15 +52,14 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [简要描述]:非公平可重入锁，并在指定单位时间内自动释放锁，无需手动释放<br/>
      * [详细描述]:<br/>
      *
-     * @param lockKey : key
+     * @param lockKey   : key
      * @param leaseTime : 存货时间
-     * @param unit : 时间单位
+     * @param unit      : 时间单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:37
      **/
     @Override
-    public RLock autoReleaseRLock(String lockKey, long leaseTime, TimeUnit unit)
-    {
+    public RLock autoReleaseRLock(String lockKey, long leaseTime, TimeUnit unit) {
         RLock lock = redissonClient.getLock(lockKey);
         lock.lock(leaseTime, unit);
         return lock;
@@ -78,19 +75,15 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * llxiao  2018/10/11 - 9:51
      **/
     @Override
-    public RLock tryLock(String lockKey, long timeout)
-    {
+    public RLock tryLock(String lockKey, long timeout) {
         RLock lock = redissonClient.getLock(lockKey);
         boolean flag = false;
         //锁可用立即返回 true,锁不可用立即返回false
         //boolean flag = lock.tryLock();
-        try
-        {
+        try {
             // 获取不到锁等待一段时间，如果获取到返回true，获取不到返回false
             flag = lock.tryLock(timeout, TimeUnit.SECONDS);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             log.warn("尝试获取锁失败，线程中断!", e);
             lock.unlock();
         }
@@ -102,24 +95,20 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [简要描述]:指定时间内尝试获取非公平可重入锁，获取成功并设置锁自动失效时间(加锁)<br/>
      * [详细描述]:获取不到锁返回null<br/>
      *
-     * @param lockKey : key
-     * @param timeout : 超时时间，单位秒
+     * @param lockKey   : key
+     * @param timeout   : 超时时间，单位秒
      * @param leaseTime : 锁失效时间
-     * @param unit : 锁失效单位
+     * @param unit      : 锁失效单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:52
      **/
     @Override
-    public RLock tryLockAutoRelease(String lockKey, long timeout, long leaseTime, TimeUnit unit)
-    {
+    public RLock tryLockAutoRelease(String lockKey, long timeout, long leaseTime, TimeUnit unit) {
         RLock lock = redissonClient.getLock(lockKey);
         boolean flag = false;
-        try
-        {
+        try {
             flag = lock.tryLock(timeout, leaseTime, unit);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             log.warn("尝试获取锁失败，线程中断!", e);
             lock.unlock();
         }
@@ -135,8 +124,7 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * llxiao  2018/10/11 - 10:40
      **/
     @Override
-    public RLock getFairRLock(String lockKey)
-    {
+    public RLock getFairRLock(String lockKey) {
         RLock fairLock = redissonClient.getFairLock(lockKey);
         fairLock.lock();
         return fairLock;
@@ -146,15 +134,14 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [简要描述]:获取可重入公平锁，并在指定单位时间内自动释放锁，无需手动释放<br/>
      * [详细描述]:阻塞式，直到获取锁<br/>
      *
-     * @param lockKey : key
+     * @param lockKey   : key
      * @param leaseTime : 存货时间
-     * @param unit : 时间单位
+     * @param unit      : 时间单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:37
      **/
     @Override
-    public RLock autoReleaseRFairLock(String lockKey, long leaseTime, TimeUnit unit)
-    {
+    public RLock autoReleaseRFairLock(String lockKey, long leaseTime, TimeUnit unit) {
         RLock fairLock = redissonClient.getFairLock(lockKey);
         fairLock.lock(leaseTime, unit);
         return fairLock;
@@ -170,19 +157,15 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * llxiao  2018/10/11 - 9:51
      **/
     @Override
-    public RLock tryFairLock(String lockKey, long timeout)
-    {
+    public RLock tryFairLock(String lockKey, long timeout) {
         RLock lock = redissonClient.getFairLock(lockKey);
         boolean flag = false;
         //锁可用立即返回 true,锁不可用立即返回false
         //boolean flag = lock.tryLock();
-        try
-        {
+        try {
             // 获取不到锁等待一段时间，如果获取到返回true，获取不到返回false
             flag = lock.tryLock(timeout, TimeUnit.SECONDS);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             log.warn("尝试获取锁失败，线程中断!", e);
             lock.unlock();
         }
@@ -194,25 +177,21 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [简要描述]:指定时间内尝试获取公平可重入锁，获取成功并设置锁自动失效时间<br/>
      * [详细描述]:获取不到锁返回null<br/>
      *
-     * @param lockKey : key
-     * @param timeout : 超时时间，单位秒
+     * @param lockKey   : key
+     * @param timeout   : 超时时间，单位秒
      * @param leaseTime : 锁失效时间
-     * @param unit : 锁失效单位
+     * @param unit      : 锁失效单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:52
      **/
     @Override
-    public RLock tryFairLockAutoRelease(String lockKey, long timeout, long leaseTime, TimeUnit unit)
-    {
+    public RLock tryFairLockAutoRelease(String lockKey, long timeout, long leaseTime, TimeUnit unit) {
         RLock lock = redissonClient.getLock(lockKey);
         boolean flag = false;
-        try
-        {
+        try {
             // 尝试加锁，最多等待timeout秒，上锁以后leaseTime(unit)自动解锁
             flag = lock.tryLock(timeout, leaseTime, unit);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             log.warn("尝试获取锁失败，线程中断!", e);
             lock.unlock();
         }
@@ -229,16 +208,12 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * llxiao  2018/10/11 - 10:54
      **/
     @Override
-    public RLock getReadWriteLock(String lockKey, boolean isWrite)
-    {
+    public RLock getReadWriteLock(String lockKey, boolean isWrite) {
         RReadWriteLock rwlock = redissonClient.getReadWriteLock(lockKey);
         RLock rLock;
-        if (isWrite)
-        {
+        if (isWrite) {
             rLock = rwlock.writeLock();
-        }
-        else
-        {
+        } else {
             rLock = rwlock.readLock();
         }
         rLock.lock();
@@ -251,22 +226,18 @@ public class DistributedServiceRedissonImpl implements DistributedService
      *
      * @param lockKey : key
      * @param isWrite : true写锁，false读锁
-     * @param lease : 存活时间
-     * @param unit : 时间单位
+     * @param lease   : 存活时间
+     * @param unit    : 时间单位
      * @return org.redisson.api.RReadWriteLock
      * llxiao  2018/10/11 - 10:54
      **/
     @Override
-    public RLock autoReleaseReadWriteLock(String lockKey, boolean isWrite, Long lease, TimeUnit unit)
-    {
+    public RLock autoReleaseReadWriteLock(String lockKey, boolean isWrite, Long lease, TimeUnit unit) {
         RReadWriteLock rwlock = redissonClient.getReadWriteLock(lockKey);
         RLock rLock;
-        if (isWrite)
-        {
+        if (isWrite) {
             rLock = rwlock.writeLock();
-        }
-        else
-        {
+        } else {
             rLock = rwlock.readLock();
         }
         rLock.lock(lease, unit);
@@ -284,25 +255,18 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * llxiao  2018/10/11 - 9:51
      **/
     @Override
-    public RLock tryReadWriteLock(String lockKey, boolean isWrite, long timeout)
-    {
+    public RLock tryReadWriteLock(String lockKey, boolean isWrite, long timeout) {
         RReadWriteLock rwlock = redissonClient.getReadWriteLock(lockKey);
         RLock rLock;
-        if (isWrite)
-        {
+        if (isWrite) {
             rLock = rwlock.writeLock();
-        }
-        else
-        {
+        } else {
             rLock = rwlock.readLock();
         }
-        try
-        {
+        try {
 
             rLock.tryLock(timeout, TimeUnit.SECONDS);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             log.warn("尝试获取锁失败，线程中断!", e);
             rLock.unlock();
         }
@@ -313,27 +277,23 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [简要描述]:指定时间内尝试获取读写锁，获取成功并设置锁自动失效时间<br/>
      * [详细描述]:获取不到锁返回null<br/>
      *
-     * @param lockKey : key
-     * @param isWrite : true写锁，false读锁
-     * @param timeout : 超时时间，单位秒
+     * @param lockKey   : key
+     * @param isWrite   : true写锁，false读锁
+     * @param timeout   : 超时时间，单位秒
      * @param leaseTime : 锁失效时间
-     * @param unit : 锁失效单位
+     * @param unit      : 锁失效单位
      * @return org.redisson.api.RLock
      * llxiao  2018/10/11 - 9:52
      **/
     @Override
     public RLock tryReadWriteLockAutoRelease(String lockKey, boolean isWrite, long timeout, long leaseTime,
-            TimeUnit unit)
-    {
+                                             TimeUnit unit) {
         RLock rLock = this.getReadWriteLock(lockKey, isWrite);
         boolean flag = false;
-        try
-        {
+        try {
             // 尝试加锁，最多等待timeout秒，上锁以后leaseTime(unit)自动解锁
             flag = rLock.tryLock(timeout, leaseTime, unit);
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             log.warn("尝试获取锁失败，线程中断!", e);
             rLock.unlock();
         }
@@ -344,14 +304,13 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [简要描述]:闭锁（CountDownLatch）<br/>
      * [详细描述]:<br/>
      *
-     * @param key : key
+     * @param key   : key
      * @param count : 数量
      * @return org.redisson.api.RCountDownLatch
      * llxiao  2018/10/11 - 11:49
      **/
     @Override
-    public RCountDownLatch getRCountDownLatch(String key, int count)
-    {
+    public RCountDownLatch getRCountDownLatch(String key, int count) {
         RCountDownLatch rCountDownLatch = redissonClient.getCountDownLatch(key);
         rCountDownLatch.trySetCount(count);
         return rCountDownLatch;
@@ -362,11 +321,10 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [详细描述]:<br/>
      *
      * @param key : key
-     * llxiao  2018/10/11 - 11:53
+     *            llxiao  2018/10/11 - 11:53
      **/
     @Override
-    public void countDown(String key)
-    {
+    public void countDown(String key) {
         RCountDownLatch rCountDownLatch = redissonClient.getCountDownLatch(key);
         rCountDownLatch.countDown();
     }
@@ -376,11 +334,10 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [详细描述]:<br/>
      *
      * @param lockKey : key
-     * llxiao  2018/10/11 - 9:42
+     *                llxiao  2018/10/11 - 9:42
      **/
     @Override
-    public void unRLock(String lockKey)
-    {
+    public void unRLock(String lockKey) {
         RLock lock = redissonClient.getLock(lockKey);
         lock.unlock();
     }
@@ -390,13 +347,11 @@ public class DistributedServiceRedissonImpl implements DistributedService
      * [详细描述]:<br/>
      *
      * @param rLock : RLock
-     * llxiao  2018/10/11 - 9:42
+     *              llxiao  2018/10/11 - 9:42
      **/
     @Override
-    public void unRLock(RLock rLock)
-    {
-        if (null != rLock)
-        {
+    public void unRLock(RLock rLock) {
+        if (null != rLock) {
             rLock.unlock();
         }
     }

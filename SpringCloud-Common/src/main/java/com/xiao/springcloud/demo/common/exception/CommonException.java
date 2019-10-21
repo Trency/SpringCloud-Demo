@@ -10,21 +10,18 @@ package com.xiao.springcloud.demo.common.exception;
 public class CommonException extends RuntimeException {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-    /**
      * 缺少必填参数，三位错误码后缀，需要结合前缀的业务编码组装成完整的错误码信息
      */
-	public static final String REQUIRED_PARAM_SUFFIX = "000";
-
+    public static final String REQUIRED_PARAM_SUFFIX = "000";
     /**
      * 参数非法，三位错误码后缀，需要结合前缀的业务编码组装成完整的错误码信息
      */
-	public static final String ILLEGAL_PARAM_SUFFIX = "001";
-
-	private Integer code;
+    public static final String ILLEGAL_PARAM_SUFFIX = "001";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer code;
 
     private String errorMessage;
 
@@ -38,6 +35,10 @@ public class CommonException extends RuntimeException {
         super(exception.getMessage());
         this.code = exception.getCode();
         this.errorMessage = exception.getMessage();
+    }
+
+    public static CommonException throwEx(AbstractServiceException e) {
+        throw new CommonException(e);
     }
 
     public Integer getCode() {
@@ -55,9 +56,5 @@ public class CommonException extends RuntimeException {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
-    
-    public static CommonException throwEx(AbstractServiceException e) {
-    	throw new CommonException(e);
-    }
-    
+
 }

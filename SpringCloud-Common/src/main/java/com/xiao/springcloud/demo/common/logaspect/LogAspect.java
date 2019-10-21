@@ -31,8 +31,7 @@ import java.sql.Timestamp;
  */
 @Aspect
 @Component
-public class LogAspect
-{
+public class LogAspect {
     /**
      * 日志服务
      */
@@ -45,15 +44,13 @@ public class LogAspect
      * llxiao  2018/9/2 - 17:02
      **/
     @Pointcut("@annotation(com.xiao.springcloud.demo.common.logaspect.LogAnnotation)")
-    public void logAnnotatison()
-    {
+    public void logAnnotatison() {
 
     }
 
     // around 切面强化
     @Around("logAnnotatison()")
-    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable
-    {
+    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
 
         LogInfo logInfo = new LogInfo();
         logInfo.setRequestTime(new Timestamp(System.currentTimeMillis()));
@@ -73,28 +70,20 @@ public class LogAspect
         StopWatch clock = new StopWatch();
         Throwable tempE = null;
         clock.start();
-        try
-        {
+        try {
             // 注意和finally中的执行顺序 finally是在return中的计算结束返回前执行
             retrunobj = joinPoint.proceed(args);
-        }
-        catch (Throwable e)
-        {
+        } catch (Throwable e) {
             tempE = e;
             throw e;
-        }
-        finally
-        {
+        } finally {
             boolean isError = setResultAndError(joinPoint, logInfo, retrunobj, clock, tempE);
             logInfo.setResponseTime(new Timestamp(System.currentTimeMillis()));
             setHostInfo(logInfo);
-            if (isError)
-            {
+            if (isError) {
                 //记录日志
                 logService.error(JSON.toJSONString(logInfo), tempE);
-            }
-            else
-            {
+            } else {
                 logService.info(JSON.toJSONString(logInfo));
             }
         }
@@ -109,28 +98,22 @@ public class LogAspect
      * @return void
      * llxiao  2018/9/20 - 9:30
      **/
-    private void setHostInfo(LogInfo logInfo)
-    {
+    private void setHostInfo(LogInfo logInfo) {
         // 本机IP信息
-        try
-        {
+        try {
             InetAddress local = InetAddress.getLocalHost();
-            if (null != local)
-            {
+            if (null != local) {
                 logInfo.setServerHost(local.getHostName());
                 logInfo.setServerIp(local.getHostAddress());
             }
-        }
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
             logService.warn("UnknownHostException");
         }
 
         // 请求IP信息
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        if (null != request)
-        {
+        if (null != request) {
             logInfo.setClientIp(request.getRemoteAddr());
             logInfo.setClientHost(request.getRemoteHost());
             logInfo.setRequestUri(request.getRequestURI());
@@ -144,16 +127,15 @@ public class LogAspect
      * [详细描述]:<br/>
      *
      * @param joinPoint :
-     * @param logInfo :
+     * @param logInfo   :
      * @param retrunobj :
-     * @param clock :
-     * @param tempE :
+     * @param clock     :
+     * @param tempE     :
      * @return true 未知异常
      * llxiao  2018/9/8 - 9:53
      **/
     private boolean setResultAndError(ProceedingJoinPoint joinPoint, LogInfo logInfo, Object retrunobj, StopWatch clock,
-            Throwable tempE)
-    {
+                                      Throwable tempE) {
         clock.stop();
         logInfo.setResult(JSON.toJSONString(retrunobj));
         logInfo.setCostTime(clock.getTime());
@@ -164,22 +146,17 @@ public class LogAspect
         LogAnnotation logAnnotation = method.getAnnotation(LogAnnotation.class);
         String customerInfo = logAnnotation.customer();
         //自定义的一些消息
-        if (StringUtils.isNotBlank(customerInfo))
-        {
+        if (StringUtils.isNotBlank(customerInfo)) {
             logInfo.setRemark(customerInfo);
         }
-        if (null != tempE)
-        {
+        if (null != tempE) {
             logInfo.setStatus(LogInfo.FAILED);
             // 业务异常处理不需要打印堆栈信息
-            if (tempE instanceof CommonException)
-            {
+            if (tempE instanceof CommonException) {
                 CommonException ce = (CommonException) tempE;
                 logInfo.setErrorCode(ce.getCode());
                 logInfo.setErrorMsg(ce.getErrorMessage());
-            }
-            else
-            {
+            } else {
                 // 未知异常打印堆栈信息
                 logInfo.setErrorMsg(tempE.getMessage());
                 return true;

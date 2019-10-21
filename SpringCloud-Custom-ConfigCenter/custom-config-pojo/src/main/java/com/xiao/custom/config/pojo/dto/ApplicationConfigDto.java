@@ -8,14 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
-* Created by Mybatis Generator on 2019/01/07
-*/
+ * Created by Mybatis Generator on 2019/01/07
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicationConfigDto
-{
+public class ApplicationConfigDto {
     //
     private Long id;
 

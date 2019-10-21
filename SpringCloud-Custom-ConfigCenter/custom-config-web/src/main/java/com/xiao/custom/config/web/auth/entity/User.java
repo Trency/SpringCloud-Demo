@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User
-{
+public class User {
 
     //    @ApiModelProperty(value = "用户名", required = true)
     private String name;

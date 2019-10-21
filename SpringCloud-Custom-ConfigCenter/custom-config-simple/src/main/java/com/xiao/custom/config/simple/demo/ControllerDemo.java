@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/demo")
 @RefreshScope
-public class ControllerDemo
-{
+public class ControllerDemo {
     @Value("${dymaic:test}")
     private String dbUrl;
 
     @RequestMapping("/getDbUrl")
-    public String getDbUrl()
-    {
+    public String getDbUrl() {
         return dbUrl;
     }
 }

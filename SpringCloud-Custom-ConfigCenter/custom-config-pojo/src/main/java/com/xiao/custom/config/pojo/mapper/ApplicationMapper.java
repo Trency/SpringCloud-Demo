@@ -9,8 +9,7 @@ import java.util.List;
 /**
  * Created by Mybatis Generator on 2018/11/23
  */
-public interface ApplicationMapper
-{
+public interface ApplicationMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(Application record);

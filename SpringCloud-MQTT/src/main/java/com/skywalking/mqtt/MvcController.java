@@ -13,13 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
  * @since JDK 1.8
  */
 @Controller()
-public class MvcController
-{
+public class MvcController {
     @RequestMapping("/mqtt")
-    public ModelAndView mqtt(){
+    public ModelAndView mqtt() {
         ModelAndView mv = new ModelAndView();
 //        mv.addObject("msg", "this a msg from HelloWorldController");
-        mv.setViewName("mqtt_client");;
+        mv.setViewName("mqtt_client");
+        ;
         return mv;
     }
 }

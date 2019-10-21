@@ -12,6 +12,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @since JDK 1.8
  */
 @Mapper
-public interface OrderItemRepository extends CommonRepository<OrderItem>
-{
+public interface OrderItemRepository extends CommonRepository<OrderItem> {
 }

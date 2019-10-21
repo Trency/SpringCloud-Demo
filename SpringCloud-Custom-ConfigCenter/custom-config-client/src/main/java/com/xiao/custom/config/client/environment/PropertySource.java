@@ -25,34 +25,33 @@ import java.util.Map;
  * Simple plain text serializable encapsulation of a named source of key-value pairs.
  * Basically a DTO for {@link PropertySource}, but also applicable outside the domain of a
  * Spring application.
- * 
- * @author Dave Syer
  *
+ * @author Dave Syer
  */
 public class PropertySource {
 
-	private String name;
+    private String name;
 
-	private Map<?, ?> source;
+    private Map<?, ?> source;
 
-	@JsonCreator
-	public PropertySource(@JsonProperty("name") String name,
-			@JsonProperty("source") Map<?, ?> source) {
-		this.name = name;
-		this.source = source;
-	}
+    @JsonCreator
+    public PropertySource(@JsonProperty("name") String name,
+                          @JsonProperty("source") Map<?, ?> source) {
+        this.name = name;
+        this.source = source;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Map<?, ?> getSource() {
-		return source;
-	}
+    public Map<?, ?> getSource() {
+        return source;
+    }
 
-	@Override
-	public String toString() {
-		return "PropertySource [name=" + name + "]";
-	}
+    @Override
+    public String toString() {
+        return "PropertySource [name=" + name + "]";
+    }
 
 }

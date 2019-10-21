@@ -19,17 +19,14 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
-public class ConsumerApplication
-{
-    public static void main(String[] args)
-    {
+public class ConsumerApplication {
+    public static void main(String[] args) {
         SpringApplication.run(ConsumerApplication.class, args);
     }
 
     @Bean
     @SentinelRestTemplate
-    public RestTemplate restTemplate()
-    {
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

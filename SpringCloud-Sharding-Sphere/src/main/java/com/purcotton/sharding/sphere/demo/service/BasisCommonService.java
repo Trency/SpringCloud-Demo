@@ -17,11 +17,9 @@ import java.util.List;
  * @version 1.0, 2018/11/14 11:15
  * @since JDK 1.8
  */
-public abstract class BasisCommonService implements CommonService
-{
+public abstract class BasisCommonService implements CommonService {
     @Override
-    public void initEnvironment()
-    {
+    public void initEnvironment() {
         getOrderRepository().createTableIfNotExists();
         getOrderItemRepository().createTableIfNotExists();
         getOrderRepository().truncateTable();
@@ -29,16 +27,14 @@ public abstract class BasisCommonService implements CommonService
     }
 
     @Override
-    public void cleanEnvironment()
-    {
+    public void cleanEnvironment() {
         getOrderRepository().dropTable();
         getOrderItemRepository().dropTable();
     }
 
     @Transactional
     @Override
-    public void processSuccess(final boolean isRangeSharding)
-    {
+    public void processSuccess(final boolean isRangeSharding) {
         System.out.println("-------------- Process Success Begin ---------------");
         List<Long> orderIds = insertData();
         printData(isRangeSharding);
@@ -49,20 +45,17 @@ public abstract class BasisCommonService implements CommonService
 
     @Transactional
     @Override
-    public void processFailure()
-    {
+    public void processFailure() {
         System.out.println("-------------- Process Failure Begin ---------------");
         insertData();
         System.out.println("-------------- Process Failure Finish --------------");
         throw new RuntimeException("Exception occur for transaction test.");
     }
 
-    private List<Long> insertData()
-    {
+    private List<Long> insertData() {
         System.out.println("---------------------------- Insert Data ----------------------------");
         List<Long> result = new ArrayList<>(10);
-        for (int i = 1; i <= 10; i++)
-        {
+        for (int i = 1; i <= 10; i++) {
             Order order = newOrder();
             order.setUserId(i);
             order.setStatus("INSERT_TEST");
@@ -77,53 +70,41 @@ public abstract class BasisCommonService implements CommonService
         return result;
     }
 
-    private void deleteData(final List<Long> orderIds)
-    {
+    private void deleteData(final List<Long> orderIds) {
         System.out.println("---------------------------- Delete Data ----------------------------");
-        for (Long each : orderIds)
-        {
+        for (Long each : orderIds) {
             getOrderRepository().delete(each);
             getOrderItemRepository().delete(each);
         }
     }
 
     @Override
-    public void printData(final boolean isRangeSharding)
-    {
-        if (isRangeSharding)
-        {
+    public void printData(final boolean isRangeSharding) {
+        if (isRangeSharding) {
             printDataRange();
-        }
-        else
-        {
+        } else {
             printDataAll();
         }
     }
 
-    private void printDataRange()
-    {
+    private void printDataRange() {
         System.out.println("---------------------------- Print Order Data -----------------------");
-        for (Object each : getOrderRepository().selectRange())
-        {
+        for (Object each : getOrderRepository().selectRange()) {
             System.out.println(each);
         }
         System.out.println("---------------------------- Print OrderItem Data -------------------");
-        for (Object each : getOrderItemRepository().selectRange())
-        {
+        for (Object each : getOrderItemRepository().selectRange()) {
             System.out.println(each);
         }
     }
 
-    private void printDataAll()
-    {
+    private void printDataAll() {
         System.out.println("---------------------------- Print Order Data -----------------------");
-        for (Object each : getOrderRepository().selectAll())
-        {
+        for (Object each : getOrderRepository().selectAll()) {
             System.out.println(each);
         }
         System.out.println("---------------------------- Print OrderItem Data -------------------");
-        for (Object each : getOrderItemRepository().selectAll())
-        {
+        for (Object each : getOrderItemRepository().selectAll()) {
             System.out.println(each);
         }
     }

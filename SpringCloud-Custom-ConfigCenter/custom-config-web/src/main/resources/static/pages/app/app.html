@@ -4,33 +4,33 @@
 
             <div slot="header">
                 <el-button-group>
-                    <el-button size="mini" type="primary" icon="el-icon-plus" @click="create">新增</el-button>
+                    <el-button @click="create" icon="el-icon-plus" size="mini" type="primary">新增</el-button>
                     <!--<el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteBatch">删除</el-button>-->
-                    <el-button size="mini" type="success" icon="el-icon-search" @click="search"
-                               style="margin-left: 25px">搜索
+                    <el-button @click="search" icon="el-icon-search" size="mini" style="margin-left: 25px"
+                               type="success">搜索
                     </el-button>
-                    <el-button size="mini" type="info" icon="el-icon-refresh" @click="resetForm('form')">重置
+                    <el-button @click="resetForm('form')" icon="el-icon-refresh" size="mini" type="info">重置
                     </el-button>
                 </el-button-group>
             </div>
             <br/><br/>
             <div>
-                <el-form :inline="true" :model="searchForm" ref="form" style="width: 100%" size="small">
+                <el-form :inline="true" :model="searchForm" ref="form" size="small" style="width: 100%">
                     <el-form-item label="应用名称">
-                        <el-input size="small" v-model="searchForm.application" placeholder="请输入应用名称"
-                                  style="width:230px;" clearable="true"></el-input>
+                        <el-input clearable="true" placeholder="请输入应用名称" size="small"
+                                  style="width:230px;" v-model="searchForm.application"></el-input>
                     </el-form-item>
                     <el-form-item label="所属环境" style="height: 32px;">
-                        <el-select v-model="searchForm.profile" placeholder="请选择环境" style="width:230px;;height: 32px"
-                                   clearable="true">
-                            <el-option label="开发环境" value="dev" style="height: 32px;"></el-option>
-                            <el-option label="测试环境" value="test" style="height: 32px;"></el-option>
-                            <el-option label="生产环境" value="prod" style="height: 32px;"></el-option>
+                        <el-select clearable="true" placeholder="请选择环境" style="width:230px;;height: 32px"
+                                   v-model="searchForm.profile">
+                            <el-option label="开发环境" style="height: 32px;" value="dev"></el-option>
+                            <el-option label="测试环境" style="height: 32px;" value="test"></el-option>
+                            <el-option label="生产环境" style="height: 32px;" value="prod"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="应用描述">
-                        <el-input size="small" v-model="searchForm.applicationName" placeholder="请输入应用描述信息"
-                                  style="width:230px;" clearable="true"></el-input>
+                        <el-input clearable="true" placeholder="请输入应用描述信息" size="small"
+                                  style="width:230px;" v-model="searchForm.applicationName"></el-input>
                     </el-form-item>
                     <!--<el-form-item>-->
                     <!--<el-button ref="submit" size="mini" type="primary" icon="el-icon-search" @click="search">搜索-->
@@ -39,13 +39,13 @@
                 </el-form>
             </div>
             <div>
-                <el-table ref="table" :data="pager.list" stripe @selection-change="selectChange"
-                          highlight-current-row style="width: 100%" :height="tableHeight-65" size="mini">
-                    <el-table-column type="index" min-width="50"></el-table-column>
-                    <el-table-column type="selection" min-width="50"></el-table-column>
-                    <el-table-column property="application" label="应用名称" min-width="200"></el-table-column>
-                    <el-table-column property="label" label="标签" min-width="150"></el-table-column>
-                    <el-table-column property="profile" label="所属环境" min-width="150">
+                <el-table :data="pager.list" :height="tableHeight-65" @selection-change="selectChange" highlight-current-row
+                          ref="table" size="mini" stripe style="width: 100%">
+                    <el-table-column min-width="50" type="index"></el-table-column>
+                    <el-table-column min-width="50" type="selection"></el-table-column>
+                    <el-table-column label="应用名称" min-width="200" property="application"></el-table-column>
+                    <el-table-column label="标签" min-width="150" property="label"></el-table-column>
+                    <el-table-column label="所属环境" min-width="150" property="profile">
                         <template slot-scope="scope">
                             <p v-if="scope.row.profile=='dev'">
                                 开发环境
@@ -61,34 +61,34 @@
                             </p>
                         </template>
                     </el-table-column>
-                    <el-table-column property="regionName" label="所属区域" min-width="150"></el-table-column>
-                    <el-table-column property="createTime" label="创建时间" min-width="150"></el-table-column>
-                    <el-table-column property="updateTime" label="修改时间" min-width="150"></el-table-column>
-                    <el-table-column property="applicationName" label="描述" min-width="200"></el-table-column>
-                    <el-table-column label="操作" min-width="330" fixed="right">
+                    <el-table-column label="所属区域" min-width="150" property="regionName"></el-table-column>
+                    <el-table-column label="创建时间" min-width="150" property="createTime"></el-table-column>
+                    <el-table-column label="修改时间" min-width="150" property="updateTime"></el-table-column>
+                    <el-table-column label="描述" min-width="200" property="applicationName"></el-table-column>
+                    <el-table-column fixed="right" label="操作" min-width="330">
                         <template slot-scope="scope">
                             <el-button-group>
-                                <el-button size="mini" type="success" icon="el-icon-setting"
-                                           @click="relation(scope.row)">管理
+                                <el-button @click="relation(scope.row)" icon="el-icon-setting" size="mini"
+                                           type="success">管理
                                 </el-button>
-                                <el-button size="mini" type="success" icon="el-icon-upload"
-                                           @click="refresh(scope.row)">发布
+                                <el-button @click="refresh(scope.row)" icon="el-icon-upload" size="mini"
+                                           type="success">发布
                                 </el-button>
                             </el-button-group>
                             <el-button-group>
-                                <el-button size="mini" type="primary" icon="el-icon-edit"
-                                           @click="edit(scope.row)">修改
+                                <el-button @click="edit(scope.row)" icon="el-icon-edit" size="mini"
+                                           type="primary">修改
                                 </el-button>
-                                <el-button size="mini" type="danger" icon="el-icon-delete"
-                                           @click="del(scope.row)">删除
+                                <el-button @click="del(scope.row)" icon="el-icon-delete" size="mini"
+                                           type="danger">删除
                                 </el-button>
                             </el-button-group>
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination background
-                               layout="sizes, prev, pager, next, total"
-                               :total="pager.total"></el-pagination>
+                <el-pagination :total="pager.total"
+                               background
+                               layout="sizes, prev, pager, next, total"></el-pagination>
             </div>
             <!--<el-dialog title="删除提示" :visible.sync="deleteModal"-->
             <!--width="30%">-->
@@ -103,4 +103,4 @@
     </div>
     <br/>
 </template>
-<script type="text/javascript" src="pages/app/app.js"></script>
+<script src="pages/app/app.js" type="text/javascript"></script>

@@ -13,8 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ClientHostInfo
-{
+public class ClientHostInfo {
 
     /**
      * 在线

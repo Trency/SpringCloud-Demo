@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @FeignClient(value = Constants.CONFIG_SERVICE)
 @RequestMapping(value = "/serverHostConfig")
-public interface ServerHostConfigFeign
-{
+public interface ServerHostConfigFeign {
     //查询服务器配置信息
     @RequestMapping(value = "/queryServerHost")
     PageInfo<ServerHostConfigDto> pageServerHostConfig(@RequestBody ServerHostConfigQuery serverHostConfigQuery);

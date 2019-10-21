@@ -13,8 +13,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Data
-public class ClientHostInfoDto
-{
+public class ClientHostInfoDto {
     private Long id;
 
     /**

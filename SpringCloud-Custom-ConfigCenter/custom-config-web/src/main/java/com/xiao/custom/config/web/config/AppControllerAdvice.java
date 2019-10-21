@@ -28,8 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  */
 @Slf4j
 @ControllerAdvice
-public class AppControllerAdvice extends DefaultControllerAdvice implements ResponseBodyAdvice
-{
+public class AppControllerAdvice extends DefaultControllerAdvice implements ResponseBodyAdvice {
 
     /**
      * 拦截服务调用异常
@@ -38,13 +37,11 @@ public class AppControllerAdvice extends DefaultControllerAdvice implements Resp
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     @Override
-    public ResponseData hystrixRuntimeException(HystrixRuntimeException e)
-    {
+    public ResponseData hystrixRuntimeException(HystrixRuntimeException e) {
         log.info("系统异常:", e);
         Throwable cause = e.getCause();
         //return new ErrorResponseData(e.getCode(), e.getErrorMessage());
-        if (cause instanceof CommonException)
-        {
+        if (cause instanceof CommonException) {
             return serviceException((CommonException) cause);
         }
         log.info("服务远程调用异常:", e);
@@ -53,8 +50,7 @@ public class AppControllerAdvice extends DefaultControllerAdvice implements Resp
     }
 
     @Override
-    public boolean supports(MethodParameter methodParameter, Class aClass)
-    {
+    public boolean supports(MethodParameter methodParameter, Class aClass) {
         return true;
     }
 
@@ -71,22 +67,15 @@ public class AppControllerAdvice extends DefaultControllerAdvice implements Resp
      */
     @Override
     public Object beforeBodyWrite(Object returnValue, MethodParameter methodParameter, MediaType mediaType,
-            Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse)
-    {
+                                  Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
 
         //如果已经是ResponseData，直接返回
-        if (returnValue instanceof ResponseData)
-        {
+        if (returnValue instanceof ResponseData) {
             return returnValue;
-        }
-        else if (returnValue instanceof String)
-        {
-            try
-            {
+        } else if (returnValue instanceof String) {
+            try {
                 return JSONObject.toJSON(SuccessResponseData.success(returnValue));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 log.error("返回结果转换json异常", e);
                 return ErrorResponseData.error("返回结果转换json异常");
             }

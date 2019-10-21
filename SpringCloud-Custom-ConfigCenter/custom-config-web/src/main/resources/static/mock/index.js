@@ -28,7 +28,13 @@ Mock.mock(/api\/user\/menuList/, new MockResult([
         ]
     },
     {"id": "4", "menuId": "4", "name": "区域管理", "url": "#region/region.html", "iconCls": "iconfont icon-quyu"},
-    {"id": "5", "menuId": "5", "name": "服务管理", "url": "#server/serverlist.html", "iconCls": "iconfont el-icon-document"},
+    {
+        "id": "5",
+        "menuId": "5",
+        "name": "服务管理",
+        "url": "#server/serverlist.html",
+        "iconCls": "iconfont el-icon-document"
+    },
     // {
     //     "id": "5", "menuId": "5", "name": "演示", "iconCls": "iconfont icon-yanshi",
     //     children: [

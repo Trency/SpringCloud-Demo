@@ -21,8 +21,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Service
-public class ClientHostServiceImpl implements ClientHostService
-{
+public class ClientHostServiceImpl implements ClientHostService {
     @Autowired
     private ClientHostInfoMapper clientHostInfoMapper;
 
@@ -33,11 +32,9 @@ public class ClientHostServiceImpl implements ClientHostService
      * @return
      */
     @Override
-    public PageInfo<ClientHostInfoDto> pageQuery(ClientHostInfoQuery query)
-    {
+    public PageInfo<ClientHostInfoDto> pageQuery(ClientHostInfoQuery query) {
         List<ClientHostInfoDto> clientHostInfoDtos = new ArrayList<>();
-        if (null != query)
-        {
+        if (null != query) {
             PageHelper.startPage(query.getPageNum(), query.getPageSize());
             clientHostInfoDtos = this.clientHostInfoMapper.pageQuery(query);
         }
@@ -50,8 +47,7 @@ public class ClientHostServiceImpl implements ClientHostService
      * @param id
      */
     @Override
-    public void delete(long id)
-    {
+    public void delete(long id) {
         this.clientHostInfoMapper.deleteByPrimaryKey(id);
     }
 }

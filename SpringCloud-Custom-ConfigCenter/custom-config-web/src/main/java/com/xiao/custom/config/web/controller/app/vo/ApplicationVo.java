@@ -11,8 +11,7 @@ import lombok.Data;
  * @since JDK 1.8
  */
 @Data
-public class ApplicationVo
-{
+public class ApplicationVo {
     private Long id;
     private String application;
     private String applicationName;

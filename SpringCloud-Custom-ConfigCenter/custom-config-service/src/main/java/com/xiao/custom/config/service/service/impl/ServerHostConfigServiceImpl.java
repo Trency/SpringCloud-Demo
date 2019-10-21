@@ -25,8 +25,7 @@ import java.util.List;
  * @since JDK 1.8
  */
 @Service
-public class ServerHostConfigServiceImpl implements ServerHostConfigService
-{
+public class ServerHostConfigServiceImpl implements ServerHostConfigService {
     @Resource
     private ServerHostConfigMapper serverHostConfigMapper;
 
@@ -35,8 +34,7 @@ public class ServerHostConfigServiceImpl implements ServerHostConfigService
 
     @Override
     @Transactional
-    public int save(ServerHostConfigDto serverHostConfigDto)
-    {
+    public int save(ServerHostConfigDto serverHostConfigDto) {
         serverHostConfigDto.setCreateTime(new Date());
         ServerHostConfig serverHostConfig = serverHostConfigDtoconvertserverHostConfig(serverHostConfigDto);
         return serverHostConfigMapper.insert(serverHostConfig);
@@ -44,8 +42,7 @@ public class ServerHostConfigServiceImpl implements ServerHostConfigService
 
     @Override
     @Transactional
-    public int update(ServerHostConfigDto serverHostConfigDto)
-    {
+    public int update(ServerHostConfigDto serverHostConfigDto) {
         ServerHostConfig serverHostConfig = serverHostConfigDtoconvertserverHostConfig(serverHostConfigDto);
         return serverHostConfigMapper.updateByPrimaryKey(serverHostConfig);
     }
@@ -60,8 +57,7 @@ public class ServerHostConfigServiceImpl implements ServerHostConfigService
      **/
     @Override
     @Transactional
-    public int delete(Long id)
-    {
+    public int delete(Long id) {
         //        if (applicationConfigMapper.countByRegionId(id) > 0)
         //        {
         //            return -1;
@@ -71,8 +67,7 @@ public class ServerHostConfigServiceImpl implements ServerHostConfigService
 
     @Override
     public PageInfo<ServerHostConfigDto> pageServerHostConfig(ServerHostConfigQuery serverHostConfigQuery,
-            Integer pageNum, Integer pageSize)
-    {
+                                                              Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ServerHostConfigDto> list = serverHostConfigMapper.pageServerHostConfig(serverHostConfigQuery);
         return new PageInfo<>(list);
@@ -84,8 +79,7 @@ public class ServerHostConfigServiceImpl implements ServerHostConfigService
      *
      * @return ServerHostConfig
      **/
-    public ServerHostConfig serverHostConfigDtoconvertserverHostConfig(ServerHostConfigDto serverHostConfigDto)
-    {
+    public ServerHostConfig serverHostConfigDtoconvertserverHostConfig(ServerHostConfigDto serverHostConfigDto) {
         ServerHostConfig serverHostConfig = new ServerHostConfig();
         serverHostConfig.setId(serverHostConfigDto.getId());
         serverHostConfig.setRegionId(serverHostConfigDto.getRegionId());
@@ -98,8 +92,7 @@ public class ServerHostConfigServiceImpl implements ServerHostConfigService
     }
 
     @Override
-    public ServerHostConfig selectServerHostConfigById(Long id)
-    {
+    public ServerHostConfig selectServerHostConfigById(Long id) {
         // TODO Auto-generated method stub
         return serverHostConfigMapper.selectByPrimaryKey(id);
     }

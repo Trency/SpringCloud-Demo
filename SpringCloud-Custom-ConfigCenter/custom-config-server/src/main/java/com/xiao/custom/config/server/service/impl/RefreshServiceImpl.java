@@ -22,8 +22,7 @@ import javax.annotation.Resource;
  */
 @Service
 @Slf4j
-public class RefreshServiceImpl implements RefreshService
-{
+public class RefreshServiceImpl implements RefreshService {
     @Resource
     private ConnectionManager connectionManager;
 
@@ -31,20 +30,17 @@ public class RefreshServiceImpl implements RefreshService
      * [简要描述]:刷新服务<br/>
      * [详细描述]:<br/>
      *
-     * @param ip :
+     * @param ip   :
      * @param port :
      * @return void
      * llxiao  2019/4/4 - 9:44
      **/
     @Override
-    public boolean refresh(String ip, int port)
-    {
+    public boolean refresh(String ip, int port) {
         boolean flag = false;
-        if (StringUtils.isNotBlank(ip))
-        {
+        if (StringUtils.isNotBlank(ip)) {
             Connection connection = connectionManager.getConnection(ip, port);
-            if (null != connection)
-            {
+            if (null != connection) {
                 log.info(">>> 服务端通知IP:{},PORT:{}的客户端刷新配置....", connection.getServerIp(), connection.getServerPort());
                 Channel channel = connection.getChannel();
                 Message message = new Message();
@@ -52,9 +48,7 @@ public class RefreshServiceImpl implements RefreshService
                 message.setMessage("服务通知客户端发起刷新配置");
                 channel.writeAndFlush(message);
                 flag = true;
-            }
-            else
-            {
+            } else {
                 log.error(">>> 无法发起刷新配置请求，当前IP:{}和PORT:{}找不到对应的客户端信息...", ip, port);
             }
         }

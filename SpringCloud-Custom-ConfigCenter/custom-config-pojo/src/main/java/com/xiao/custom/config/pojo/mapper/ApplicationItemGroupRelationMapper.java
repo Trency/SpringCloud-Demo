@@ -6,8 +6,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * Created by Mybatis Generator on 2018/11/23
  */
-public interface ApplicationItemGroupRelationMapper
-{
+public interface ApplicationItemGroupRelationMapper {
     int deleteByPrimaryKey(Long id);
 
     int insert(ApplicationItemGroupRelation record);
@@ -25,7 +24,7 @@ public interface ApplicationItemGroupRelationMapper
      * [详细描述]:<br/>
      *
      * @param groupIdArr :
-     * @param appId :
+     * @param appId      :
      * @return void
      * jun.liu  2018/11/28 - 14:10
      **/
@@ -36,7 +35,7 @@ public interface ApplicationItemGroupRelationMapper
      * [详细描述]:<br/>
      *
      * @param groupIdArr :
-     * @param appId :
+     * @param appId      :
      * @return int
      * jun.liu  2018/11/28 - 15:41
      **/

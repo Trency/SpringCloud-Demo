@@ -13,8 +13,7 @@ import com.xiao.custom.config.pojo.query.ConfigItemQuery;
  * @version 1.0, 2018/11/27 09:35
  * @since JDK 1.8
  */
-public interface ConfigItemService
-{
+public interface ConfigItemService {
     Integer save(ConfigItem configItem);
 
     Integer update(ConfigItem configItem);
@@ -38,8 +37,8 @@ public interface ConfigItemService
      * [详细描述]:<br/>
      *
      * @param configItemQuery :
-     * @param pageNum :
-     * @param pageSize :
+     * @param pageNum         :
+     * @param pageSize        :
      * @return com.github.pagehelper.PageInfo<com.winner.config.center.pojo.db.dto.ConfigItemDto>
      * jun.liu  2018/11/27 - 16:44
      **/
@@ -50,8 +49,8 @@ public interface ConfigItemService
      * [详细描述]:<br/>
      *
      * @param configItemQuery :
-     * @param pageNum :
-     * @param pageSize :
+     * @param pageNum         :
+     * @param pageSize        :
      * @return com.github.pagehelper.PageInfo<com.winner.config.center.pojo.db.dto.ConfigItemDto>
      * jun.liu  2018/11/28 - 10:03
      **/

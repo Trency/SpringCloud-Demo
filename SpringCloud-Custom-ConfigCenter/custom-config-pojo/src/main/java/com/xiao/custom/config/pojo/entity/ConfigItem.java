@@ -14,8 +14,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfigItem
-{
+public class ConfigItem {
     //
     private Long id;
 

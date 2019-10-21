@@ -14,8 +14,7 @@ import java.util.Set;
  * @since JDK 1.8
  */
 @Data
-public class SearchMenusDo
-{
+public class SearchMenusDo {
     /**
      * 品牌
      **/
